@@ -229,6 +229,10 @@ body.airforgeCleanMode{background:#07111a!important;color:#edf7ff!important;over
 .afcAuth{position:fixed;inset:0;z-index:2147483003;background:#07111a;display:flex;align-items:center;justify-content:center;padding:18px}.afcAuthCard{width:min(900px,100%);display:grid;grid-template-columns:1.08fr .92fr;border:1px solid #2a485c;border-radius:20px;overflow:hidden;background:#0b1722;box-shadow:0 30px 100px rgba(0,0,0,.5)}.afcAuthLeft{padding:31px;background:radial-gradient(circle at 18% 9%,rgba(97,221,244,.14),transparent 31%),linear-gradient(145deg,#0c1c29,#112c3f 58%,#14203a)}.afcAuthLeft img{width:46px;height:46px;border-radius:13px}.afcAuthLeft h1{font-size:43px;line-height:.95;letter-spacing:-2.3px;margin:28px 0 9px}.afcAuthLeft h1 span{color:#61ddf4}.afcAuthLeft p{max-width:430px;color:#acc1cc;font-size:10px;line-height:1.65}.afcAuthBullets{display:grid;gap:7px;margin-top:17px}.afcAuthBullet{border:1px solid #2b4b5f;background:rgba(3,13,20,.25);padding:9px;border-radius:9px;color:#c1d1d9;font-size:8px}.afcAuthRight{padding:30px;background:#08131e}.afcAuthRight h2{font-size:22px;margin:0}.afcAuthRight p{font-size:8px;color:#8198a8;line-height:1.55}.afcAuthTabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:15px 0 10px}.afcAuthTabs button{padding:9px;border:1px solid #2a4355;background:#0c1a26;color:#9eb4c1;border-radius:8px;font-size:8px;font-weight:900}.afcAuthTabs button.active{border-color:#3da9c1;background:#10283a;color:#70e5f7}.afcAuthForm{display:grid;gap:7px}.afcAuthForm label{font-size:7px;color:#849aaa;font-weight:900}.afcAuthForm input,.afcAuthForm select{width:100%;padding:10px;background:#08131e;border:1px solid #294456;color:#edf7fb;border-radius:8px;font-size:9px}.afcAuthSubmit{width:100%;border:0;border-radius:9px;padding:11px;background:linear-gradient(135deg,#4ddcf1,#7183f5);color:#06111b;font-weight:950;font-size:9px}.afcAuthError{min-height:16px;color:#ff7f87;font-size:7px;font-weight:850}
 @media(max-width:980px){.afcLayout{grid-template-columns:1fr}.afcSide{position:fixed;left:0;top:70px;bottom:0;width:245px;z-index:2147483004;transform:translateX(-105%);transition:.18s}.afcSide.open{transform:none}.afcMenu{display:grid!important}.afcStats{grid-template-columns:repeat(2,1fr)}.afcGrid2,.afcGrid3{grid-template-columns:1fr}.afcFormGrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.afcSearch{display:none}.afcBrand{min-width:0}.afcBrand span{display:none}.afcTop{padding:0 10px}.afcTopBtns button{padding:0 8px}.afcPage{padding:11px}.afcHero{padding:19px}.afcStats{grid-template-columns:1fr 1fr}.afcLoop{grid-template-columns:1fr 1fr}.afcFormGrid{grid-template-columns:1fr}.afcAuthCard{grid-template-columns:1fr}.afcAuthLeft{display:none}.afcCoach{right:9px;bottom:9px}}
+</style><style id="airforgeMultiAccountV1">
+body.airforgeCleanMode #airforgeCleanApp,body.airforgeCleanMode #airforgeCleanApp *{pointer-events:auto}
+.afcAuth,.afcAuthCard,.afcAuthRight,.afcAuthTabs,.afcAuthForm{pointer-events:auto!important}
+.afcAuthTabs button,.afcAuthSubmit{pointer-events:auto!important;cursor:pointer!important}
 </style></head>
 <body><div id="authGate" class="authGate">
   <div class="authCard">
@@ -891,7 +895,7 @@ initAuth();
 <script id="airforgeCleanV1Script">
 (function(){
 'use strict';
-var ACCOUNT='airforge_account_v4', ACCOUNT_OLD='airforge_account_v3';
+var ACCOUNT='airforge_account_v4', ACCOUNT_OLD='airforge_account_v3', ACCOUNTS='airforge_accounts_v1', CURRENT='airforge_current_email_v1';
 var STATE='airforge_clean_state_v1', OLD_STATE='pcm_master_command_v3', CHAT='airforge_clean_chat_v1';
 var app=document.getElementById('airforgeCleanApp'), state=loadState(), account=null, view='home', coachAction='planner';
 function $(id){return document.getElementById(id)}
@@ -900,8 +904,31 @@ function today(){return new Date().toISOString().slice(0,10)}
 function addDays(n){var d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
 function hash(p){var h=2166136261;for(var i=0;i<p.length;i++){h^=p.charCodeAt(i);h=Math.imul(h,16777619)}return 'af4-'+(h>>>0).toString(16)}
 function initials(n){return String(n||'A').split(/\s+/).filter(Boolean).slice(0,2).map(function(x){return x[0]}).join('').toUpperCase()||'A'}
-function getAccount(){try{return JSON.parse(localStorage.getItem(ACCOUNT)||localStorage.getItem(ACCOUNT_OLD)||'null')}catch(e){return null}}
-function saveAccount(x){localStorage.setItem(ACCOUNT,JSON.stringify(x))}
+function getAccounts(){
+ try{
+  var a=JSON.parse(localStorage.getItem(ACCOUNTS)||'null');
+  if(Array.isArray(a))return a;
+  var old=JSON.parse(localStorage.getItem(ACCOUNT)||localStorage.getItem(ACCOUNT_OLD)||'null');
+  if(old&&old.email){a=[old];localStorage.setItem(ACCOUNTS,JSON.stringify(a));return a}
+ }catch(e){}
+ return [];
+}
+function saveAccounts(a){localStorage.setItem(ACCOUNTS,JSON.stringify(a))}
+function getAccount(){
+ var a=getAccounts(), email='';
+ try{email=sessionStorage.getItem(CURRENT)||''}catch(e){}
+ if(email){var hit=a.find(function(x){return x.email===email});if(hit)return hit}
+ return a[0]||null;
+}
+function saveAccount(x){
+ var a=getAccounts(),idx=a.findIndex(function(y){return y.email===x.email});
+ if(idx<0)a.push(x);else a[idx]=x;
+ saveAccounts(a);
+ try{sessionStorage.setItem(CURRENT,x.email)}catch(e){}
+ localStorage.setItem(ACCOUNT,JSON.stringify(x));
+}
+function accountStateKey(email){return STATE+'_'+hash(String(email||'').toLowerCase())}
+function freshState(){return normalize({sessions:0,minutes:0,streak:0,lastDay:'',tasks:[],revisions:[],errors:[],cards:[],notes:[],attempts:[],settings:{targetDate:'2027-04-18',dailyMinutes:180}})}
 function loadState(){
  var d={sessions:0,minutes:0,streak:0,tasks:[],revisions:[],errors:[],cards:[],notes:[],attempts:[],settings:{targetDate:'2027-04-18',dailyMinutes:180}};
  try{
@@ -911,11 +938,23 @@ function loadState(){
  }catch(e){}
  return normalize(d);
 }
+function loadStateFor(a){
+ var key=accountStateKey(a.email);
+ try{
+  var x=JSON.parse(localStorage.getItem(key)||'null');if(x)return normalize(x);
+  var all=getAccounts();
+  if(all.length===1 && all[0].email===a.email){
+    var legacy=JSON.parse(localStorage.getItem(STATE)||'null');
+    if(legacy){var migrated=normalize(legacy);localStorage.setItem(key,JSON.stringify(migrated));return migrated}
+  }
+ }catch(e){}
+ return freshState();
+}
 function normalize(s){
  var d={sessions:0,minutes:0,streak:0,tasks:[],revisions:[],errors:[],cards:[],notes:[],attempts:[],settings:{targetDate:'2027-04-18',dailyMinutes:180}};
  s=Object.assign(d,s||{});s.tasks=Array.isArray(s.tasks)?s.tasks:[];s.revisions=Array.isArray(s.revisions)?s.revisions:[];s.errors=Array.isArray(s.errors)?s.errors:[];s.cards=Array.isArray(s.cards)?s.cards:[];s.notes=Array.isArray(s.notes)?s.notes:[];s.attempts=Array.isArray(s.attempts)?s.attempts:[];s.settings=Object.assign(d.settings,s.settings||{});return s;
 }
-function saveState(){localStorage.setItem(STATE,JSON.stringify(state));render()}
+function saveState(){if(account)localStorage.setItem(accountStateKey(account.email),JSON.stringify(state));localStorage.setItem(STATE,JSON.stringify(state));render()}
 function toast(t){var x=$('afcToast');if(!x)return;x.textContent=t;x.classList.add('show');setTimeout(function(){x.classList.remove('show')},1500)}
 function authHTML(mode){
  var signup=mode==='signup';
@@ -930,14 +969,24 @@ function submitAuth(){
  try{
   if(mode==='signup'){
    var n=$('acName').value.trim(),em=$('acEmail').value.trim().toLowerCase(),p=$('acPass').value,cl=$('acClass').value;
-   if(n.length<2)throw Error('Enter your name.');if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em))throw Error('Enter a valid email.');if(p.length<6)throw Error('Password must be at least 6 characters.');
-   var old=getAccount();if(old&&old.email){showAuth('login');throw Error('An account already exists on this device. Sign in instead.')}
-   account={version:6,name:n,email:em,className:cl,passwordHash:hash(p),createdAt:new Date().toISOString()};saveAccount(account);enter();
+   if(n.length<2)throw Error('Enter your name.');
+   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em))throw Error('Enter a valid email.');
+   if(p.length<6)throw Error('Password must be at least 6 characters.');
+   var all=getAccounts();
+   if(all.some(function(x){return x.email===em}))throw Error('An account with this email already exists. Use Sign in.');
+   account={version:7,name:n,email:em,className:cl,passwordHash:hash(p),createdAt:new Date().toISOString(),lastSeen:new Date().toISOString(),coachHistory:[]};
+   all.push(account);saveAccounts(all);
+   try{sessionStorage.setItem(CURRENT,em)}catch(e){}
+   state=freshState();localStorage.setItem(accountStateKey(em),JSON.stringify(state));
+   enter();
   }else{
-   var a=getAccount(),em2=$('acLoginEmail').value.trim().toLowerCase(),p2=$('acLoginPass').value;
-   if(!a||a.email!==em2)throw Error('No matching account found on this device.');
+   var all=getAccounts(),em2=$('acLoginEmail').value.trim().toLowerCase(),p2=$('acLoginPass').value;
+   var a=all.find(function(x){return x.email===em2});
+   if(!a)throw Error('No matching account found on this device.');
    if((a.passwordHash||hash(a.password||''))!==hash(p2))throw Error('Incorrect email or password.');
-   account=a;account.lastSeen=new Date().toISOString();saveAccount(account);enter();
+   account=a;account.lastSeen=new Date().toISOString();saveAccount(account);
+   state=loadStateFor(account);
+   enter();
   }
  }catch(e){err.textContent=e.message||'Could not continue.'}
  finally{var b=$('acSubmit');if(b)b.disabled=false}
@@ -1031,9 +1080,12 @@ function setupCoach(){
 function openCoach(){$('afcCoach').style.display='block';$('afcReopen').style.display='none'}
 function executeCoach(a){var m={planner:'planner',revision:'revision',mistakes:'errors',test:'tests'};logCoach(a);openView(m[a]||'planner');toast('Coach opened '+(m[a]||'your next step'))}
 function logCoach(a){account=getAccount();if(!account)return;account.coachHistory=account.coachHistory||[];account.coachHistory.push({action:a,time:new Date().toLocaleString()});account.coachHistory=account.coachHistory.slice(-20);saveAccount(account);var h=account.coachHistory.slice().reverse();$('coachHistory').innerHTML=h.map(function(x){return '<div class="afcItem"><b>'+esc(x.action)+'</b><small>'+esc(x.time)+'</small></div>'}).join('')}
-function signOut(){pauseTimer();app.innerHTML='';showAuth('login')}
+function signOut(){pauseTimer();if(account){localStorage.setItem(accountStateKey(account.email),JSON.stringify(state));saveAccount(account)}try{sessionStorage.removeItem(CURRENT)}catch(e){}app.innerHTML='';showAuth('login')}
 function enter(){
- account=getAccount();app.style.display='block';app.innerHTML=shellHTML();renderShell();
+ account=getAccount();
+ if(!account)return showAuth('signup');
+ state=loadStateFor(account);
+ app.style.display='block';app.innerHTML=shellHTML();renderShell();
 }
 function bindGlobal(){
  app.addEventListener('click',function(e){
