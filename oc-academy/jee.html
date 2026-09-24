@@ -158,6 +158,48 @@ body:not(.auth-ready) .aiCoach{display:none!important}
 #authGate .authAction{pointer-events:auto!important;position:relative!important;z-index:2147483647!important;touch-action:manipulation!important}
 #authGate .authForm{isolation:isolate!important}
 #authGate .auth3d,#authGate .auth3d canvas{pointer-events:none!important}
+</style><style id="airforgeInteractionFixV2">
+/* Auth layer is completely removed from the hit-test tree after sign-in. */
+body.auth-ready #authGate{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+body.auth-ready .shell,
+body.auth-ready .afSidebar,
+body.auth-ready #aiCoachV2,
+body.auth-ready #coachDock{
+  pointer-events:auto!important;
+}
+body.auth-ready .afSideBtn,
+body.auth-ready .afAction,
+body.auth-ready .afQuick,
+body.auth-ready button,
+body.auth-ready input,
+body.auth-ready select,
+body.auth-ready textarea{
+  pointer-events:auto!important;
+}
+#aiCoachV2 .coachHeaderV2{touch-action:none}
+#aiCoachV2 .coachHeadBtns,
+#aiCoachV2 .coachHeadBtns button,
+#aiCoachV2 .coachTabsV2,
+#aiCoachV2 .coachTabsV2 button,
+#aiCoachV2 .coachBottom,
+#aiCoachV2 .coachBottom button,
+#aiCoachV2 .coachOption,
+#aiCoachV2 .coachSend,
+#aiCoachV2 input{
+  pointer-events:auto!important;
+  touch-action:manipulation;
+}
+.coachClear{
+  width:100%;margin-top:7px;padding:7px 9px;border-radius:8px;
+  border:1px solid #29485a;background:#0d1a26;color:#91a8b8;
+  cursor:pointer;font-size:9px;font-weight:850;
+}
+.coachClear:hover{border-color:#4dc5dc;color:#e6f7fc}
 </style></head>
 <body><div id="authGate" class="authGate">
   <div class="authCard">
@@ -417,7 +459,7 @@ body:not(.auth-ready) .aiCoach{display:none!important}
   <div class="coachHeaderV2" id="coachDragHandle">
     <div class="coach3d" id="coach3d"></div>
     <div><div class="coachTitleV2">🤖 AIRForge Coach <span class="coachOnline">● online</span></div><div class="coachSubV2">A study buddy with a serious side • drag me anywhere</div></div>
-    <div class="coachHeadBtns"><button class="coachIcon" onclick="coachCollapse()" title="Minimize">−</button><button class="coachIcon coachClose" onclick="coachHide()" title="Hide">×</button></div>
+    <div class="coachHeadBtns"><button id="coachCollapseButton" class="coachIcon" onclick="coachCollapse()" title="Minimize">−</button><button id="coachCloseButton" class="coachIcon coachClose" onclick="coachHide()" title="Hide">×</button></div>
   </div>
   <div class="coachBodyV2">
     <div class="coachTabsV2">
@@ -437,7 +479,7 @@ body:not(.auth-ready) .aiCoach{display:none!important}
       </div>
       <div class="coachBottom"><button onclick="studentChooseV2()">✋ I choose</button><button class="primary" onclick="coachDoV2()">⚡ Do this</button></div>
     </div>
-    <div id="coachChat" class="coachChat" style="display:none"><div id="coachChatMessages"><div class="chatBubble bot">Hey! I’m your AIRForge study buddy. Tell me what’s stuck. I’ll keep it practical.</div></div><div class="coachInputRow"><input id="coachChatInput" placeholder="Ask about a plan, chapter, mistake..." onkeydown="if(event.key==='Enter')sendCoachChat()"><button class="coachSend" onclick="sendCoachChat()">→</button></div></div>
+    <div id="coachChat" class="coachChat" style="display:none"><div id="coachChatMessages"><div class="chatBubble bot">Hey! I’m your AIRForge study buddy. Tell me what’s stuck. I’ll keep it practical.</div></div><div class="coachInputRow"><input id="coachChatInput" placeholder="Ask about a plan, chapter, mistake..." onkeydown="if(event.key==='Enter')sendCoachChat()"><button class="coachSend" id="coachSendButton" onclick="sendCoachChat()">→</button></div><button class="coachClear" id="coachClearButton" type="button">Clear chat</button></div>
     <div id="coachTools" class="coachScroll" style="display:none"><div class="coachOptions">
       <button class="coachOption" onclick="openView('formula')"><b>🧾 Formula cards</b>Rapid recall.</button><button class="coachOption" onclick="openView('notebook')"><b>🔖 Notebook</b>Save a tricky idea.</button><button class="coachOption" onclick="openView('atlas')"><b>🧬 Knowledge Atlas</b>Visual recall.</button><button class="coachOption" onclick="openView('exam')"><b>⏱️ Exam mode</b>Timed block.</button><button class="coachOption" onclick="openView('resources')"><b>📚 Resources</b>Official + study stack.</button><button class="coachOption" onclick="openView('challenge')"><b>🏁 Daily challenge</b>Keep momentum.</button>
     </div></div>
@@ -782,4 +824,35 @@ initAuth();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wire);else wire();
 })();
-</script><footer class="siteFooter"><div><b>AIRForge</b> • Train. Analyze. Master.</div><div>JEE Main + Advanced • PCM • AI-assisted study workspace</div></footer></div></body></html>
+<script id="airforgeInteractionFixV2Script">
+(function(){
+  function clearChat(){
+    var box=document.getElementById('coachChatMessages');
+    if(box)box.innerHTML='<div class="chatBubble bot">Fresh chat. Tell me a chapter, a mistake, or what you need to study next.</div>';
+  }
+  function bind(){
+    var gate=document.getElementById('authGate');
+    if(document.body.classList.contains('auth-ready') && gate){
+      gate.style.display='none';
+      gate.style.visibility='hidden';
+      gate.style.pointerEvents='none';
+    }
+    var close=document.getElementById('coachCloseButton');
+    var min=document.getElementById('coachCollapseButton');
+    var dock=document.getElementById('coachDock');
+    var clear=document.getElementById('coachClearButton');
+    if(close&&!close.dataset.bound){close.dataset.bound='1';close.addEventListener('click',function(e){e.preventDefault();e.stopImmediatePropagation();coachHide()},true)}
+    if(min&&!min.dataset.bound){min.dataset.bound='1';min.addEventListener('click',function(e){e.preventDefault();e.stopImmediatePropagation();coachCollapse()},true)}
+    if(dock&&!dock.dataset.bound){dock.dataset.bound='1';dock.addEventListener('click',function(e){e.preventDefault();e.stopImmediatePropagation();coachRestore()},true)}
+    if(clear&&!clear.dataset.bound){clear.dataset.bound='1';clear.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();clearChat()},true)}
+    document.querySelectorAll('.afSideBtn,.afAction,.afQuick,.coachTabV2,.coachOption,.coachBottom button').forEach(function(el){
+      if(el.dataset.hitbound)return;
+      el.dataset.hitbound='1';
+      el.addEventListener('pointerdown',function(e){e.stopPropagation()},true);
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
+  setTimeout(bind,150);
+  setTimeout(bind,700);
+})();
+</script></script><footer class="siteFooter"><div><b>AIRForge</b> • Train. Analyze. Master.</div><div>JEE Main + Advanced • PCM • AI-assisted study workspace</div></footer></div></body></html>
