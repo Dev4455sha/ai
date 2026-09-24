@@ -269,8 +269,8 @@ function loadAccounts(){
 }
 function saveAccounts(a){localStorage.setItem(ACCOUNT_KEY,JSON.stringify(a))}
 function readCookie(name){var m=document.cookie.match(new RegExp('(?:^|; )'+name.replace(/[.*+?^{}()|[\]\\]/g,'\\$&')+'=([^;]*)'));return m?decodeURIComponent(m[1]):''}
-function setSession(id){document.cookie=COOKIE+'='+encodeURIComponent(id)+'; path=/; SameSite=Lax';}
-function clearSession(){document.cookie=COOKIE+'=; path=/; Max-Age=0; SameSite=Lax'}
+function setSession(id){document.cookie=COOKIE+'='+encodeURIComponent(id)+'; Path=/; SameSite=Lax; Secure';}
+function clearSession(){document.cookie=COOKIE+'=; Path=/; Max-Age=0; SameSite=Lax; Secure'}
 function adminMode(){
   try{
     if(new URLSearchParams(location.search).get('admin')==='1'){
