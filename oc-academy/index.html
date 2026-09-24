@@ -424,8 +424,17 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 </section>
 
 <section id="settings" class="view">
-  <div class="hero"><div class="eyebrow">Settings</div><h1>Make AIRForge fit <span>your routine.</span></h1><p>Local account and study data stay in this browser in this version. Export a backup before clearing browser data.</p></div>
-  <div class="grid2"><section class="panel"><div class="panelHead"><h3>Study profile</h3><span>saved locally</span></div><div class="controls" style="grid-template-columns:1fr 1fr"><div class="field"><label>Target date</label><input id="targetDate" type="date"></div><div class="field"><label>Daily minutes</label><input id="dailyMinutes" type="number" value="180"></div></div><button class="btn primary" id="saveSettings" style="margin-top:8px">Save settings</button></section><section class="panel"><div class="panelHead"><h3>Backup</h3><span>protect your work</span></div><button class="btn" id="exportBtn">💾 Export</button> <button class="btn" id="importBtn">↥ Import</button><input id="importFile" type="file" accept="application/json" hidden></section></div>
+  <div class="hero"><div class="eyebrow">Settings</div><h1>Make AIRForge fit <span>your routine.</span></h1><p>Local account and study data stay in this browser in this version. The browser-session login stays active across refreshes and tabs and ends when the browser session closes.</p></div>
+  <div class="grid2">
+    <section class="panel"><div class="panelHead"><h3>Study profile</h3><span>saved locally</span></div><div class="controls" style="grid-template-columns:1fr 1fr"><div class="field"><label>Target date</label><input id="targetDate" type="date"></div><div class="field"><label>Daily minutes</label><input id="dailyMinutes" type="number" value="180"></div></div><button class="btn primary" id="saveSettings" style="margin-top:8px">Save settings</button></section>
+    <section class="panel"><div class="panelHead"><h3>Session & network</h3><span>this browser</span></div>
+      <div class="item"><b id="sessionAccount">Signed in</b><small id="sessionState">Active browser session — refresh and new tabs stay signed in.</small></div>
+      <div class="item" style="margin-top:7px"><b>Public IP</b><small id="publicIp">Detecting…</small></div>
+      <p class="subtle" style="margin-top:7px">The IP shown is the public network IP visible to websites. AIRForge does not use IP as a password or authentication key, and it never displays your stored password.</p>
+      <button class="btn" id="refreshIp" type="button" style="margin-top:8px">↻ Refresh IP</button>
+    </section>
+  </div>
+  <section class="panel" style="margin-top:12px"><div class="panelHead"><h3>Backup</h3><span>protect your work</span></div><button class="btn" id="exportBtn">💾 Export</button> <button class="btn" id="importBtn">↥ Import</button><input id="importFile" type="file" accept="application/json" hidden></section>
 </section>
 
 <section id="physics" class="view"><div class="hero"><div class="eyebrow">Physics</div><h1>Model first. Then <span>calculate.</span></h1><p>Open the full Physics engine in the workspace.</p></div><div class="engineWrap"><iframe class="engineFrame" src="physics.html" title="AIRForge Physics Engine" loading="lazy"></iframe></div></section>
@@ -537,6 +546,28 @@ function save(){localStorage.setItem(STATE_KEY,JSON.stringify(state));renderAll(
 function setBrowserSession(){document.cookie=SESSION_COOKIE+'=1; path=/; SameSite=Lax';}
 function hasBrowserSession(){return document.cookie.split(';').some(function(x){return x.trim()===SESSION_COOKIE+'=1'})}
 function clearBrowserSession(){document.cookie=SESSION_COOKIE+'=; Max-Age=0; path=/; SameSite=Lax';}
+function updateSessionPanel(){
+  const a=account();
+  if($('sessionAccount'))$('sessionAccount').textContent=a?'Signed in as '+(a.name||a.email||'Student'):'Not signed in';
+  if($('sessionState'))$('sessionState').textContent=hasBrowserSession()?'Active browser session — refresh and new tabs stay signed in.':'No active browser session.';
+}
+async function detectPublicIP(){
+  const el=$('publicIp');if(!el)return;
+  el.textContent='Detecting…';
+  const endpoints=['https://api64.ipify.org?format=json','https://api.ipify.org?format=json'];
+  for(const endpoint of endpoints){
+    try{
+      const controller=new AbortController();
+      const timeout=setTimeout(function(){controller.abort()},4500);
+      const res=await fetch(endpoint,{cache:'no-store',signal:controller.signal});
+      clearTimeout(timeout);
+      if(!res.ok)continue;
+      const data=await res.json();
+      if(data&&data.ip){el.textContent=data.ip;return;}
+    }catch(e){}
+  }
+  el.textContent='Unavailable — network/API blocked';
+}
 function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),1600)}
 function initials(name){return String(name||'A').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'A'}
 
@@ -585,7 +616,7 @@ function enterApp(){
   const a=account();if(!a)return; $('authScreen').classList.add('hidden');$('app').classList.remove('hidden');
   $('profileName').textContent=a.name||'Student';$('profileClass').textContent=a.className||'JEE 2027';$('sideName').textContent=a.name||'Student';$('avatar').textContent=initials(a.name);
   $('greeting').textContent='Hey '+String(a.name||'Student').split(' ')[0]+' — let’s make the next study block useful.';
-  renderAll();setupCoach();renderChat();
+  renderAll();setupCoach();renderChat();updateSessionPanel();detectPublicIP();
 }
 function bootAuth(){
   const a=account(),active=hasBrowserSession();
@@ -784,6 +815,8 @@ function bind(){
   $('backupBtn') && ($('backupBtn').onclick=exportData);
   $('exportBtn').onclick=exportData;$('importBtn').onclick=function(){$('importFile').click()};$('importFile').onchange=function(e){if(e.target.files[0])importData(e.target.files[0])};$('saveSettings').onclick=saveSettings;
   $('signOutBtn').onclick=signOut;
+  if($('refreshIp'))$('refreshIp').onclick=detectPublicIP;
+  updateSessionPanel();
   $('globalSearch').addEventListener('input',function(){
     const q=this.value.trim().toLowerCase(),box=$('searchResults');if(!q){box.classList.remove('show');box.innerHTML='';return}
     const items=[['Physics','physics'],['Chemistry','chemistry'],['Mathematics','maths'],['Study Planner','planner'],['PYQ Bank','pyq'],['Test Lab','tests'],['Revision','revision'],['Mistakes','errors'],['Notes & Vault','vault'],['Analytics','analytics'],['Resources','resources'],['AI Coach','coach']];
