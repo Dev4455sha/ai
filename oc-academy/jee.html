@@ -271,14 +271,14 @@ function saveAccounts(a){localStorage.setItem(ACCOUNT_KEY,JSON.stringify(a))}
 function readCookie(name){var m=document.cookie.match(new RegExp('(?:^|; )'+name.replace(/[.*+?^{}()|[\]\\]/g,'\\$&')+'=([^;]*)'));return m?decodeURIComponent(m[1]):''}
 function setSession(id){document.cookie=COOKIE+'='+encodeURIComponent(id)+'; path=/; SameSite=Lax';}
 function clearSession(){document.cookie=COOKIE+'=; path=/; Max-Age=0; SameSite=Lax'}
-function adminMode(){return false}
-function adminAccount(){{
+function adminMode(){
+  try{return new URLSearchParams(window.location.search).get('admin')==='1'}catch(e){return false}
+}
+function adminAccount(){
   var a=loadAccounts();
-  if(!a.length){
-    var rec={version:6,id:'admin-'+randomToken(),name:'Admin Demo Student',email:'admin@airforge.local',className:'Admin / Demo',passwordHash:hash('admin-demo'),createdAt:new Date().toISOString(),activity:[],adminDemo:true};
-    a.push(rec);saveAccounts(a);return rec;
-  }
-  return a[Math.floor(Math.random()*a.length)];
+  for(var i=0;i<a.length;i++)if(a[i].id==='airforge-admin-demo')return a[i];
+  var rec={version:6,id:'airforge-admin-demo',name:'AIRForge Admin',email:'admin@airforge.local',className:'Admin Demo',passwordHash:hash('admin-demo'),createdAt:new Date().toISOString(),activity:[],adminDemo:true};
+  a.push(rec);saveAccounts(a);return rec;
 }
 function enterAdmin(){
   var rec=adminAccount();
@@ -488,6 +488,7 @@ function showModal(title,body){$('modalTitle').textContent=title;$('modalBody').
 function init(){
   $('modalClose').onclick=function(){$('planModal').classList.remove('show')};$('planModal').addEventListener('click',function(e){if(e.target===$('planModal'))$('planModal').classList.remove('show')});
   bind();
+  if(adminMode()){enterAdmin();return}
   var rec=currentAccount();if(rec){enterApp(rec)}else{var a=loadAccounts();showAuth(a.length?'login':'signup')}
 }
 document.addEventListener('DOMContentLoaded',init);
