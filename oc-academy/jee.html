@@ -146,7 +146,19 @@ body:not(.auth-ready) .aiCoach{display:none!important}
 .authForm input,.authForm select{position:relative!important;z-index:1000000!important;pointer-events:auto!important;user-select:text}
 #authGate{pointer-events:auto!important}
 </style>
-</head>
+<style id="airforgeAuthFinalFix">
+/* Final isolated auth interaction layer */
+#authGate{pointer-events:none!important;z-index:2147483000!important}
+#authGate .authCard,
+#authGate .authForm,
+#authGate .authTabs,
+#authGate .authTabs button,
+#authGate input,
+#authGate select,
+#authGate .authAction{pointer-events:auto!important;position:relative!important;z-index:2147483647!important;touch-action:manipulation!important}
+#authGate .authForm{isolation:isolate!important}
+#authGate .auth3d,#authGate .auth3d canvas{pointer-events:none!important}
+</style></head>
 <body><div id="authGate" class="authGate">
   <div class="authCard">
     <div class="authPitch">
@@ -701,4 +713,73 @@ setTimeout(wireAuthControls,100);
 initAuth();
 // ===== end AIRForge V3 =====
 
+</script>
+<script id="airforgeAuthFinalScript">
+(function(){
+  var mode='signup';
+  function $(id){return document.getElementById(id);}
+  function saved(){try{return JSON.parse(localStorage.getItem('airforge_account_v4')||localStorage.getItem('airforge_account_v3')||'null')}catch(e){return null}}
+  function hash(p){var h=2166136261;for(var i=0;i<p.length;i++){h^=p.charCodeAt(i);h=Math.imul(h,16777619)}return 'af4-'+(h>>>0).toString(16)}
+  function setMode(m){
+    mode=m==='login'?'login':'signup';
+    var sf=$('authSignupFields'),lf=$('authLoginFields'),st=$('authSignupTab'),lt=$('authLoginTab');
+    if(sf)sf.style.display=mode==='signup'?'block':'none';
+    if(lf)lf.style.display=mode==='login'?'block':'none';
+    if(st)st.classList.toggle('active',mode==='signup');
+    if(lt)lt.classList.toggle('active',mode==='login');
+    if($('authTitle'))$('authTitle').textContent=mode==='signup'?'Create your AIRForge account':'Welcome back to AIRForge';
+    if($('authSub'))$('authSub').textContent=mode==='signup'?'Create your profile before entering the workspace.':'Sign in to reopen the study record saved on this device.';
+    if($('authSubmit'))$('authSubmit').textContent=mode==='signup'?'Create account & enter AIRForge →':'Sign in & enter AIRForge →';
+    if($('authError'))$('authError').textContent='';
+  }
+  function enter(rec){
+    try{sessionStorage.setItem('airforge_session_v5','1')}catch(e){}
+    document.body.classList.add('auth-ready');
+    var g=$('authGate');if(g)g.style.display='none';
+    var n=$('afSideName');if(n)n.textContent=(rec.name||'Student')+' • '+(rec.className||'Student');
+    var sm=$('afSideMetaText');if(sm)sm.textContent=(rec.email||'')+' • study record saved on this device';
+    var gr=$('afGreeting');if(gr)gr.textContent='Hey '+String(rec.name||'Student').split(' ')[0]+' — let’s make the next block useful, not just busy.';
+    try{if(typeof updateAFDashboard==='function')updateAFDashboard();}catch(e){}
+    try{if(typeof renderAll==='function')renderAll();}catch(e){}
+    try{if(typeof init3DCoach==='function')init3DCoach();}catch(e){}
+    try{if(typeof initAuth3D==='function')initAuth3D();}catch(e){}
+    try{if(typeof wireCoachDrag==='function')wireCoachDrag();}catch(e){}
+    try{if(typeof restoreCoachUI==='function')restoreCoachUI();}catch(e){}
+  }
+  function submit(){
+    var er=$('authError'),btn=$('authSubmit');if(er)er.textContent='';
+    if(btn)btn.disabled=true;
+    try{
+      if(mode==='signup'){
+        var name=($('authName')?.value||'').trim(),email=($('authEmail')?.value||'').trim().toLowerCase(),pass=$('authPass')?.value||'',cls=$('authClass')?.value||'Other';
+        if(name.length<2)throw Error('Please enter your name.');
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw Error('Enter a valid email address.');
+        if(pass.length<6)throw Error('Password must be at least 6 characters.');
+        var old=saved();if(old&&old.email){setMode('login');throw Error('An account already exists on this device. Use Sign in.');}
+        var rec={version:5,createdAt:new Date().toISOString(),activity:[{type:'account-created',detail:'AIRForge account created',time:new Date().toISOString()}],name:name,email:email,className:cls,passwordHash:hash(pass),loginCount:1,lastSeen:new Date().toISOString()};
+        localStorage.setItem('airforge_account_v4',JSON.stringify(rec));enter(rec);
+      }else{
+        var rec=saved(),email=($('loginEmail')?.value||'').trim().toLowerCase(),pass=$('loginPass')?.value||'';
+        if(!rec||rec.email!==email)throw Error('No matching AIRForge account was found on this device.');
+        if((rec.passwordHash||hash(rec.password||''))!==hash(pass))throw Error('Incorrect email or password.');
+        rec.lastSeen=new Date().toISOString();rec.loginCount=(rec.loginCount||0)+1;
+        rec.activity=rec.activity||[];rec.activity.unshift({type:'login',detail:'Signed in to AIRForge',time:new Date().toISOString()});
+        localStorage.setItem('airforge_account_v4',JSON.stringify(rec));enter(rec);
+      }
+    }catch(e){if(er)er.textContent=e.message||'Could not continue.';}
+    finally{if(btn)btn.disabled=false;}
+  }
+  function wire(){
+    var gate=$('authGate');if(!gate)return;
+    gate.style.display='grid';
+    setMode(saved()?'login':'signup');
+    var st=$('authSignupTab'),lt=$('authLoginTab'),sb=$('authSubmit');
+    if(st)st.addEventListener('click',function(e){e.preventDefault();e.stopImmediatePropagation();setMode('signup')},true);
+    if(lt)lt.addEventListener('click',function(e){e.preventDefault();e.stopImmediatePropagation();setMode('login')},true);
+    if(sb)sb.addEventListener('click',function(e){e.preventDefault();e.stopImmediatePropagation();submit()},true);
+    gate.querySelectorAll('input').forEach(function(x){x.addEventListener('click',function(e){e.stopPropagation()},true);x.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();submit()}})});
+    gate.querySelectorAll('select').forEach(function(x){x.addEventListener('click',function(e){e.stopPropagation()},true)});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wire);else wire();
+})();
 </script><footer class="siteFooter"><div><b>AIRForge</b> • Train. Analyze. Master.</div><div>JEE Main + Advanced • PCM • AI-assisted study workspace</div></footer></div></body></html>
