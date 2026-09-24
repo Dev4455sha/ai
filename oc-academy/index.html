@@ -2,609 +2,614 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AIRForge — JEE Main & Advanced Study Workspace</title>
-<meta name="description" content="AIRForge — a focused, modern JEE Main and Advanced workspace for planning, practice, PYQs, tests, revision, mistakes and PCM engines.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AIRForge — JEE Main & Advanced Command Center</title>
+<meta name="description" content="AIRForge — a focused JEE Main and Advanced preparation workspace for planning, practice, PYQs, revision, mistakes and analytics.">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://airforgehub.pages.dev/">
 <link rel="icon" type="image/svg+xml" href="airforge-logo.svg">
-<meta name="theme-color" content="#07111b">
+<meta name="theme-color" content="#06101a">
 <style>
 :root{
-  --bg:#050c14;--panel:#0a1420;--panel2:#0e1b29;--panel3:#101f30;
-  --line:#20384b;--line2:#2a4a60;--text:#eef8ff;--muted:#91a8b9;
-  --cyan:#53ddf4;--blue:#4d8cff;--violet:#8b69ff;--pink:#ee55d6;
-  --green:#52df9b;--orange:#ffb85b;--red:#ff6f78;--shadow:0 24px 80px rgba(0,0,0,.34)
+  --bg:#06101a;--bg2:#081623;--panel:#0a1725;--panel2:#0d1c2c;--line:#20384d;--line2:#29465d;
+  --text:#eef7ff;--muted:#8ba2b3;--cyan:#58dcf4;--blue:#4d8cff;--violet:#8d69ff;--pink:#d950ff;
+  --green:#50df96;--orange:#ffad4d;--red:#ff7079;--shadow:0 20px 60px rgba(0,0,0,.32)
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
 body{overflow-x:hidden}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid rgba(83,221,244,.7);outline-offset:2px}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid rgba(88,220,244,.7);outline-offset:2px}
 .hidden{display:none!important}
-.app{min-height:100vh}
-.topbar{height:70px;position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:14px;padding:0 18px;border-bottom:1px solid rgba(42,74,96,.55);background:rgba(5,12,20,.9);backdrop-filter:blur(18px)}
-.menuBtn{display:none;width:40px;height:40px;border:1px solid var(--line2);background:#0b1926;color:#e9f7fd;border-radius:10px}
-.brand{display:flex;align-items:center;gap:10px;min-width:210px}.brand img{width:38px;height:38px;border-radius:11px;box-shadow:0 8px 26px rgba(64,204,240,.14)}
-.brand b{font-size:16px;letter-spacing:-.4px}.brand small{display:block;color:#7f98aa;font-size:9px;margin-top:2px}
-.search{flex:1;max-width:540px;height:40px;display:flex;align-items:center;gap:9px;padding:0 12px;border:1px solid var(--line);background:#091621;border-radius:11px}.search span{color:#6f899b}.search input{width:100%;background:transparent;border:0;outline:0;color:var(--text)}
-.topRight{display:flex;align-items:center;gap:8px;margin-left:auto}.topBtn{height:38px;border:1px solid var(--line2);background:#0b1926;color:#dfeef5;border-radius:10px;padding:0 11px;font-size:9px;font-weight:900}.topBtn:hover{border-color:#4cb6cf}
-.profile{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#091520;padding:6px 9px;border-radius:12px}.avatar{width:27px;height:27px;display:grid;place-items:center;border-radius:9px;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#05101a;font-size:9px;font-weight:950}.profile b{display:block;font-size:9px}.profile small{color:#8299a9;font-size:7px}
-.layout{display:grid;grid-template-columns:228px minmax(0,1fr);min-height:calc(100vh - 70px)}
-.sidebar{position:sticky;top:70px;height:calc(100vh - 70px);padding:12px 10px;background:#07121d;border-right:1px solid rgba(42,74,96,.5);overflow:auto}
-.sideLabel{padding:4px 9px 6px;color:#60798b;font-size:8px;font-weight:950;letter-spacing:.14em;text-transform:uppercase}
-.sideBtn{width:100%;display:flex;align-items:center;gap:10px;border:1px solid transparent;background:transparent;color:#a8becb;border-radius:10px;padding:9px 10px;margin:2px 0;text-align:left;font-size:10px;font-weight:850}.sideBtn:hover{background:#0d1d2b;color:#fff;border-color:#253e51}.sideBtn.active{background:linear-gradient(135deg,#102f42,#172646);border-color:#2b6d88;color:#70e5f8;box-shadow:inset 3px 0 var(--cyan)}
-.divider{height:1px;background:#172a3a;margin:11px 7px}
-.sideGoal{margin:11px 4px;padding:11px;border:1px solid #263e50;border-radius:12px;background:linear-gradient(145deg,#0c1926,#09131e)}.sideGoal b{font-size:10px}.sideGoal span{display:block;color:#859baa;font-size:8px;line-height:1.5;margin-top:3px}.sideGoal .gbar{height:6px;background:#182b3a;border-radius:99px;margin-top:7px;overflow:hidden}.sideGoal .gbar i{display:block;width:62%;height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:99px}
-.content{padding:18px;min-width:0}.wrap{max-width:1500px;margin:0 auto}
-.view{display:none}.view.active{display:block}
-.hero{position:relative;overflow:hidden;border:1px solid #254359;border-radius:20px;padding:24px;background:
-  radial-gradient(circle at 80% 12%,rgba(83,221,244,.12),transparent 30%),
-  radial-gradient(circle at 90% 80%,rgba(139,105,255,.14),transparent 28%),
-  linear-gradient(135deg,#0b1926 0%,#0c2232 48%,#131b35 100%);box-shadow:0 18px 55px rgba(0,0,0,.22)}
-.hero h1{font-size:clamp(35px,4.5vw,62px);line-height:.96;letter-spacing:-2.8px;margin:8px 0 10px;max-width:760px}.hero h1 span{color:var(--cyan)}.hero p{max-width:730px;margin:0;color:#abc0cc;font-size:12px;line-height:1.65}.eyebrow{font-size:8px;color:var(--cyan);font-weight:950;letter-spacing:.16em;text-transform:uppercase}
-.mountains{position:absolute;inset:0;pointer-events:none;overflow:hidden}.peak{position:absolute;bottom:-42px;background:linear-gradient(145deg,#142c4e,#0b1625);filter:drop-shadow(0 0 18px rgba(80,130,255,.12));clip-path:polygon(0 100%,48% 0,100% 100%)}.peak.one{right:2%;width:48%;height:72%}.peak.two{right:28%;width:34%;height:55%;opacity:.72}.peak.three{right:45%;width:28%;height:43%;opacity:.46}.road{position:absolute;right:12%;bottom:0;width:24%;height:66%;border-left:3px solid rgba(84,223,244,.3);transform:skewX(20deg) rotate(-2deg);filter:drop-shadow(0 0 8px rgba(84,223,244,.24))}
-.heroContent{position:relative;z-index:2}.heroActions{display:flex;flex-wrap:wrap;gap:8px;margin-top:17px}.btn{border:1px solid var(--line2);background:#0d1c2a;color:#eaf7fc;border-radius:10px;padding:9px 12px;font-size:9px;font-weight:900;transition:.14s}.btn:hover{transform:translateY(-1px);border-color:#51bfd7}.btn.primary{border:0;background:linear-gradient(135deg,#46dff3,#677df4);color:#06111a;box-shadow:0 12px 30px rgba(74,200,235,.17)}
-.heroStats{display:grid;grid-template-columns:repeat(4,140px);gap:8px;margin-top:20px}.heroStat{padding:10px 11px;border:1px solid rgba(79,121,145,.35);border-radius:11px;background:rgba(5,14,23,.55);backdrop-filter:blur(9px)}.heroStat b{display:block;font-size:18px}.heroStat small{font-size:8px;color:#88a1b0}
-.grid4,.grid3,.grid2{display:grid;gap:10px;margin-top:12px}.grid4{grid-template-columns:repeat(4,1fr)}.grid3{grid-template-columns:repeat(3,1fr)}.grid2{grid-template-columns:1.15fr .85fr}
-.metric,.panel,.quick{border:1px solid var(--line);background:linear-gradient(145deg,#0b1723,#08131e);border-radius:14px}.metric{padding:13px;position:relative;overflow:hidden;min-height:94px}.metric .icon{font-size:16px}.metric b{display:block;font-size:22px;margin-top:5px}.metric small{font-size:8px;color:#8197a8}.metric em{position:absolute;right:9px;top:9px;font-style:normal;font-size:7px;padding:4px 6px;border-radius:999px;background:#102a21;color:#65e6a5}
-.panel{padding:14px}.panelHead{display:flex;justify-content:space-between;align-items:center;gap:9px;margin-bottom:9px}.panelHead h2,.panelHead h3{margin:0;font-size:13px}.panelHead span{color:#70899a;font-size:8px}
-.quickGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.quick{padding:11px;text-align:left}.quick b{display:block;font-size:10px}.quick span{display:block;color:#8098a8;font-size:8px;margin-top:3px}.quick:hover{border-color:#4ab9d0;background:#0d2130}
-.task{display:grid;grid-template-columns:23px 1fr auto;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid #172b3b}.task:last-child{border-bottom:0}.check{width:19px;height:19px;border-radius:6px;border:1px solid #3a5668;background:#0a1621;color:#07111a;display:grid;place-items:center;font-size:11px;padding:0}.task.done .check{background:var(--green);border-color:var(--green)}.task strong{font-size:9px}.task small{display:block;color:#8198a8;font-size:8px;margin-top:2px}.task time{font-size:7px;color:#84a0af}
-.loop{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.step{padding:11px;border:1px solid #253f53;border-radius:11px;background:#0a1621}.step i{font-style:normal;color:var(--cyan);font-size:8px;font-weight:950}.step b{display:block;font-size:10px;margin-top:3px}.step span{display:block;color:#849aaa;font-size:8px;line-height:1.45;margin-top:3px}
-.subjects{display:grid;gap:8px}.subject{padding:11px;border:1px solid #253d4f;border-radius:11px;background:#091722}.subjectTop{display:flex;justify-content:space-between;font-size:9px}.subject small{display:block;color:#7890a1;font-size:8px;margin-top:4px}.bar{height:7px;background:#162835;border-radius:99px;overflow:hidden;margin:7px 0 2px}.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--cyan),var(--violet))}
-.controls{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.field{display:flex;flex-direction:column;gap:4px}.field label{font-size:8px;color:#8097a8;font-weight:900}.field input,.field select,.field textarea{width:100%;border:1px solid #294457;background:#08131e;color:#edf7fc;border-radius:9px;padding:9px;font-size:9px}.field textarea{min-height:82px;resize:vertical}
-.table{width:100%;border-collapse:collapse;font-size:8px}.table th,.table td{padding:8px;border-bottom:1px solid #172a39;text-align:left}.table th{font-size:7px;color:#71899a;text-transform:uppercase}.table td{color:#c3d1d9}
-.list{display:flex;flex-direction:column;gap:7px}.item{border:1px solid #253c4f;background:#0b1723;border-radius:10px;padding:9px}.item b{font-size:9px}.item small{display:block;color:#8299a8;font-size:8px;line-height:1.5;margin-top:3px}
-.pills{display:flex;gap:5px;flex-wrap:wrap}.pill{border:1px solid #294354;background:#0d1b28;color:#a9c0cc;border-radius:999px;padding:5px 8px;font-size:7px;font-weight:900}
-.progressRing{width:86px;height:86px;border-radius:50%;background:conic-gradient(var(--cyan) 0 72%,#172938 72%);display:grid;place-items:center}.progressRing:after{content:"";width:66px;height:66px;border-radius:50%;background:#0a1621}.progressRing b{position:absolute;font-size:15px;z-index:2}
-.analyticsCards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.chart{height:180px;border:1px solid #233d50;border-radius:12px;background:linear-gradient(180deg,#0a1621,#08121c);position:relative;overflow:hidden}.chartGrid{position:absolute;inset:15px;display:grid;grid-template-rows:repeat(4,1fr)}.chartGrid span{border-top:1px dashed rgba(94,126,146,.18)}.lineSvg{position:absolute;inset:20px 15px 18px}
-.coach{position:fixed;right:16px;top:92px;width:355px;max-width:calc(100vw - 26px);border:1px solid #356077;background:#091521;border-radius:18px;box-shadow:0 26px 90px rgba(0,0,0,.48);z-index:45;overflow:hidden}.coach.hidden{display:none}.coachHead{display:flex;align-items:center;gap:9px;padding:10px;background:linear-gradient(135deg,#0f2230,#122d40);border-bottom:1px solid #29465a;user-select:none}.coachDrag{cursor:grab}.coachDrag.drag{cursor:grabbing}.bot{width:44px;height:44px;flex:0 0 auto;border-radius:13px;background:radial-gradient(circle at 35% 28%,#d5ffff 0 7%,#66e3f5 8% 18%,#456bda 19% 47%,#182945 48% 100%);position:relative;box-shadow:0 0 28px rgba(80,220,244,.18)}.bot:before,.bot:after{content:"";position:absolute;top:16px;width:7px;height:7px;border-radius:50%;background:#dfffff;box-shadow:0 0 9px #7cf0ff}.bot:before{left:11px}.bot:after{right:11px}.coachTitle b{display:block;font-size:11px}.coachTitle span{color:#67e5a2;font-size:8px;font-weight:900}.coachTitle small{display:block;color:#8ba2b1;font-size:7px;margin-top:2px}.coachControls{margin-left:auto;display:flex;gap:4px}.coachControls button{width:28px;height:28px;border:1px solid #365267;background:#0b1926;color:#dcebf2;border-radius:8px;font-weight:950}.coachTabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:8px 8px 0}.coachTabs button{border:1px solid #294354;background:#0c1926;color:#9db4c1;border-radius:8px;padding:7px 4px;font-size:7px;font-weight:950}.coachTabs button.active{border-color:#3ca8c0;background:#11293a;color:#70e6fa}.coachBody{padding:8px}.coachPane{display:none}.coachPane.active{display:block}.coachCard{border:1px solid #2b4b5f;background:linear-gradient(145deg,#102536,#0d1a26);border-radius:11px;padding:10px}.coachCard label{font-size:7px;color:var(--cyan);font-weight:950;letter-spacing:.12em;text-transform:uppercase}.coachCard h3{font-size:13px;margin:4px 0}.coachCard p{font-size:8px;color:#a4bbc8;line-height:1.55;margin:0}.coachGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:7px}.coachAction{padding:9px;border:1px solid #294355;background:#0c1a27;color:#eaf7fb;border-radius:9px;text-align:left}.coachAction b{display:block;font-size:8px}.coachAction span{display:block;color:#8099a9;font-size:7px;margin-top:2px}.coachFoot{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px}.coachFoot button{border:1px solid #345167;background:#0e1e2b;color:#eaf5fa;border-radius:9px;padding:9px;font-size:8px;font-weight:900}.coachFoot .primary{background:linear-gradient(135deg,#4edcf1,#6b7df4);color:#07111a;border:0}.chatLog{height:250px;overflow:auto;display:flex;flex-direction:column;gap:7px;padding:2px}.bubble{max-width:91%;padding:8px 9px;border-radius:10px;font-size:8px;line-height:1.55}.bubble.bot{background:#102333;border:1px solid #2b4659}.bubble.user{margin-left:auto;background:#12372b;border:1px solid #28614c}.chatInput{display:flex;gap:5px;margin-top:7px}.chatInput input{flex:1;min-width:0;border:1px solid #2a4658;background:#08131e;color:#eef8fc;border-radius:9px;padding:9px;font-size:8px}.chatInput button{width:38px;border:0;border-radius:9px;background:#58dcef;color:#07111a;font-weight:950}.clearChat{width:100%;margin-top:6px;border:1px solid #294354;background:#0c1926;color:#8099a9;border-radius:8px;padding:6px;font-size:7px;font-weight:900}.reopen{position:fixed;right:0;top:43%;z-index:44;display:none}.reopen button{border:1px solid #356078;border-right:0;border-radius:11px 0 0 11px;background:#102434;color:#73e6f8;padding:11px 9px;font-size:9px;font-weight:950}
-.auth{position:fixed;inset:0;z-index:100;background:
-radial-gradient(circle at 18% 15%,rgba(82,216,243,.12),transparent 30%),
-radial-gradient(circle at 86% 88%,rgba(139,105,255,.12),transparent 28%),#06101a;
-display:flex;align-items:center;justify-content:center;padding:18px}
-.authCard{width:min(940px,100%);display:grid;grid-template-columns:1.08fr .92fr;border:1px solid #2b4659;border-radius:22px;overflow:hidden;background:#0a1723;box-shadow:var(--shadow)}
-.authLeft{padding:30px;background:linear-gradient(145deg,#0c1b29,#102d40 58%,#151d3b)}.authLeft img{width:46px;height:46px;border-radius:13px}.authLeft h1{font-size:45px;line-height:.95;letter-spacing:-2.4px;margin:28px 0 10px}.authLeft h1 span{color:var(--cyan)}.authLeft p{max-width:440px;color:#abc1cd;font-size:11px;line-height:1.7}.authBullets{display:grid;gap:7px;margin-top:18px}.authBullet{padding:9px 10px;border:1px solid #2b485a;background:rgba(4,13,20,.28);border-radius:10px;color:#bfd1da;font-size:8px}.authRight{padding:30px;background:#08131e}.authRight h2{font-size:23px;margin:0}.authRight>p{color:#8198a9;font-size:9px;line-height:1.55}.authTabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:15px 0 10px}.authTabs button{border:1px solid #2a4457;background:#0d1b28;color:#9bb1bf;border-radius:9px;padding:9px;font-size:9px;font-weight:900}.authTabs button.active{background:#102a3a;border-color:#3caec7;color:#6fe5f9}.authForm{display:grid;gap:8px}.authForm label{font-size:8px;color:#839aab;font-weight:900}.authForm input,.authForm select{width:100%;border:1px solid #294457;background:#08131e;color:#eef8fc;border-radius:9px;padding:10px;font-size:9px}.authSubmit{margin-top:2px;width:100%;padding:11px;border:0;border-radius:10px;background:linear-gradient(135deg,#4bdcf0,#6e80f3);color:#06111a;font-size:10px;font-weight:950}.authMsg{min-height:18px;color:#ff7c83;font-size:8px;font-weight:900}.authNote{margin-top:8px;color:#70899a;font-size:7px;line-height:1.55}
-@media(max-width:1100px){.layout{grid-template-columns:1fr}.sidebar{position:fixed;left:0;top:70px;bottom:0;width:248px;z-index:60;transform:translateX(-105%);transition:.18s}.sidebar.open{transform:none}.menuBtn{display:grid;place-items:center}.search{display:none}.heroStats{grid-template-columns:repeat(2,140px)}} 
-@media(max-width:800px){.grid4,.grid3,.grid2{grid-template-columns:1fr}.controls{grid-template-columns:1fr 1fr}.authCard{grid-template-columns:1fr}.authLeft{display:none}.coach{right:9px;bottom:9px;top:auto}.profile b,.profile small{display:none}} 
-@media(max-width:520px){.content{padding:11px}.hero{padding:18px}.hero h1{font-size:36px}.heroStats{grid-template-columns:1fr 1fr}.controls{grid-template-columns:1fr}.quickGrid{grid-template-columns:1fr}.coach{width:calc(100vw - 18px)}}
+#authScreen{position:fixed;inset:0;z-index:100;background:
+ radial-gradient(circle at 14% 10%,rgba(71,180,255,.16),transparent 32%),
+ radial-gradient(circle at 86% 85%,rgba(140,105,255,.13),transparent 34%),#06101a;
+ display:flex;align-items:center;justify-content:center;padding:18px}
+.authCard{width:min(950px,100%);display:grid;grid-template-columns:1.12fr .88fr;border:1px solid #29465d;border-radius:24px;overflow:hidden;background:#081522;box-shadow:var(--shadow)}
+.authLeft{padding:34px;background:radial-gradient(circle at 75% 15%,rgba(81,221,244,.13),transparent 30%),linear-gradient(145deg,#0b1c2b,#10273a 62%,#171f3c)}
+.authLogo{width:52px;height:52px;border-radius:14px}.authLeft h1{font-size:48px;line-height:.96;letter-spacing:-2.7px;margin:34px 0 10px}.authLeft h1 span{color:var(--cyan)}.authLeft p{max-width:470px;color:#afc0cc;line-height:1.7;font-size:12px}.authPoints{display:grid;gap:8px;margin-top:20px}.authPoint{padding:10px 11px;border:1px solid #2a475b;border-radius:11px;background:rgba(3,10,16,.28);font-size:9px;color:#c8d6df}
+.authRight{padding:31px;background:#07131f}.authRight h2{margin:0;font-size:25px}.authRight .sub{font-size:9px;line-height:1.6;color:#8399aa}.authTabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:17px 0 12px}.authTab{border:1px solid #2b4559;background:#0d1b28;color:#9db4c2;border-radius:9px;padding:9px;font-size:9px;font-weight:900}.authTab.active{border-color:#3caac6;background:#102a3d;color:#72e7fb}.authFields{display:grid;gap:8px}.authFields label{font-size:8px;color:#89a0b0;font-weight:900}.authFields input,.authFields select{width:100%;padding:10px;border:1px solid #2b4559;background:#07131e;color:#eef7ff;border-radius:9px;font-size:10px}.authSubmit{width:100%;margin-top:5px;padding:11px;border:0;border-radius:10px;background:linear-gradient(135deg,#49dbf0,#6c79f5);color:#06111a;font-size:10px;font-weight:950}.authMessage{min-height:18px;color:#ff828b;font-size:8px;font-weight:850;margin-top:6px}.authNote{font-size:8px;color:#687f90;line-height:1.55;margin-top:10px}
+
+#app{min-height:100vh}
+.topbar{height:72px;display:flex;align-items:center;gap:13px;padding:0 18px;border-bottom:1px solid rgba(42,67,87,.66);background:rgba(6,16,26,.9);backdrop-filter:blur(14px);position:sticky;top:0;z-index:40}
+.menuBtn{display:none;width:40px;height:40px;border:1px solid var(--line2);background:#0c1a27;color:#fff;border-radius:10px}
+.brand{display:flex;align-items:center;gap:9px;min-width:210px}.brand img{width:39px;height:39px;border-radius:11px}.brand b{display:block;font-size:16px;letter-spacing:-.4px}.brand small{display:block;font-size:8px;color:var(--muted);margin-top:2px}
+.search{height:40px;max-width:520px;flex:1;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#0a1723;border-radius:11px;padding:0 12px}.search span{color:#71899a}.search input{border:0;outline:0;flex:1;min-width:0;background:transparent;color:#fff;font-size:10px}
+.topRight{display:flex;align-items:center;gap:8px;margin-left:auto}.topBtn{height:38px;padding:0 10px;border:1px solid var(--line2);background:#0c1a28;color:#daeaf2;border-radius:10px;font-size:9px;font-weight:900}.topBtn.square{width:38px;padding:0}.streakBadge{display:flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid #5a4423;background:#17140c;border-radius:10px;font-size:9px;color:#ffbd58;font-weight:950}
+.profile{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:#0b1723;border-radius:11px;padding:5px 8px}.avatar{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--cyan),var(--violet));display:grid;place-items:center;color:#07111a;font-size:10px;font-weight:950}.profileText b{display:block;font-size:9px}.profileText span{display:block;font-size:7px;color:var(--muted);margin-top:1px}
+
+.layout{display:grid;grid-template-columns:235px minmax(0,1fr);min-height:calc(100vh - 72px)}
+.sidebar{position:sticky;top:72px;height:calc(100vh - 72px);padding:12px 11px;background:#07131e;border-right:1px solid rgba(42,67,87,.6);overflow:auto;z-index:30}
+.sideSection{margin:4px 0 12px}.sideLabel{padding:0 9px 6px;color:#5e7687;font-size:8px;letter-spacing:.15em;text-transform:uppercase;font-weight:950}.sideBtn{width:100%;display:flex;align-items:center;gap:10px;padding:10px 11px;margin:2px 0;border:1px solid transparent;background:transparent;color:#a7bdcb;border-radius:10px;text-align:left;font-size:10px;font-weight:850;transition:.12s}.sideBtn:hover{background:#0d1d2a;border-color:#274357;color:#fff}.sideBtn.active{background:linear-gradient(135deg,#10334a,#17274b);border-color:#2d708a;color:#72e5f8;box-shadow:inset 3px 0 var(--cyan)}.sideIcon{width:18px;text-align:center;font-size:13px}.divider{height:1px;background:#172b3b;margin:12px 6px}.sideProfile{margin-top:10px;padding:10px;border:1px solid #21384b;background:#091722;border-radius:12px}.sideProfile b{font-size:10px}.sideProfile span{display:block;color:#7891a1;font-size:7px;line-height:1.5;margin-top:3px}
+.content{min-width:0;padding:18px}.shell{max-width:1500px;margin:auto}.view{display:none}.view.active{display:block}
+
+.hero{position:relative;overflow:hidden;border:1px solid #25445b;border-radius:21px;padding:25px;min-height:300px;background:
+ radial-gradient(circle at 88% 16%,rgba(75,219,246,.11),transparent 27%),
+ linear-gradient(120deg,#0b1a28 0%,#0e2335 52%,#151d39 100%);box-shadow:0 18px 55px rgba(0,0,0,.23)}
+.hero:before{content:"";position:absolute;width:430px;height:240px;right:-60px;bottom:-55px;background:linear-gradient(155deg,transparent 38%,rgba(75,140,255,.45) 39% 43%,transparent 44%),linear-gradient(165deg,transparent 50%,rgba(149,87,255,.44) 51% 54%,transparent 55%),linear-gradient(176deg,transparent 55%,rgba(62,216,239,.2) 56% 58%,transparent 59%);transform:skewX(-10deg);pointer-events:none}.hero:after{content:"AIR 1";position:absolute;right:60px;top:40px;color:#fff;font-size:10px;font-weight:950;letter-spacing:.08em;background:linear-gradient(135deg,#db48ff,#66d8ff);padding:6px 8px;border-radius:7px;box-shadow:0 0 28px rgba(194,77,255,.34);transform:rotate(-2deg);pointer-events:none}
+.eyebrow{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);font-weight:950}.hero h1{font-size:clamp(35px,4.6vw,59px);line-height:.96;letter-spacing:-2.8px;margin:9px 0 11px;max-width:760px}.hero h1 span{background:linear-gradient(90deg,#c95cff,#54e4ff);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{max-width:730px;margin:0;color:#afc0cb;font-size:11px;line-height:1.7}.heroActions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.btn{border:1px solid #304e62;background:#0d1d2b;color:#e9f5f9;border-radius:10px;padding:9px 12px;font-size:9px;font-weight:900;transition:.14s}.btn:hover{transform:translateY(-1px);border-color:#55c5dc}.btn.primary{border:0;background:linear-gradient(135deg,#51daf0,#6d7df5);color:#07111a;box-shadow:0 12px 26px rgba(69,183,232,.15)}
+.heroMini{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;max-width:660px;margin-top:18px}.mini{padding:10px 11px;border:1px solid rgba(81,117,138,.34);background:rgba(5,13,21,.48);border-radius:10px}.mini b{display:block;font-size:17px}.mini span{font-size:7px;color:#89a0b0}
+
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:11px}.metric{padding:12px;border:1px solid var(--line);border-radius:13px;background:linear-gradient(145deg,#0b1825,#09131e);position:relative;overflow:hidden}.metric .icon{font-size:15px}.metric b{display:block;font-size:21px;margin-top:4px}.metric span{font-size:7px;color:#8199aa}.metric em{position:absolute;right:8px;top:8px;font-style:normal;font-size:7px;padding:4px 6px;border-radius:999px;background:#102a21;color:#5fe5a3}
+.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:11px;margin-top:11px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:11px}.panel{border:1px solid var(--line);border-radius:14px;background:linear-gradient(145deg,#0a1723,#08131d);padding:13px}.panelHead{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:9px}.panelHead h2,.panelHead h3{margin:0;font-size:13px}.panelHead span{font-size:8px;color:#71899a}.list{display:flex;flex-direction:column;gap:7px}.item{padding:9px;border:1px solid #223b50;background:#0a1723;border-radius:10px}.item b{font-size:9px}.item small,.item p{display:block;color:#8198a8;font-size:8px;line-height:1.5;margin:3px 0 0}
+.task{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid #172b3c}.task:last-child{border-bottom:0}.check{width:19px;height:19px;border:1px solid #38546a;background:#091721;border-radius:6px;color:#06111a;display:grid;place-items:center;font-size:11px}.check.done{background:var(--green);border-color:var(--green)}.task strong{font-size:9px}.task span{display:block;color:#7e97a8;font-size:7px;margin-top:2px}.task time{font-size:7px;color:#89a0ad}
+.quickGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}.quick{padding:10px;border:1px solid #253f53;background:#0d1b28;color:#fff;text-align:left;border-radius:10px}.quick:hover{border-color:#48b7d2;transform:translateY(-1px)}.quick b{display:block;font-size:9px}.quick span{display:block;color:#7f97a8;font-size:7px;margin-top:3px}
+.subjectGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.subject{padding:10px;border:1px solid #253e52;background:#091722;border-radius:10px}.subjectTop{display:flex;justify-content:space-between;gap:5px;font-size:9px}.subjectTop span{color:#8098a7}.bar{height:6px;border-radius:99px;background:#172837;overflow:hidden;margin:7px 0 4px}.bar i{display:block;height:100%;background:linear-gradient(90deg,#58dcf4,#8d69ff);border-radius:99px}.subject small{font-size:7px;color:#7891a0}
+.targets{display:grid;gap:6px}.target{display:grid;grid-template-columns:15px 1fr auto;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid #172b3b;font-size:8px}.target:last-child{border-bottom:0}.dot{width:10px;height:10px;border-radius:3px;background:var(--orange);box-shadow:0 0 10px rgba(255,173,77,.18)}.dot.done{background:var(--green)}.target time{font-size:7px;color:#8299aa}
+.loop{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.step{padding:10px;border:1px solid #253d51;border-radius:10px;background:#091621}.step i{font-style:normal;color:var(--cyan);font-size:7px;font-weight:950}.step b{display:block;font-size:9px;margin-top:4px}.step span{display:block;font-size:7px;line-height:1.5;color:#7e97a8;margin-top:3px}
+.plannerGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;overflow:auto}.dayCol{min-width:105px;border:1px solid #20394d;border-radius:9px;background:#091520;overflow:hidden}.dayHead{padding:7px;text-align:center;border-bottom:1px solid #1e3447;background:#0c1d2b;font-size:8px;font-weight:900}.slot{margin:5px;padding:7px;border-radius:7px;font-size:7px;line-height:1.35;min-height:48px}.slot.physics{background:#0f5bb9;color:#dff4ff}.slot.chem{background:#7139bb;color:#f4e7ff}.slot.math{background:#0a8d73;color:#dcfff5}.slot.review{background:#0f789b;color:#e3fbff}.slot.test{background:#cf4c6e;color:#fff0f3}.slot.misc{background:#c26e22;color:#fff5e5}
+.analytics{display:grid;grid-template-columns:1.4fr .6fr;gap:8px}.chart{height:210px;border:1px solid #203b50;border-radius:10px;background:linear-gradient(180deg,#0b1824,#09131d);padding:8px}.chart svg{width:100%;height:100%}.donut{width:138px;height:138px;margin:auto;border-radius:50%;background:conic-gradient(var(--cyan) 0 42%,var(--violet) 42% 76%,var(--green) 76% 100%);display:grid;place-items:center}.donut:after{content:"78%";width:88px;height:88px;border-radius:50%;background:#08131e;display:grid;place-items:center;font-size:18px;font-weight:950}.legend{display:grid;gap:5px;margin-top:10px}.legend div{display:flex;justify-content:space-between;font-size:8px;color:#92a6b4}.legend span{font-weight:900}
+.controls{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.field{display:flex;flex-direction:column;gap:4px}.field label{font-size:8px;color:#839bab;font-weight:900}.field input,.field select,.field textarea{width:100%;padding:9px;border:1px solid #294559;background:#08131e;color:#eef7ff;border-radius:9px;font-size:9px}.field textarea{min-height:80px;resize:vertical}
+.pillRow{display:flex;gap:5px;flex-wrap:wrap}.pill{border:1px solid #294559;background:#0c1a27;color:#91a7b5;border-radius:999px;padding:5px 8px;font-size:7px;font-weight:900}
+.table{width:100%;border-collapse:collapse;font-size:8px}.table th,.table td{padding:7px;border-bottom:1px solid #182d3f;text-align:left}.table th{color:#71899a;font-size:7px;text-transform:uppercase}
+.engineFrame{display:block;border:0;width:100%;height:calc(100vh - 150px);min-height:720px;background:#fff}.engineWrap{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:11px;background:#fff}
+.searchResults{position:absolute;top:60px;left:0;right:0;border:1px solid var(--line2);background:#091721;border-radius:11px;box-shadow:var(--shadow);display:none;z-index:60;overflow:hidden}.searchResults.show{display:block}.searchWrap{position:relative;flex:1;max-width:520px}.searchResult{padding:9px 11px;border-bottom:1px solid #1b3041;font-size:9px;color:#bcd0db}.searchResult:hover{background:#0e2231;color:#fff}
+.coach{position:fixed;right:18px;top:88px;width:375px;max-width:calc(100vw - 24px);border:1px solid #356078;border-radius:17px;background:#081521;box-shadow:0 25px 75px rgba(0,0,0,.46);z-index:45;overflow:hidden}.coach.hidden{display:none}.coach.docked{right:0;top:40%;width:70px;border-radius:13px 0 0 13px}.coach.docked .coachBody,.coach.docked .coachTitle,.coach.docked .coachStatus,.coach.docked .coachBtns .coachClose{display:none}.coach.docked .coachHead{justify-content:center}.coach.docked .coachAvatar{width:52px;height:52px}.coachHead{display:flex;align-items:center;gap:9px;padding:10px;background:linear-gradient(135deg,#0f2434,#112d40);border-bottom:1px solid #29485c}.coachAvatar{width:45px;height:45px;border-radius:13px;background:radial-gradient(circle at 35% 30%,#eaffff 0 7%,#61dff5 8% 17%,#3b70d3 18% 46%,#182744 47% 100%);position:relative;box-shadow:0 0 30px rgba(80,217,243,.18);flex:none}.coachAvatar:before,.coachAvatar:after{content:"";position:absolute;top:17px;width:7px;height:7px;border-radius:50%;background:#e7ffff;box-shadow:0 0 9px #87f2ff}.coachAvatar:before{left:11px}.coachAvatar:after{right:11px}.coachTitle b{display:block;font-size:11px}.coachStatus{color:#66e6a4;font-size:7px;font-weight:950}.coachTitle span{color:#8ba2b2;font-size:7px;margin-top:2px;display:block}.coachBtns{margin-left:auto;display:flex;gap:5px}.coachBtns button{width:29px;height:29px;border:1px solid #355267;background:#0d1b28;color:#def0f5;border-radius:8px;font-weight:950}.coachTabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:9px 9px 0}.coachTab{border:1px solid #294457;background:#0c1a27;color:#9cb3c0;border-radius:8px;padding:8px 4px;font-size:8px;font-weight:900}.coachTab.active{border-color:#45b6d1;background:#102a3b;color:#72e6f9}.coachBody{padding:9px}.coachPane{display:none}.coachPane.active{display:block}.coachRec{border:1px solid #2b4b61;border-radius:11px;background:linear-gradient(145deg,#102436,#0c1925);padding:11px}.coachRec label{font-size:7px;color:#66dff6;letter-spacing:.13em;text-transform:uppercase;font-weight:950}.coachRec h3{font-size:14px;margin:4px 0}.coachRec p{font-size:9px;line-height:1.55;color:#a7bcc8;margin:0}.coachOptions{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:7px}.coachOption{padding:9px;border:1px solid #294355;background:#0c1b28;color:#e9f6fa;border-radius:9px;text-align:left}.coachOption:hover{border-color:#5bd8ef}.coachOption b{display:block;font-size:9px}.coachOption span{display:block;color:#8299a8;font-size:7px;margin-top:2px}.coachBottom{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px}.coachBottom button{border:1px solid #304e61;background:#0e1e2b;color:#eaf5f9;border-radius:9px;padding:9px;font-size:8px;font-weight:900}.coachBottom .primary{border:0;background:linear-gradient(135deg,#4cdcf0,#697af5);color:#07111b}.chatLog{height:228px;overflow:auto;display:flex;flex-direction:column;gap:7px}.bubble{max-width:90%;padding:8px 9px;border-radius:10px;font-size:8px;line-height:1.5}.bubble.bot{background:#102536;border:1px solid #294659}.bubble.user{margin-left:auto;background:#12382d;border:1px solid #29604e}.chatInput{display:flex;gap:5px;margin-top:7px}.chatInput input{flex:1;min-width:0;padding:9px;border:1px solid #2b485b;background:#08131e;color:#eef7ff;border-radius:9px;font-size:8px}.chatInput button{width:38px;border:0;border-radius:9px;background:#59d9ef;color:#06111a;font-weight:950}.clearChat{width:100%;margin-top:6px;border:1px solid #294355;background:#0c1926;color:#8198a7;padding:6px;border-radius:8px;font-size:8px;font-weight:900}.coachDockLabel{position:fixed;right:0;top:40%;z-index:44;display:none}.coach.docked + .coachDockLabel{display:block}.coachDockLabel button{border:1px solid #335268;border-right:0;border-radius:11px 0 0 11px;background:#102434;color:#7ae7f9;padding:12px 8px;font-size:9px;font-weight:950}
+
+.footer{margin:18px 0 5px;padding:14px 3px;border-top:1px solid #1a3041;color:#6f8797;font-size:8px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+
+@media(max-width:1100px){.layout{grid-template-columns:1fr}.sidebar{position:fixed;left:0;top:72px;bottom:0;width:250px;transform:translateX(-105%);transition:.18s;z-index:70}.sidebar.open{transform:none}.menuBtn{display:grid;place-items:center}.topSearch{display:none}.grid4{grid-template-columns:repeat(2,1fr)}.subjectGrid{grid-template-columns:repeat(2,1fr)}.analytics{grid-template-columns:1fr}}
+@media(max-width:760px){.content{padding:12px}.brand{min-width:0}.brand small{display:none}.topbar{padding:0 9px}.streakBadge{display:none}.profileText{display:none}.hero{padding:20px;min-height:0}.hero h1{font-size:38px}.hero:after{right:18px;top:25px}.heroMini{grid-template-columns:repeat(2,1fr)}.grid2,.grid3,.grid4{grid-template-columns:1fr}.subjectGrid{grid-template-columns:1fr}.loop{grid-template-columns:1fr}.plannerGrid{grid-template-columns:repeat(7,105px)}.controls{grid-template-columns:1fr}.coach{right:10px;bottom:10px;top:auto}.authCard{grid-template-columns:1fr}.authLeft{display:none}.authRight{padding:22px}}
 </style>
 </head>
 <body>
-<div id="authRoot" class="auth"></div>
-<div id="app" class="app hidden">
+<div id="authScreen"></div>
 
+<div id="app" class="hidden">
 <header class="topbar">
-  <button id="menuBtn" class="menuBtn" type="button">☰</button>
-  <div class="brand"><img src="airforge-logo.svg" alt="AIRForge"><div><b>AIRForge</b><small>JEE Main + Advanced • PCM</small></div></div>
-  <div class="search"><span>⌕</span><input id="searchInput" placeholder="Search chapters, tools, notes…"></div>
+  <button class="menuBtn" id="menuBtn" type="button">☰</button>
+  <div class="brand"><img src="airforge-logo.svg" alt="AIRForge"><div><b>AIRForge <small style="display:inline;color:#69e5fb;font-size:8px">JEE</small></b><small>Train • Analyze • Master</small></div></div>
+  <div class="searchWrap">
+    <div class="search"><span>⌕</span><input id="globalSearch" placeholder="Search chapters, questions, notes, tests…" autocomplete="off"></div>
+    <div class="searchResults" id="searchResults"></div>
+  </div>
   <div class="topRight">
-    <button id="focusTop" class="topBtn" type="button">⏱ Focus</button>
-    <button id="exportTop" class="topBtn" type="button">↥ Backup</button>
-    <div class="profile"><div class="avatar" id="avatar">A</div><div><b id="userName">Student</b><small id="userClass">JEE 2027</small></div></div>
+    <div class="streakBadge">🔥 <span id="topStreak">0 days</span></div>
+    <button class="topBtn square" id="notifyBtn" type="button">◔</button>
+    <button class="topBtn square" id="calendarBtn" type="button">□</button>
+    <div class="profile"><div class="avatar" id="avatar">A</div><div class="profileText"><b id="profileName">Student</b><span id="profileClass">JEE 2027</span></div></div>
   </div>
 </header>
 
 <div class="layout">
 <aside class="sidebar" id="sidebar">
-  <div class="sideLabel">Main</div>
-  <button class="sideBtn active" data-view="home">⌂ <span>Home</span></button>
-  <button class="sideBtn" data-view="planner">◷ <span>Study Planner</span></button>
-  <button class="sideBtn" data-view="pyq">▤ <span>PYQ Bank</span></button>
-  <button class="sideBtn" data-view="tests">⚗ <span>Test Lab</span></button>
-  <button class="sideBtn" data-view="revision">↻ <span>Revision</span></button>
-  <button class="sideBtn" data-view="errors">⌁ <span>Mistakes</span></button>
+  <div class="sideSection">
+    <div class="sideLabel">Main</div>
+    <button class="sideBtn active" data-view="home"><span class="sideIcon">⌂</span>Home</button>
+    <button class="sideBtn" data-view="coach"><span class="sideIcon">🤖</span>AI Coach</button>
+    <button class="sideBtn" data-view="planner"><span class="sideIcon">◷</span>Study Planner</button>
+    <button class="sideBtn" data-view="practice"><span class="sideIcon">◈</span>Practice</button>
+    <button class="sideBtn" data-view="tests"><span class="sideIcon">⚗</span>Tests</button>
+    <button class="sideBtn" data-view="pyq"><span class="sideIcon">▤</span>PYQs</button>
+  </div>
   <div class="divider"></div>
-  <div class="sideLabel">PCM</div>
-  <button class="sideBtn" data-view="physics">⚡ <span>Physics</span></button>
-  <button class="sideBtn" data-view="chemistry">🧪 <span>Chemistry</span></button>
-  <button class="sideBtn" data-view="maths">△ <span>Mathematics</span></button>
+  <div class="sideSection">
+    <div class="sideLabel">Prepare</div>
+    <button class="sideBtn" data-view="syllabus"><span class="sideIcon">✓</span>Syllabus</button>
+    <button class="sideBtn" data-view="revision"><span class="sideIcon">↻</span>Revision</button>
+    <button class="sideBtn" data-view="errors"><span class="sideIcon">⌁</span>Mistakes</button>
+    <button class="sideBtn" data-view="vault"><span class="sideIcon">▣</span>Notes & Vault</button>
+  </div>
   <div class="divider"></div>
-  <div class="sideLabel">Track</div>
-  <button class="sideBtn" data-view="syllabus">✓ <span>Syllabus</span></button>
-  <button class="sideBtn" data-view="analytics">▥ <span>Analytics</span></button>
-  <button class="sideBtn" data-view="vault">▣ <span>Study Vault</span></button>
-  <button class="sideBtn" data-view="resources">◈ <span>Resources</span></button>
-  <button class="sideBtn" data-view="settings">⚙ <span>Settings</span></button>
-  <div class="sideGoal"><b>🎯 JEE Advanced 2027</b><span>Keep the next block small and finish it.</span><div class="gbar"><i></i></div></div>
-  <button class="sideBtn" id="signOutBtn">↪ <span>Sign out</span></button>
+  <div class="sideSection">
+    <div class="sideLabel">Insights</div>
+    <button class="sideBtn" data-view="analytics"><span class="sideIcon">▥</span>Analytics</button>
+    <button class="sideBtn" data-view="resources"><span class="sideIcon">▧</span>Resources</button>
+  </div>
+  <div class="divider"></div>
+  <div class="sideSection">
+    <div class="sideLabel">My subjects</div>
+    <button class="sideBtn" data-view="physics"><span class="sideIcon">⚡</span>Physics</button>
+    <button class="sideBtn" data-view="chemistry"><span class="sideIcon">🧪</span>Chemistry</button>
+    <button class="sideBtn" data-view="maths"><span class="sideIcon">△</span>Mathematics</button>
+  </div>
+  <div class="divider"></div>
+  <button class="sideBtn" data-view="settings"><span class="sideIcon">⚙</span>Settings</button>
+  <button class="sideBtn" id="signOutBtn"><span class="sideIcon">↪</span>Sign out</button>
+  <div class="sideProfile"><b id="sideName">Student</b><span>Study record stays on this device in the current local setup.</span></div>
 </aside>
 
-<main class="content"><div class="wrap">
+<main class="content">
+<div class="shell">
 
-<section class="view active" id="home">
+<section id="home" class="view active">
   <div class="hero">
-    <div class="mountains"><div class="peak one"></div><div class="peak two"></div><div class="peak three"></div><div class="road"></div></div>
-    <div class="heroContent">
-      <div class="eyebrow">JEE Main + Advanced • PCM Command Center</div>
-      <h1>Your Journey to<br><span>JEE Advanced 2027</span></h1>
-      <p id="greeting">Plan smarter. Practice better. Use evidence to decide what to do next.</p>
-      <div class="heroActions">
-        <button class="btn primary" data-view="planner">▶ Continue studying</button>
-        <button class="btn" data-view="pyq">▤ Practice PYQs</button>
-        <button class="btn" data-view="tests">⚗ Take a test</button>
-        <button class="btn" id="coachOpenHome">🤖 Ask Coach</button>
-      </div>
-      <div class="heroStats">
-        <div class="heroStat"><b id="heroSessions">0</b><small>focus sessions</small></div>
-        <div class="heroStat"><b id="heroQuestions">0</b><small>attempts logged</small></div>
-        <div class="heroStat"><b id="heroAccuracy">0%</b><small>accuracy</small></div>
-        <div class="heroStat"><b id="heroStreak">0</b><small>day streak</small></div>
-      </div>
+    <div class="eyebrow">JEE Main + Advanced • Class 12 • 2027</div>
+    <h1>Your journey to<br><span>JEE Advanced 2027</span></h1>
+    <p id="greeting">Plan smarter. Practice better. Keep the next step clear. AIRForge connects your study plan, practice, revision, mistakes and analytics.</p>
+    <div class="heroActions">
+      <button class="btn primary" data-view="planner">▶ Continue studying</button>
+      <button class="btn" data-view="tests">⚗ Take a test</button>
+      <button class="btn" data-view="pyq">▤ Solve PYQs</button>
+      <button class="btn" data-view="coach">🤖 Ask AI Coach</button>
+    </div>
+    <div class="heroMini">
+      <div class="mini"><b id="mSessions">0</b><span>focus sessions</span></div>
+      <div class="mini"><b id="mMinutes">0</b><span>focused minutes</span></div>
+      <div class="mini"><b id="mQuestions">0</b><span>questions logged</span></div>
+      <div class="mini"><b id="mStreak">0</b><span>study-day streak</span></div>
     </div>
   </div>
 
   <div class="grid4">
-    <div class="metric"><div class="icon">🔥</div><b id="kStreak">0</b><small>day streak</small><em>consistency</em></div>
-    <div class="metric"><div class="icon">🎯</div><b id="kQuestions">0</b><small>questions attempted</small><em>evidence</em></div>
-    <div class="metric"><div class="icon">🧠</div><b id="kErrors">0</b><small>mistakes logged</small><em>learn</em></div>
-    <div class="metric"><div class="icon">↻</div><b id="kDue">0</b><small>revisions due</small><em>review</em></div>
+    <div class="metric"><div class="icon">🔥</div><b id="kStreak">0</b><span>day streak</span><em>consistency</em></div>
+    <div class="metric"><div class="icon">🎯</div><b id="kAccuracy">0%</b><span>logged accuracy</span><em>evidence</em></div>
+    <div class="metric"><div class="icon">🧠</div><b id="kErrors">0</b><span>mistakes to learn from</span><em>review</em></div>
+    <div class="metric"><div class="icon">↻</div><b id="kDue">0</b><span>revisions due</span><em>today</em></div>
   </div>
 
   <div class="grid2">
     <section class="panel">
-      <div class="panelHead"><h3>Today's plan</h3><span id="todayDate"></span></div>
-      <div id="todayQueue" class="list"><div class="item"><b>No tasks yet.</b><small>Open Study Planner and make your next block concrete.</small></div></div>
-      <div class="heroActions"><button class="btn small" data-view="planner">Open planner →</button><button class="btn small" data-view="revision">See revisions</button></div>
+      <div class="panelHead"><h3>Today's Plan</h3><span id="todayDate"></span></div>
+      <div id="todayQueue"></div>
+      <button class="btn small" data-view="planner" style="margin-top:8px">Open full planner →</button>
     </section>
     <section class="panel">
-      <div class="panelHead"><h3>Quick tools</h3><span>one click away</span></div>
-      <div class="quickGrid">
-        <button class="quick" data-view="physics"><b>⚡ Physics Engine</b><span>Problems, graphs & simulations</span></button>
-        <button class="quick" data-view="chemistry"><b>🧪 Chemistry Engine</b><span>Concepts, mechanisms & practice</span></button>
-        <button class="quick" data-view="maths"><b>△ Mathematics Engine</b><span>Algebra, geometry & calculus</span></button>
-        <button class="quick" data-view="pyq"><b>▤ PYQ Bank</b><span>Filter and jump into practice</span></button>
-        <button class="quick" data-view="tests"><b>⚗ Test Lab</b><span>Build a deliberate paper</span></button>
-        <button class="quick" data-view="errors"><b>⌁ Error Book</b><span>Turn misses into rules</span></button>
-      </div>
+      <div class="panelHead"><h3>Next Targets</h3><span data-view="planner" style="cursor:pointer;color:#60def5">See all →</span></div>
+      <div class="targets" id="targetList"></div>
     </section>
   </div>
 
-  <section class="panel" style="margin-top:12px">
-    <div class="panelHead"><h3>How AIRForge works</h3><span>simple by design</span></div>
+  <section class="panel" style="margin-top:11px">
+    <div class="panelHead"><h3>Subject Progress</h3><span>from your recorded work</span></div>
+    <div class="subjectGrid">
+      <div class="subject"><div class="subjectTop"><b>⚡ Physics</b><span id="pPct">0%</span></div><div class="bar"><i id="pBar" style="width:0"></i></div><small id="pMeta">0 attempts</small></div>
+      <div class="subject"><div class="subjectTop"><b>🧪 Chemistry</b><span id="cPct">0%</span></div><div class="bar"><i id="cBar" style="width:0"></i></div><small id="cMeta">0 attempts</small></div>
+      <div class="subject"><div class="subjectTop"><b>△ Mathematics</b><span id="mPct">0%</span></div><div class="bar"><i id="mBar" style="width:0"></i></div><small id="mMeta">0 attempts</small></div>
+      <div class="subject"><div class="subjectTop"><b>🏆 Overall</b><span id="oPct">0%</span></div><div class="bar"><i id="oBar" style="width:0"></i></div><small id="oMeta">0 total attempts</small></div>
+    </div>
+  </section>
+
+  <section class="panel" style="margin-top:11px">
+    <div class="panelHead"><h3>The AIRForge Loop</h3><span>simple by design</span></div>
     <div class="loop">
-      <div class="step"><i>01</i><b>Pick</b><span>Choose one chapter or task.</span></div>
-      <div class="step"><i>02</i><b>Attempt</b><span>Try before looking at solutions.</span></div>
-      <div class="step"><i>03</i><b>Diagnose</b><span>Record the real reason for the miss.</span></div>
-      <div class="step"><i>04</i><b>Retest</b><span>Return and prove the fix sticks.</span></div>
+      <div class="step"><i>01</i><b>Pick</b><span>Choose one chapter or target.</span></div>
+      <div class="step"><i>02</i><b>Attempt</b><span>Solve before looking at help.</span></div>
+      <div class="step"><i>03</i><b>Diagnose</b><span>Write why the miss happened.</span></div>
+      <div class="step"><i>04</i><b>Retest</b><span>Prove the fix later.</span></div>
     </div>
   </section>
 
   <div class="grid2">
     <section class="panel">
-      <div class="panelHead"><h3>Subject progress</h3><span>based on logged attempts</span></div>
-      <div class="subjects">
-        <div class="subject"><div class="subjectTop"><b>⚡ Physics</b><b id="pPct">0%</b></div><div class="bar"><i id="pBar"></i></div><small id="pMeta">0 attempts</small></div>
-        <div class="subject"><div class="subjectTop"><b>🧪 Chemistry</b><b id="cPct">0%</b></div><div class="bar"><i id="cBar"></i></div><small id="cMeta">0 attempts</small></div>
-        <div class="subject"><div class="subjectTop"><b>△ Mathematics</b><b id="mPct">0%</b></div><div class="bar"><i id="mBar"></i></div><small id="mMeta">0 attempts</small></div>
+      <div class="panelHead"><h3>Performance</h3><span>last 6 months</span></div>
+      <div class="analytics">
+        <div class="chart">
+          <svg viewBox="0 0 640 210" preserveAspectRatio="none">
+            <path d="M30 176 L100 166 L170 155 L240 142 L310 130 L380 116 L450 102 L520 86 L600 62" fill="none" stroke="#4d8cff" stroke-width="3"/>
+            <path d="M30 185 L100 177 L170 166 L240 160 L310 145 L380 134 L450 121 L520 112 L600 91" fill="none" stroke="#d950ff" stroke-width="3"/>
+            <path d="M30 190 L100 184 L170 180 L240 170 L310 160 L380 153 L450 141 L520 129 L600 111" fill="none" stroke="#50df96" stroke-width="3"/>
+            <line x1="30" y1="195" x2="610" y2="195" stroke="#233c50" stroke-width="1"/>
+            <line x1="30" y1="30" x2="30" y2="195" stroke="#233c50" stroke-width="1"/>
+            <g fill="#71899a" font-size="9"><text x="28" y="208">Apr</text><text x="145" y="208">May</text><text x="260" y="208">Jun</text><text x="375" y="208">Jul</text><text x="490" y="208">Aug</text><text x="582" y="208">Sep</text></g>
+          </svg>
+        </div>
+        <div>
+          <div class="donut"></div>
+          <div class="legend">
+            <div><span style="color:#58dcf4">● Physics</span><b id="legendP">0%</b></div>
+            <div><span style="color:#8d69ff">● Chemistry</span><b id="legendC">0%</b></div>
+            <div><span style="color:#50df96">● Mathematics</span><b id="legendM">0%</b></div>
+          </div>
+        </div>
       </div>
     </section>
     <section class="panel">
-      <div class="panelHead"><h3>Next targets</h3><span>student-controlled</span></div>
-      <div id="homeTargets" class="list"></div>
+      <div class="panelHead"><h3>Coach Note</h3><span>you stay in control</span></div>
+      <div class="item"><b id="coachNoteTitle">Start with one real attempt.</b><small id="coachNoteText">Give me a chapter or add one concrete block to Today. The Coach will use your recorded work to suggest the next step.</small></div>
+      <button class="btn primary" data-view="coach" style="margin-top:8px">Open Coach</button>
     </section>
   </div>
 </section>
 
-<section class="view" id="planner">
-  <div class="hero"><div class="eyebrow">Study Planner</div><h1>Make the next block <span>obvious.</span></h1><p>Build around coaching, school and travel. Short finished blocks beat an overloaded timetable.</p></div>
+<section id="coach" class="view">
+  <div class="hero"><div class="eyebrow">AI Coach</div><h1>Ask. Solve. Analyze. <span>Plan.</span></h1><p>Your Coach is a helper, not a controller. It uses your logged activity to suggest practical next actions while keeping the final choice with you.</p></div>
   <div class="grid2">
-    <section class="panel">
-      <div class="panelHead"><h3>Add a study block</h3><span>saved per account</span></div>
+    <section class="panel"><div class="panelHead"><h3>Coach workspace</h3><span>same coach, larger view</span></div><div id="coachPageNote" class="callout">Start with the recommendation or ask a question.</div>
+      <div class="coachOptions" style="margin-top:9px">
+        <button class="coachOption" data-coach-action="planner"><b>🗓 Create a plan</b><span>Open today's study queue.</span></button>
+        <button class="coachOption" data-coach-action="revision"><b>↻ Review due</b><span>Open the recall queue.</span></button>
+        <button class="coachOption" data-coach-action="mistakes"><b>⌁ Analyze mistakes</b><span>Open your Error Book.</span></button>
+        <button class="coachOption" data-coach-action="test"><b>⚗ Build a test</b><span>Open Test Lab.</span></button>
+      </div>
+    </section>
+    <section class="panel"><div class="panelHead"><h3>Coach principles</h3><span>transparent</span></div>
+      <div class="list"><div class="item"><b>Evidence over guesswork</b><small>Recommendations use your attempts, mistakes and revisions.</small></div><div class="item"><b>Student remains in control</b><small>The Coach suggests. You decide.</small></div><div class="item"><b>One next step</b><small>Reduce noise and keep the next useful action obvious.</small></div></div>
+    </section>
+  </div>
+</section>
+
+<section id="planner" class="view">
+  <div class="hero"><div class="eyebrow">Study Planner</div><h1>Make the next block <span>obvious.</span></h1><p>Build a day around coaching, school and realistic focus blocks.</p></div>
+  <div class="grid2">
+    <section class="panel"><div class="panelHead"><h3>Add task</h3><span>saved locally</span></div>
       <div class="controls">
         <div class="field"><label>Subject</label><select id="taskSubject"><option>Physics</option><option>Chemistry</option><option>Mathematics</option><option>Revision</option></select></div>
-        <div class="field"><label>Type</label><select id="taskType"><option>Concept</option><option>Practice</option><option>PYQ</option><option>Revision</option><option>Mock</option></select></div>
+        <div class="field"><label>Type</label><select id="taskType"><option>Practice</option><option>Concept</option><option>PYQ</option><option>Revision</option><option>Mock</option></select></div>
         <div class="field"><label>Minutes</label><input id="taskMinutes" type="number" value="45" min="10" step="5"></div>
         <div class="field"><label>Target</label><input id="taskTitle" placeholder="e.g. SHM — phase"></div>
       </div>
-      <button class="btn primary" id="addTask" style="margin-top:9px">＋ Add block</button>
+      <button class="btn primary" id="addTask" style="margin-top:8px">＋ Add task</button>
     </section>
-    <section class="panel">
-      <div class="panelHead"><h3>Focus timer</h3><span>completed sessions are logged</span></div>
-      <div style="text-align:center"><div id="timer" style="font-size:43px;font-weight:950;letter-spacing:1px">25:00</div>
-      <div class="pills" style="justify-content:center;margin:8px 0"><button class="pill" data-timer="25">25 min</button><button class="pill" data-timer="45">45 min</button><button class="pill" data-timer="60">60 min</button></div>
-      <button class="btn primary" id="timerStart">▶ Start</button> <button class="btn" id="timerReset">↺ Reset</button></div>
+    <section class="panel"><div class="panelHead"><h3>Focus Timer</h3><span>completed sessions are logged</span></div>
+      <div style="text-align:center"><div id="timer" style="font-size:43px;font-weight:950;letter-spacing:1px">25:00</div><div class="pillRow" style="justify-content:center;margin:7px 0"><button class="pill" data-timer="25">25 min</button><button class="pill" data-timer="45">45 min</button><button class="pill" data-timer="60">60 min</button></div><button class="btn primary" id="timerStart">▶ Start</button> <button class="btn" id="timerReset">↺ Reset</button></div>
     </section>
   </div>
-  <section class="panel" style="margin-top:12px"><div class="panelHead"><h3>Today's queue</h3><span>check off completed work</span></div><div id="plannerList" class="list"></div></section>
+  <section class="panel" style="margin-top:11px"><div class="panelHead"><h3>Today's tasks</h3><span>tap the check to finish</span></div><div id="plannerList" class="list"></div></section>
+  <section class="panel" style="margin-top:11px"><div class="panelHead"><h3>Week view</h3><span>22–28 Sep 2026</span></div><div class="plannerGrid" id="plannerWeek"></div></section>
 </section>
 
-<section class="view" id="pyq">
-  <div class="hero"><div class="eyebrow">PYQ Bank</div><h1>Questions without the <span>friction.</span></h1><p>Filter first. Attempt seriously. Use the subject engine for the full question-solving workspace.</p></div>
-  <section class="panel" style="margin-top:12px">
-    <div class="controls">
-      <div class="field"><label>Exam</label><select id="pyqExam"><option>JEE Main</option><option>JEE Advanced</option><option>Mixed</option></select></div>
-      <div class="field"><label>Subject</label><select id="pyqSubject"><option>Physics</option><option>Chemistry</option><option>Mathematics</option></select></div>
-      <div class="field"><label>Year</label><select id="pyqYear"><option>Any year</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option><option>2017</option><option>2016</option><option>2015</option></select></div>
-      <div class="field"><label>Type</label><select id="pyqType"><option>Any</option><option>Single Correct</option><option>Multiple Correct</option><option>Numerical</option><option>Integer</option><option>Match / Matrix</option></select></div>
-    </div>
-    <div class="heroActions"><button class="btn primary" id="preparePyq">🔎 Prepare set</button><button class="btn" id="openPyqEngine">🚀 Open subject engine</button><button class="btn" id="officialPyq">🌐 Official site</button></div>
-    <div class="item" id="pyqResult" style="margin-top:10px"><b>Ready.</b><small>Choose filters and prepare a focused set.</small></div>
-  </section>
-  <div class="grid3"><section class="panel"><h3 style="margin:0;font-size:11px">Attempt first</h3><p class="subtle">No solution peeking before a genuine attempt.</p></section><section class="panel"><h3 style="margin:0;font-size:11px">Mark uncertain</h3><p class="subtle">Correct but uncertain is still revision data.</p></section><section class="panel"><h3 style="margin:0;font-size:11px">Retest</h3><p class="subtle">Come back after the error is understood.</p></section></div>
+<section id="practice" class="view">
+  <div class="hero"><div class="eyebrow">Practice</div><h1>Practice with <span>purpose.</span></h1><p>Quickly log an attempt or jump into a full subject engine.</p></div>
+  <div class="grid3">
+    <section class="panel"><div class="panelHead"><h3>Log Physics</h3><span>fast</span></div><p class="subtle">Use this when you practiced offline from your module or book.</p><button class="btn" data-attempt-subject="Physics" data-attempt-correct="1">✓ Correct</button> <button class="btn" data-attempt-subject="Physics" data-attempt-correct="0">✕ Wrong</button></section>
+    <section class="panel"><div class="panelHead"><h3>Log Chemistry</h3><span>fast</span></div><p class="subtle">Record the result so analytics and Coach have evidence.</p><button class="btn" data-attempt-subject="Chemistry" data-attempt-correct="1">✓ Correct</button> <button class="btn" data-attempt-subject="Chemistry" data-attempt-correct="0">✕ Wrong</button></section>
+    <section class="panel"><div class="panelHead"><h3>Log Mathematics</h3><span>fast</span></div><p class="subtle">One tap after a genuine attempt.</p><button class="btn" data-attempt-subject="Mathematics" data-attempt-correct="1">✓ Correct</button> <button class="btn" data-attempt-subject="Mathematics" data-attempt-correct="0">✕ Wrong</button></section>
+  </div>
+  <div class="grid3">
+    <button class="panel quick" data-view="physics"><b>⚡ Physics Engine</b><span>Problems, diagrams and simulations.</span></button>
+    <button class="panel quick" data-view="chemistry"><b>🧪 Chemistry Engine</b><span>Structure, mechanisms and practice.</span></button>
+    <button class="panel quick" data-view="maths"><b>△ Mathematics Engine</b><span>Algebra, geometry and calculus.</span></button>
+  </div>
 </section>
 
-<section class="view" id="tests">
-  <div class="hero"><div class="eyebrow">Test Lab</div><h1>Build the paper you <span>need.</span></h1><p>Control exam, subject, size and time instead of solving random piles of questions.</p></div>
-  <section class="panel" style="margin-top:12px"><div class="controls">
+<section id="tests" class="view">
+  <div class="hero"><div class="eyebrow">Test Lab</div><h1>Build the paper you <span>need.</span></h1><p>Control exam, subject, question count and time before starting.</p></div>
+  <section class="panel" style="margin-top:11px"><div class="controls">
     <div class="field"><label>Exam</label><select id="testExam"><option>JEE Main</option><option>JEE Advanced</option><option>Mixed</option></select></div>
     <div class="field"><label>Subject</label><select id="testSubject"><option>Physics</option><option>Chemistry</option><option>Mathematics</option><option>PCM Mixed</option></select></div>
     <div class="field"><label>Questions</label><input id="testN" type="number" value="30" min="5" max="180"></div>
     <div class="field"><label>Minutes</label><input id="testT" type="number" value="60" min="10" max="360"></div>
-  </div><button class="btn primary" id="buildTest" style="margin-top:9px">⚗ Generate blueprint</button></section>
-  <section class="panel" style="margin-top:12px"><div class="panelHead"><h3>Blueprint</h3><span>first 12 rows shown</span></div><div id="testBlueprint" class="list"><div class="item"><b>No blueprint yet.</b><small>Generate one above.</small></div></div></section>
+  </div><button class="btn primary" id="buildTest" style="margin-top:8px">⚗ Generate blueprint</button></section>
+  <section class="panel" style="margin-top:11px"><div class="panelHead"><h3>Generated Blueprint</h3><span>editable by you</span></div><div id="testBlueprint" class="list"></div></section>
 </section>
 
-<section class="view" id="revision">
-  <div class="hero"><div class="eyebrow">Revision</div><h1>Recall it. Then <span>prove it.</span></h1><p>Use spaced intervals and keep the review evidence visible.</p></div>
-  <div class="grid2" style="margin-top:12px"><section class="panel"><div class="controls" style="grid-template-columns:1fr 1fr"><div class="field"><label>Subject</label><select id="revSubject"><option>Physics</option><option>Chemistry</option><option>Mathematics</option></select></div><div class="field"><label>Concept</label><input id="revTitle" placeholder="e.g. Chemical Bonding"></div></div><button class="btn primary" id="addRevision" style="margin-top:9px">＋ Add revision</button></section><section class="panel"><div class="callout" style="border-left:3px solid var(--cyan);padding:12px;background:#0a1824;border-radius:0 10px 10px 0;font-size:9px;line-height:1.6">Recall first. Check second. Increase the interval when you can reproduce the idea cleanly.</div></section></div>
-  <section class="panel" style="margin-top:12px"><div class="panelHead"><h3>Revision queue</h3><span id="revCount"></span></div><div id="revisionList" class="list"></div></section>
+<section id="pyq" class="view">
+  <div class="hero"><div class="eyebrow">PYQ Bank</div><h1>PYQs without the <span>friction.</span></h1><p>Filter by exam, subject, year and question type, then open the matching engine.</p></div>
+  <section class="panel" style="margin-top:11px"><div class="controls">
+    <div class="field"><label>Exam</label><select id="pyqExam"><option>JEE Main</option><option>JEE Advanced</option><option>Mixed</option></select></div>
+    <div class="field"><label>Subject</label><select id="pyqSubject"><option>Physics</option><option>Chemistry</option><option>Mathematics</option></select></div>
+    <div class="field"><label>Year</label><select id="pyqYear"><option>Any year</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option><option>2017</option><option>2016</option></select></div>
+    <div class="field"><label>Question type</label><select id="pyqType"><option>Any</option><option>Single Correct</option><option>Multiple Correct</option><option>Numerical</option><option>Integer</option><option>Match / Matrix</option></select></div>
+  </div><div class="heroActions"><button class="btn primary" id="buildPyq">🔎 Prepare set</button><button class="btn" id="openPyqEngine">🚀 Open engine</button><button class="btn" id="officialPyq">🌐 Official source</button></div><div class="callout" id="pyqResult" style="margin-top:9px">Choose filters and prepare a set.</div></section>
 </section>
 
-<section class="view" id="errors">
-  <div class="hero"><div class="eyebrow">Error Book</div><h1>Extract the lesson from <span>every miss.</span></h1><p>Log why the answer failed so the next revision has a useful target.</p></div>
-  <section class="panel" style="margin-top:12px"><div class="controls">
+<section id="syllabus" class="view">
+  <div class="hero"><div class="eyebrow">Syllabus</div><h1>Know what is <span>covered.</span></h1><p>Mark chapters you've completed manually. Subject engines remain the place for detailed topic practice.</p></div>
+  <section class="panel" style="margin-top:11px"><div class="subjectGrid" id="syllabusCards"></div></section>
+</section>
+
+<section id="revision" class="view">
+  <div class="hero"><div class="eyebrow">Revision</div><h1>Recall it. Then <span>prove it.</span></h1><p>Keep revision short, active and connected to what you actually missed.</p></div>
+  <section class="panel" style="margin-top:11px"><div class="controls" style="grid-template-columns:1fr 1fr"><div class="field"><label>Subject</label><select id="revSubject"><option>Physics</option><option>Chemistry</option><option>Mathematics</option></select></div><div class="field"><label>Concept</label><input id="revTitle" placeholder="e.g. Chemical bonding"></div></div><button class="btn primary" id="addRevision" style="margin-top:8px">＋ Add revision</button></section>
+  <section class="panel" style="margin-top:11px"><div class="panelHead"><h3>Revision Queue</h3><span id="revCount">0 due</span></div><div id="revisionList" class="list"></div></section>
+</section>
+
+<section id="errors" class="view">
+  <div class="hero"><div class="eyebrow">Mistakes</div><h1>Extract the lesson from <span>every miss.</span></h1><p>Write the failure mode so the next attempt has something specific to improve.</p></div>
+  <section class="panel" style="margin-top:11px"><div class="controls">
     <div class="field"><label>Subject</label><select id="errSubject"><option>Physics</option><option>Chemistry</option><option>Mathematics</option></select></div>
-    <div class="field"><label>Failure type</label><select id="errType"><option>Concept</option><option>Model / Setup</option><option>Sign / Direction</option><option>Algebra</option><option>Calculation</option><option>Careless</option></select></div>
+    <div class="field"><label>Type</label><select id="errType"><option>Concept</option><option>Model / Setup</option><option>Sign / Direction</option><option>Algebra</option><option>Calculation</option><option>Careless</option></select></div>
     <div class="field"><label>Chapter</label><input id="errChapter" placeholder="chapter"></div>
-    <div class="field"><label>What went wrong?</label><input id="errNote" placeholder="e.g. wrong sign convention in mirror formula"></div>
-  </div><button class="btn primary" id="addError" style="margin-top:9px">＋ Log mistake</button></section>
-  <section class="panel" style="margin-top:12px"><div class="panelHead"><h3>Recent mistakes</h3><span id="errCount"></span></div><div id="errorList" class="list"></div></section>
+    <div class="field"><label>What went wrong?</label><input id="errNote" placeholder="failure mode"></div>
+  </div><button class="btn primary" id="addError" style="margin-top:8px">＋ Log mistake</button></section>
+  <section class="panel" style="margin-top:11px"><div class="panelHead"><h3>Recent mistakes</h3><span id="errCount">0 total</span></div><div id="errorList" class="list"></div></section>
 </section>
 
-<section class="view" id="syllabus">
-  <div class="hero"><div class="eyebrow">Syllabus</div><h1>See every <span>chapter.</span></h1><p>Use the map for coverage. Your practice evidence still matters more than a checkbox.</p></div>
-  <section class="panel" style="margin-top:12px"><div class="controls" style="grid-template-columns:1fr"><div class="field"><label>Subject</label><select id="syllabusSubject"><option>All</option><option>Physics</option><option>Chemistry</option><option>Mathematics</option></select></div></div><div id="syllabusList" class="grid3" style="margin-top:10px"></div></section>
-</section>
-
-<section class="view" id="analytics">
-  <div class="hero"><div class="eyebrow">Analytics</div><h1>See the <span>evidence.</span></h1><p>Understand pace, accuracy, subject distribution and the mistakes worth revisiting.</p></div>
-  <div class="grid4 analyticsCards">
-    <div class="metric"><div class="icon">⏱</div><b id="aMinutes">0</b><small>focused minutes</small></div>
-    <div class="metric"><div class="icon">🎯</div><b id="aAttempts">0</b><small>attempts</small></div>
-    <div class="metric"><div class="icon">✓</div><b id="aCorrect">0</b><small>correct</small></div>
-    <div class="metric"><div class="icon">⌁</div><b id="aErrors">0</b><small>errors</small></div>
-  </div>
+<section id="vault" class="view">
+  <div class="hero"><div class="eyebrow">Notes & Vault</div><h1>Keep the things worth <span>seeing again.</span></h1><p>Save formulas, notes, tricky questions and short reminders.</p></div>
   <div class="grid2">
-    <section class="panel"><div class="panelHead"><h3>Subject performance</h3><span>recorded attempts</span></div><div id="subjectAnalytics" class="subjects"></div></section>
-    <section class="panel"><div class="panelHead"><h3>Performance trend</h3><span>simple local chart</span></div><div class="chart"><div class="chartGrid"><span></span><span></span><span></span><span></span></div><svg class="lineSvg" viewBox="0 0 500 150" preserveAspectRatio="none"><polyline points="0,126 70,116 140,119 210,92 280,98 350,72 420,68 500,38" fill="none" stroke="#53ddf4" stroke-width="3"/><polyline points="0,132 70,123 140,126 210,112 280,108 350,91 420,83 500,67" fill="none" stroke="#8b69ff" stroke-width="2"/><polyline points="0,136 70,132 140,121 210,120 280,105 350,100 420,92 500,82" fill="none" stroke="#52df9b" stroke-width="2"/></svg></div></section>
+    <section class="panel"><div class="panelHead"><h3>Flashcard</h3><span>active recall</span></div><div class="field"><label>Front</label><input id="cardFront" placeholder="Question / cue"></div><div class="field" style="margin-top:7px"><label>Back</label><textarea id="cardBack" placeholder="Answer / key idea"></textarea></div><button class="btn primary" id="addCard" style="margin-top:8px">＋ Save card</button></section>
+    <section class="panel"><div class="panelHead"><h3>Quick note</h3><span>capture an insight</span></div><div class="field"><label>Title</label><input id="noteTitle" placeholder="e.g. Rotational shortcut"></div><div class="field" style="margin-top:7px"><label>Note</label><textarea id="noteBody" placeholder="What do you want to remember?"></textarea></div><button class="btn primary" id="addNote" style="margin-top:8px">＋ Save note</button></section>
   </div>
-  <section class="panel" style="margin-top:12px"><div class="panelHead"><h3>Next focus</h3><span>derived from your record</span></div><div id="analyticsFocus" class="item"><b>Start logging real attempts.</b><small>Your data will become more useful as you practice.</small></div></section>
+  <section class="panel" style="margin-top:11px"><div class="panelHead"><h3>Saved items</h3><span id="vaultCount"></span></div><div id="vaultList" class="list"></div></section>
 </section>
 
-<section class="view" id="vault">
-  <div class="hero"><div class="eyebrow">Study Vault</div><h1>Keep what is worth <span>seeing again.</span></h1><p>Save formulas, notes and important cues in one place.</p></div>
-  <div class="grid2">
-    <section class="panel"><div class="panelHead"><h3>Flashcard</h3><span>quick recall</span></div><div class="field"><label>Front</label><input id="cardFront" placeholder="Question / cue"></div><div class="field" style="margin-top:7px"><label>Back</label><textarea id="cardBack" placeholder="Answer / key idea"></textarea></div><button class="btn primary" id="addCard" style="margin-top:8px">＋ Save card</button></section>
-    <section class="panel"><div class="panelHead"><h3>Quick note</h3><span>capture an insight</span></div><div class="field"><label>Title</label><input id="noteTitle" placeholder="e.g. Rotational shortcut"></div><div class="field" style="margin-top:7px"><label>Note</label><textarea id="noteBody" placeholder="What should you remember?"></textarea></div><button class="btn primary" id="addNote" style="margin-top:8px">＋ Save note</button></section>
+<section id="analytics" class="view">
+  <div class="hero"><div class="eyebrow">Analytics</div><h1>See the <span>evidence.</span></h1><p>Understand the trend without turning study into a popularity contest with yourself.</p></div>
+  <div class="grid4">
+    <div class="metric"><div class="icon">⏱</div><b id="aMinutes">0</b><span>focused minutes</span></div>
+    <div class="metric"><div class="icon">🎯</div><b id="aAttempts">0</b><span>attempts</span></div>
+    <div class="metric"><div class="icon">✓</div><b id="aCorrect">0</b><span>correct</span></div>
+    <div class="metric"><div class="icon">⌁</div><b id="aErrors">0</b><span>errors</span></div>
   </div>
-  <section class="panel" style="margin-top:12px"><div class="panelHead"><h3>Saved items</h3><span></span></div><div id="vaultList" class="list"></div></section>
+  <div class="grid2"><section class="panel"><div class="panelHead"><h3>Subject signals</h3><span>recorded attempts</span></div><div id="subjectAnalytics" class="list"></div></section><section class="panel"><div class="panelHead"><h3>Next focus</h3><span>based on current evidence</span></div><div id="analyticsFocus" class="callout"></div></section></div>
 </section>
 
-<section class="view" id="resources">
-  <div class="hero"><div class="eyebrow">Resources</div><h1>Your study stack, <span>one click away.</span></h1><p>Keep the interface focused; use your own coaching material and trusted sources beside AIRForge.</p></div>
+<section id="resources" class="view">
+  <div class="hero"><div class="eyebrow">Resources</div><h1>Your study stack, <span>organized.</span></h1><p>Keep your books, notes and official sources one click away.</p></div>
   <div class="grid3">
-    <button class="quick" id="resourcePhysics"><b>⚡ Physics Engine</b><span>Open AIRForge Physics workspace</span></button>
-    <button class="quick" id="resourceChem"><b>🧪 Chemistry Engine</b><span>Open AIRForge Chemistry workspace</span></button>
-    <button class="quick" id="resourceMaths"><b>△ Mathematics Engine</b><span>Open AIRForge Mathematics workspace</span></button>
-    <button class="quick" id="resourceMain"><b>🌐 JEE Main</b><span>Open official NTA website</span></button>
-    <button class="quick" id="resourceAdv"><b>🔥 JEE Advanced</b><span>Open official JEE Advanced website</span></button>
-    <button class="quick" id="resourceNcERT"><b>📘 NCERT</b><span>Use for core chemistry & fundamentals</span></button>
+    <div class="panel"><h3 style="margin:0 0 7px;font-size:11px">Physics</h3><div class="list"><div class="item"><b>H.C. Verma</b><small>Concepts + problems</small></div><div class="item"><b>University Physics</b><small>Deeper understanding</small></div><div class="item"><b>Coaching module</b><small>Daily practice</small></div></div></div>
+    <div class="panel"><h3 style="margin:0 0 7px;font-size:11px">Chemistry</h3><div class="list"><div class="item"><b>N. Awasthi</b><small>Physical Chemistry practice</small></div><div class="item"><b>M.S. Chauhan</b><small>Organic problem practice</small></div><div class="item"><b>V.K. Jaiswal</b><small>Inorganic practice</small></div></div></div>
+    <div class="panel"><h3 style="margin:0 0 7px;font-size:11px">Mathematics</h3><div class="list"><div class="item"><b>Vikas Gupta</b><small>Coordinate Geometry</small></div><div class="item"><b>Pankaj Joshi Black Book</b><small>Advanced-level practice</small></div><div class="item"><b>Coaching module</b><small>Daily practice</small></div></div></div>
   </div>
 </section>
 
-<section class="view" id="settings">
-  <div class="hero"><div class="eyebrow">Settings</div><h1>Make AIRForge fit <span>your routine.</span></h1><p>This local version keeps accounts and study records in the browser. Export before clearing browser data.</p></div>
-  <div class="grid2">
-    <section class="panel"><div class="panelHead"><h3>Profile</h3><span id="settingsEmail"></span></div><div class="controls" style="grid-template-columns:1fr 1fr"><div class="field"><label>Target date</label><input id="targetDate" type="date"></div><div class="field"><label>Daily minutes</label><input id="dailyMinutes" type="number" min="30" value="180"></div></div><button class="btn primary" id="saveSettings" style="margin-top:9px">Save settings</button></section>
-    <section class="panel"><div class="panelHead"><h3>Account</h3><span>local browser</span></div><p class="subtle">Multiple students can create separate local accounts on the same browser. Each account gets its own study record.</p><button class="btn" id="switchAccount">Switch account</button> <button class="btn" id="exportSettings">Export backup</button></section>
-  </div>
+<section id="settings" class="view">
+  <div class="hero"><div class="eyebrow">Settings</div><h1>Make AIRForge fit <span>your routine.</span></h1><p>Local account and study data stay in this browser in this version. Export a backup before clearing browser data.</p></div>
+  <div class="grid2"><section class="panel"><div class="panelHead"><h3>Study profile</h3><span>saved locally</span></div><div class="controls" style="grid-template-columns:1fr 1fr"><div class="field"><label>Target date</label><input id="targetDate" type="date"></div><div class="field"><label>Daily minutes</label><input id="dailyMinutes" type="number" value="180"></div></div><button class="btn primary" id="saveSettings" style="margin-top:8px">Save settings</button></section><section class="panel"><div class="panelHead"><h3>Backup</h3><span>protect your work</span></div><button class="btn" id="exportBtn">💾 Export</button> <button class="btn" id="importBtn">↥ Import</button><input id="importFile" type="file" accept="application/json" hidden></section></div>
 </section>
 
-<section class="view" id="physics"><div class="hero"><div class="eyebrow">Physics</div><h1>Model first. Then <span>calculate.</span></h1><p>Full AIRForge Physics engine.</p></div><div class="iframeWrap"><iframe class="engineFrame" src="physics.html" title="AIRForge Physics Engine"></iframe></div></section>
-<section class="view" id="chemistry"><div class="hero"><div class="eyebrow">Chemistry</div><h1>Structure → reason → <span>reaction.</span></h1><p>Full AIRForge Chemistry engine.</p></div><div class="iframeWrap"><iframe class="engineFrame" src="chemistry.html" title="AIRForge Chemistry Engine"></iframe></div></section>
-<section class="view" id="maths"><div class="hero"><div class="eyebrow">Mathematics</div><h1>See the structure. <span>Then solve.</span></h1><p>Full AIRForge Mathematics engine.</p></div><div class="iframeWrap"><iframe class="engineFrame" src="maths.html" title="AIRForge Mathematics Engine"></iframe></div></section>
+<section id="physics" class="view"><div class="hero"><div class="eyebrow">Physics</div><h1>Model first. Then <span>calculate.</span></h1><p>Open the full Physics engine in the workspace.</p></div><div class="engineWrap"><iframe class="engineFrame" src="physics.html" title="AIRForge Physics Engine" loading="lazy"></iframe></div></section>
+<section id="chemistry" class="view"><div class="hero"><div class="eyebrow">Chemistry</div><h1>Structure → reason → <span>reaction.</span></h1><p>Open the full Chemistry engine in the workspace.</p></div><div class="engineWrap"><iframe class="engineFrame" src="chemistry.html" title="AIRForge Chemistry Engine" loading="lazy"></iframe></div></section>
+<section id="maths" class="view"><div class="hero"><div class="eyebrow">Mathematics</div><h1>See the structure. <span>Then solve.</span></h1><p>Open the full Mathematics engine in the workspace.</p></div><div class="engineWrap"><iframe class="engineFrame" src="maths.html" title="AIRForge Mathematics Engine" loading="lazy"></iframe></div></section>
 
+<footer class="footer"><div><b style="color:#b9cad4">AIRForge</b> • Train. Analyze. Master.</div><div>JEE Main + Advanced • PCM • Local-first student workspace</div></footer>
 </div></main>
-</div></div>
+</div>
+</div>
 
-<div id="coach" class="coach hidden">
-  <div class="coachHead coachDrag" id="coachDrag">
-    <div class="bot" aria-hidden="true"></div>
-    <div class="coachTitle"><b>🤖 AIRForge Coach</b><span>● smart local guidance</span><small>Explain • Solve • Plan • Analyze</small></div>
-    <div class="coachControls"><button id="coachMin" type="button" title="Minimize">−</button><button id="coachHide" type="button" title="Close">×</button></div>
-  </div>
+<div id="floatingCoach" class="coach hidden">
+  <div class="coachHead"><div class="coachAvatar"></div><div class="coachTitle"><b>🤖 AIRForge Coach</b><div class="coachStatus">● online</div><span>Explain • Solve • Plan • Analyze</span></div><div class="coachBtns"><button id="coachMin" type="button" title="Minimize">−</button><button id="coachHide" type="button" title="Hide">×</button></div></div>
   <div class="coachTabs">
-    <button class="active" data-coachtab="recommend" type="button">Recommend</button>
-    <button data-coachtab="chat" type="button">Chat</button>
-    <button data-coachtab="tools" type="button">Tools</button>
-    <button data-coachtab="history" type="button">History</button>
+    <button class="coachTab active" data-coach-tab="recommend" type="button">Recommend</button>
+    <button class="coachTab" data-coach-tab="chat" type="button">Chat</button>
+    <button class="coachTab" data-coach-tab="tools" type="button">Tools</button>
+    <button class="coachTab" data-coach-tab="history" type="button">History</button>
   </div>
   <div class="coachBody">
-    <div class="coachPane active" data-coachpane="recommend">
-      <div class="coachCard"><label>Based on your record</label><h3 id="coachHeadline">Start with one real attempt.</h3><p id="coachReason">Your next useful step will appear here after you log practice.</p></div>
-      <div class="coachGrid">
-        <button class="coachAction" data-coachaction="planner" type="button"><b>🗓 Today</b><span>Open study queue</span></button>
-        <button class="coachAction" data-coachaction="revision" type="button"><b>↻ Revision</b><span>Review what is due</span></button>
-        <button class="coachAction" data-coachaction="mistakes" type="button"><b>⌁ Mistakes</b><span>Fix one error pattern</span></button>
-        <button class="coachAction" data-coachaction="test" type="button"><b>⚗ Test</b><span>Build a focused paper</span></button>
+    <div class="coachPane active" data-coach-pane="recommend">
+      <div class="coachRec"><label>Based on your record</label><h3 id="floatCoachTitle">Start with one real attempt.</h3><p id="floatCoachText">Give me a chapter or a task. I’ll use your activity to suggest the next useful step.</p></div>
+      <div class="coachOptions">
+        <button class="coachOption" data-coach-action="planner"><b>🗓 Today</b><span>Open study queue.</span></button>
+        <button class="coachOption" data-coach-action="revision"><b>↻ Revision</b><span>Review what is due.</span></button>
+        <button class="coachOption" data-coach-action="mistakes"><b>⌁ Mistakes</b><span>Fix one pattern.</span></button>
+        <button class="coachOption" data-coach-action="test"><b>⚗ Test</b><span>Build a focused paper.</span></button>
       </div>
-      <div class="coachFoot"><button id="coachChoice" type="button">✋ I choose</button><button id="coachDo" class="primary" type="button">⚡ Do this</button></div>
+      <div class="coachBottom"><button id="coachChoose" type="button">✋ I choose</button><button class="primary" id="coachDo" type="button">⚡ Do this</button></div>
     </div>
-    <div class="coachPane" data-coachpane="chat">
-      <div class="chatLog" id="chatLog"></div>
-      <div class="chatInput"><input id="chatInput" placeholder="Ask about a chapter, plan or mistake…"><button id="chatSend" type="button">→</button></div>
+    <div class="coachPane" data-coach-pane="chat">
+      <div id="chatLog" class="chatLog"></div>
+      <div class="chatInput"><input id="chatInput" placeholder="Ask about a plan, chapter or mistake…" autocomplete="off"><button id="chatSend" type="button">→</button></div>
       <button id="clearChat" class="clearChat" type="button">Clear chat</button>
     </div>
-    <div class="coachPane" data-coachpane="tools">
-      <div class="coachGrid">
-        <button class="coachAction" data-view="physics" type="button"><b>⚡ Physics</b><span>Open engine</span></button>
-        <button class="coachAction" data-view="chemistry" type="button"><b>🧪 Chemistry</b><span>Open engine</span></button>
-        <button class="coachAction" data-view="maths" type="button"><b>△ Mathematics</b><span>Open engine</span></button>
-        <button class="coachAction" data-view="vault" type="button"><b>▣ Study Vault</b><span>Cards + notes</span></button>
+    <div class="coachPane" data-coach-pane="tools">
+      <div class="coachOptions">
+        <button class="coachOption" data-view="physics"><b>⚡ Physics</b><span>Open engine.</span></button>
+        <button class="coachOption" data-view="chemistry"><b>🧪 Chemistry</b><span>Open engine.</span></button>
+        <button class="coachOption" data-view="maths"><b>△ Mathematics</b><span>Open engine.</span></button>
+        <button class="coachOption" data-view="planner"><b>🗓 Planner</b><span>Open today's plan.</span></button>
       </div>
     </div>
-    <div class="coachPane" data-coachpane="history"><div id="coachHistory" class="list"></div></div>
+    <div class="coachPane" data-coach-pane="history"><div id="coachHistory" class="list"></div></div>
   </div>
 </div>
-<div id="coachReopen" class="reopen"><button id="coachReopenBtn" type="button">← Coach</button></div>
+<div id="coachDockLabel" class="coachDockLabel"><button id="coachReopen" type="button">← Coach</button></div>
 <div id="toast" class="toast"></div>
 
 <script>
 (function(){
 'use strict';
 
-var ACCOUNTS_KEY='airforge_accounts_v1',SESSION_KEY='airforge_session_v1',GLOBAL_STATE='pcm_master_command_v3';
-var CHAT_KEY='airforge_chat_v2';
-var DEFAULT={sessions:0,minutes:0,streak:0,tasks:[],revisions:[],errors:[],cards:[],notes:[],attempts:[],syllabus:{},settings:{targetDate:'2027-04-18',dailyMinutes:180}};
-var state=clone(DEFAULT),account=null,currentView='home',recommendedAction='planner',timerSec=1500,timerBase=1500,timerHandle=null,dragging=false,dragDX=0,dragDY=0;
+const ACCOUNT_KEY='airforge_account_v4';
+const ACCOUNT_OLD='airforge_account_v3';
+const STATE_KEY='airforge_clean_state_v1';
+const OLD_STATE='pcm_master_command_v3';
+const CHAT_KEY='airforge_clean_chat_v1';
+
+const DEFAULT={
+ sessions:0,minutes:0,streak:0,lastDay:'',tasks:[],revisions:[],errors:[],attempts:[],
+ notes:[],cards:[],syllabus:{},settings:{targetDate:'2027-04-18',dailyMinutes:180},coachHistory:[]
+};
+let state=loadState(),currentView='home',authMode='login',recommendedAction='planner',timerSec=1500,timerBase=1500,timerHandle=null;
 
 function $(id){return document.getElementById(id)}
-function clone(x){return JSON.parse(JSON.stringify(x))}
-function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]})}
-function day(){return new Date().toISOString().slice(0,10)}
-function addDays(n){var d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
-function hash(p){var h=2166136261;for(var i=0;i<p.length;i++){h^=p.charCodeAt(i);h=Math.imul(h,16777619)}return 'af4-'+(h>>>0).toString(16)}
-function normalize(s){
-  s=Object.assign(clone(DEFAULT),s||{});
-  s.tasks=Array.isArray(s.tasks)?s.tasks:[];s.revisions=Array.isArray(s.revisions)?s.revisions:[];s.errors=Array.isArray(s.errors)?s.errors:[];s.cards=Array.isArray(s.cards)?s.cards:[];s.notes=Array.isArray(s.notes)?s.notes:[];s.attempts=Array.isArray(s.attempts)?s.attempts:[];s.syllabus=s.syllabus&&typeof s.syllabus==='object'?s.syllabus:{};s.settings=Object.assign(clone(DEFAULT.settings),s.settings||{});
-  return s;
-}
-function accounts(){
-  var a=null;try{a=JSON.parse(localStorage.getItem(ACCOUNTS_KEY)||'null')}catch(e){}
-  if(Array.isArray(a))return a;
-  var old=null;try{old=JSON.parse(localStorage.getItem('airforge_account_v4')||localStorage.getItem('airforge_account_v3')||'null')}catch(e){}
-  if(old&&old.email){a=[old];localStorage.setItem(ACCOUNTS_KEY,JSON.stringify(a));return a}
-  return [];
-}
-function saveAccounts(a){localStorage.setItem(ACCOUNTS_KEY,JSON.stringify(a))}
-function accountStateKey(email){return 'airforge_state_'+hash(email)}
-function loadStateFor(a){
-  var s=null;try{s=JSON.parse(localStorage.getItem(accountStateKey(a.email))||'null')}catch(e){}
-  if(s)return normalize(s);
-  var legacy=null;
-  try{legacy=JSON.parse(localStorage.getItem('airforge_ui_v1')||'null')}catch(e){}
-  if(!legacy){try{legacy=JSON.parse(localStorage.getItem(GLOBAL_STATE)||'null')}catch(e){}}
-  if(legacy&&a===accounts()[0]){
-    s=normalize({
-      sessions:legacy.sessions||0,minutes:legacy.minutes||0,streak:legacy.streak||0,
-      tasks:legacy.tasks||[],revisions:legacy.revisions||[],errors:legacy.errors||[],
-      cards:legacy.cards||legacy.vault?.cards||[],notes:legacy.notes||legacy.vault?.notes||[],
-      attempts:legacy.attempts||legacy.ai?.signals||[],syllabus:legacy.syllabus||{},
-      settings:{targetDate:legacy.profile?.targetDate||DEFAULT.settings.targetDate,dailyMinutes:legacy.profile?.dailyMinutes||180}
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
+function today(){return new Date().toISOString().slice(0,10)}
+function addDays(n){const d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
+function hash(pass){let h=2166136261;for(let i=0;i<pass.length;i++){h^=pass.charCodeAt(i);h=Math.imul(h,16777619)}return 'af4-'+(h>>>0).toString(16)}
+function account(){try{return JSON.parse(localStorage.getItem(ACCOUNT_KEY)||localStorage.getItem(ACCOUNT_OLD)||'null')}catch(e){return null}}
+function saveAccount(a){localStorage.setItem(ACCOUNT_KEY,JSON.stringify(a))}
+function normalize(s){s=Object.assign({},DEFAULT,s||{});for(const k of ['tasks','revisions','errors','attempts','notes','cards','coachHistory'])s[k]=Array.isArray(s[k])?s[k]:[];s.syllabus=Object.assign({},s.syllabus||{});s.settings=Object.assign({},DEFAULT.settings,s.settings||{});return s}
+function loadState(){
+  try{
+    const n=JSON.parse(localStorage.getItem(STATE_KEY)||'null');if(n)return normalize(n);
+    const o=JSON.parse(localStorage.getItem(OLD_STATE)||'null');
+    if(o)return normalize({
+      sessions:o.sessions||0,minutes:o.minutes||0,streak:o.streak||0,lastDay:o.lastDay||'',
+      tasks:o.tasks||[],revisions:o.revisions||[],errors:o.errors||[],
+      notes:o.vault&&o.vault.notes||[],cards:o.vault&&o.vault.cards||[],
+      attempts:o.ai&&o.ai.signals||[],syllabus:o.syllabus||{},
+      settings:{targetDate:o.profile&&o.profile.targetDate||DEFAULT.settings.targetDate,dailyMinutes:o.profile&&o.profile.dailyMinutes||180}
     });
-    localStorage.setItem(accountStateKey(a.email),JSON.stringify(s));
-    return s;
-  }
+  }catch(e){}
   return normalize(DEFAULT);
 }
-function saveState(){if(account)localStorage.setItem(accountStateKey(account.email),JSON.stringify(state));renderAll()}
-function toast(msg){var t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(function(){t.classList.remove('show')},1700)}
-function initials(name){return String(name||'A').trim().split(/\s+/).filter(Boolean).slice(0,2).map(function(x){return x[0]}).join('').toUpperCase()||'A'}
+function save(){localStorage.setItem(STATE_KEY,JSON.stringify(state));renderAll()}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),1600)}
+function initials(name){return String(name||'A').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'A'}
 
-function showAuth(mode,msg){
-  var list=accounts();var sign=mode==='signup';var root=$('authRoot');
-  root.classList.remove('hidden');root.innerHTML=
-  '<div class="authCard">'+
-    '<div class="authLeft"><img src="airforge-logo.svg" alt="AIRForge">'+
+function showAuth(mode){
+  authMode=mode==='signup'?'signup':'login';
+  $('authScreen').innerHTML='<div class="authCard">'+
+    '<div class="authLeft"><img class="authLogo" src="airforge-logo.svg" alt="AIRForge">'+
     '<h1>Study smarter.<br><span>Stay in control.</span></h1>'+
-    '<p>A focused JEE workspace with the simplicity of a student tool and the depth of a serious preparation system.</p>'+
-    '<div class="authBullets"><div class="authBullet">🎯 One clear next step instead of a crowded screen.</div><div class="authBullet">📖 PYQs, tests and PCM engines one click away.</div><div class="authBullet">🧠 Mistakes and revision connected to practice.</div><div class="authBullet">👥 Multiple student accounts can live on the same browser.</div></div></div>'+
-    '<div class="authRight"><h2>'+ (sign?'Create your account':'Welcome back') +'</h2>'+
-    '<p>'+ (sign?'Create a local profile; each email gets its own study record.':'Sign in to the study record saved for this account.') +'</p>'+
-    '<div class="authTabs"><button id="authSignup" class="'+(sign?'active':'')+'" type="button">Sign up</button><button id="authLogin" class="'+(!sign?'active':'')+'" type="button">Sign in</button></div>'+
-    '<div class="authForm">'+
-      (sign?'<div class="field"><label>Name</label><input id="aName" autocomplete="name" placeholder="Your name"></div><div class="field"><label>Email</label><input id="aEmail" type="email" autocomplete="email" placeholder="you@example.com"></div><div class="field"><label>Password</label><input id="aPass" type="password" autocomplete="new-password" placeholder="At least 6 characters"></div><div class="field"><label>Class</label><select id="aClass"><option>Class 11</option><option>Class 12</option><option>Dropper</option><option>Other</option></select></div>':
-       '<div class="field"><label>Email</label><input id="lEmail" type="email" autocomplete="email" placeholder="you@example.com"></div><div class="field"><label>Password</label><input id="lPass" type="password" autocomplete="current-password" placeholder="Your password"></div>')+
-      '<button id="authSubmit" class="authSubmit" type="button">'+(sign?'Create account & enter AIRForge →':'Sign in & enter AIRForge →')+'</button>'+
-      '<div id="authMsg" class="authMsg">'+esc(msg||'')+'</div>'+
-    '</div><div class="authNote">Local browser account system. No server authentication is used in this version.</div></div></div>';
-  $('authSignup').onclick=function(){showAuth('signup')};$('authLogin').onclick=function(){showAuth('login')};$('authSubmit').onclick=submitAuth;
-  root.querySelectorAll('input').forEach(function(x){x.addEventListener('keydown',function(e){if(e.key==='Enter')submitAuth()})});
+    '<p>One focused workspace for your JEE journey: planning, PYQs, tests, revision, mistakes, analytics and PCM engines.</p>'+
+    '<div class="authPoints"><div class="authPoint">🎯 One clear next step instead of a crowded feed.</div><div class="authPoint">📖 Practice, PYQs and tests a click away.</div><div class="authPoint">🧠 Mistakes and revision connected to your work.</div></div></div>'+
+    '<div class="authRight"><h2>'+(authMode==='signup'?'Create your AIRForge account':'Welcome back')+'</h2>'+
+    '<div class="sub">'+(authMode==='signup'?'Create a local profile before entering the workspace.':'Sign in to reopen the study record saved on this browser.')+'</div>'+
+    '<div class="authTabs"><button class="authTab '+(authMode==='signup'?'active':'')+'" id="authSignup" type="button">Sign up</button><button class="authTab '+(authMode==='login'?'active':'')+'" id="authLogin" type="button">Sign in</button></div>'+
+    '<div class="authFields">'+
+    (authMode==='signup'?'<div><label>Name</label><input id="authName" placeholder="Your name" autocomplete="name"></div><div><label>Email</label><input id="authEmail" type="email" placeholder="you@example.com" autocomplete="email"></div><div><label>Password</label><input id="authPass" type="password" placeholder="At least 6 characters" autocomplete="new-password"></div><div><label>Class</label><select id="authClass"><option>Class 11</option><option selected>Class 12</option><option>Dropper</option><option>Other</option></select></div>':
+    '<div><label>Email</label><input id="loginEmail" type="email" placeholder="you@example.com" autocomplete="email"></div><div><label>Password</label><input id="loginPass" type="password" placeholder="Your password" autocomplete="current-password"></div>')+
+    '<button class="authSubmit" id="authSubmit" type="button">'+(authMode==='signup'?'Create account & enter AIRForge →':'Sign in & enter AIRForge →')+'</button><div class="authMessage" id="authMessage"></div></div>'+
+    '<div class="authNote">Current version: account and study data are stored locally in this browser. This is a local gate, not server-side authentication.</div></div></div>';
+  $('authSignup').addEventListener('click',function(){showAuth('signup')});
+  $('authLogin').addEventListener('click',function(){showAuth('login')});
+  $('authSubmit').addEventListener('click',submitAuth);
+  $('authScreen').querySelectorAll('input').forEach(function(el){el.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();submitAuth()}})});
 }
 function submitAuth(){
-  var msg=$('authMsg'),btn=$('authSubmit');btn.disabled=true;msg.textContent='';
+  const msg=$('authMessage'),btn=$('authSubmit');if(!msg||!btn)return;msg.textContent='';btn.disabled=true;
   try{
-    if($('aName')){
-      var name=$('aName').value.trim(),email=$('aEmail').value.trim().toLowerCase(),pass=$('aPass').value,cls=$('aClass').value;
-      if(name.length<2)throw Error('Enter your name.');
-      if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email))throw Error('Enter a valid email.');
+    if(authMode==='signup'){
+      const name=$('authName').value.trim(),email=$('authEmail').value.trim().toLowerCase(),pass=$('authPass').value,cls=$('authClass').value;
+      if(name.length<2)throw Error('Please enter your name.');
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw Error('Enter a valid email address.');
       if(pass.length<6)throw Error('Password must be at least 6 characters.');
-      var list=accounts();for(var i=0;i<list.length;i++)if(list[i].email===email)throw Error('This account already exists. Use Sign in.');
-      var rec={version:1,name:name,email:email,className:cls,passwordHash:hash(pass),createdAt:new Date().toISOString(),lastSeen:new Date().toISOString()};
-      list.push(rec);saveAccounts(list);enter(rec);
+      if(account())throw Error('An AIRForge account already exists on this browser. Use Sign in.');
+      saveAccount({version:5,name,email,className:cls,passwordHash:hash(pass),createdAt:new Date().toISOString(),coachHistory:[]});
+      sessionStorage.setItem('airforge_session','1');enterApp();
     }else{
-      var email2=$('lEmail').value.trim().toLowerCase(),pass2=$('lPass').value,list2=accounts(),rec2=null;
-      for(var j=0;j<list2.length;j++)if(list2[j].email===email2){rec2=list2[j];break}
-      if(!rec2)throw Error('No matching account found on this browser.');
-      var valid=rec2.passwordHash?rec2.passwordHash===hash(pass2):rec2.password===pass2;if(!valid)throw Error('Incorrect email or password.');
-      if(!rec2.passwordHash)rec2.passwordHash=hash(pass2);delete rec2.password;rec2.lastSeen=new Date().toISOString();saveAccounts(list2);enter(rec2);
+      const a=account(),email=$('loginEmail').value.trim().toLowerCase(),pass=$('loginPass').value;
+      if(!a||a.email!==email)throw Error('No matching account found on this browser.');
+      const ok=a.passwordHash?a.passwordHash===hash(pass):a.password===pass;
+      if(!ok)throw Error('Incorrect email or password.');
+      if(!a.passwordHash)a.passwordHash=hash(pass);delete a.password;a.lastSeen=new Date().toISOString();saveAccount(a);sessionStorage.setItem('airforge_session','1');enterApp();
     }
   }catch(e){msg.textContent=e.message||'Could not continue.'}
-  btn.disabled=false;
+  finally{btn.disabled=false}
 }
-function enter(rec){
-  account=rec;state=loadStateFor(rec);sessionStorage.setItem(SESSION_KEY,rec.email);
-  $('authRoot').classList.add('hidden');$('app').classList.remove('hidden');
-  $('userName').textContent=rec.name||'Student';$('userClass').textContent=rec.className||'JEE 2027';$('avatar').textContent=initials(rec.name);
-  $('settingsEmail').textContent=rec.email||'';$('greeting').textContent='Hey '+String(rec.name||'Student').split(' ')[0]+' — let’s make the next block useful, not just busy.';
-  renderAll();showCoach(false);renderChat();setupCoachHistory();
+function enterApp(){
+  const a=account();if(!a)return; $('authScreen').classList.add('hidden');$('app').classList.remove('hidden');
+  $('profileName').textContent=a.name||'Student';$('profileClass').textContent=a.className||'JEE 2027';$('sideName').textContent=a.name||'Student';$('avatar').textContent=initials(a.name);
+  $('greeting').textContent='Hey '+String(a.name||'Student').split(' ')[0]+' — let’s make the next study block useful.';
+  renderAll();setupCoach();renderChat();
 }
-function signOut(){
-  saveState();sessionStorage.removeItem(SESSION_KEY);account=null;
-  $('app').classList.add('hidden');$('coach').classList.add('hidden');$('coachReopen').style.display='none';showAuth('login');
+function bootAuth(){
+  const a=account();$('app').classList.add('hidden');$('authScreen').classList.remove('hidden');
+  showAuth(a?'login':'signup');
 }
-function initAuth(){
-  var email=sessionStorage.getItem(SESSION_KEY),list=accounts(),rec=null;
-  for(var i=0;i<list.length;i++)if(list[i].email===email){rec=list[i];break}
-  if(rec)enter(rec);else showAuth(list.length?'login':'signup');
-}
-
+function signOut(){sessionStorage.removeItem('airforge_session');$('app').classList.add('hidden');$('authScreen').classList.remove('hidden');showAuth('login');$('floatingCoach').classList.add('hidden')}
 function openView(v){
-  var el=document.getElementById(v);if(!el)return;
-  currentView=v;
-  document.querySelectorAll('.view').forEach(function(x){x.classList.toggle('active',x.id===v)});
-  document.querySelectorAll('.sideBtn[data-view]').forEach(function(b){b.classList.toggle('active',b.dataset.view===v)});
+  if(v==='coach'){$('floatingCoach').classList.remove('hidden');currentView='home'}
+  else{currentView=v}
+  const target=$(v==='coach'?'home':v);if(!target)return;
+  document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===target.id));
+  document.querySelectorAll('.sideBtn[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===currentView));
   $('sidebar').classList.remove('open');window.scrollTo({top:0,behavior:'smooth'});
 }
-function renderAll(){renderDashboard();renderPlanner();renderRevision();renderErrors();renderSyllabus();renderVault();renderAnalytics();updateCoachRecommendation()}
-function renderDashboard(){
-  var attempts=state.attempts,correct=attempts.filter(function(x){return x.correct}).length,acc=attempts.length?Math.round(correct/attempts.length*100):0,due=state.revisions.filter(function(x){return x.due<=day()}).length;
-  $('heroSessions').textContent=state.sessions;$('heroQuestions').textContent=attempts.length;$('heroAccuracy').textContent=acc+'%';$('heroStreak').textContent=state.streak||0;
-  $('kStreak').textContent=state.streak||0;$('kQuestions').textContent=attempts.length;$('kErrors').textContent=state.errors.length;$('kDue').textContent=due;$('todayDate').textContent=new Date().toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
-  var counts={Physics:0,Chemistry:0,Mathematics:0},rights={Physics:0,Chemistry:0,Mathematics:0};attempts.forEach(function(a){if(counts[a.subject]!=null){counts[a.subject]++;if(a.correct)rights[a.subject]++}});
-  [['Physics','pPct','pBar','pMeta'],['Chemistry','cPct','cBar','cMeta'],['Mathematics','mPct','mBar','mMeta']].forEach(function(x){var p=counts[x[0]]?Math.round(rights[x[0]]/counts[x[0]]*100):0;$(x[1]).textContent=p+'%';$(x[2]).style.width=p+'%';$(x[3]).textContent=counts[x[0]]+' attempts • '+rights[x[0]]+' correct'});
-  var tasks=state.tasks.filter(function(t){return t.date===day()}).slice(0,5);
-  $('todayQueue').innerHTML=tasks.length?tasks.map(function(t){return '<div class="task '+(t.done?'done':'')+'"><button class="check" data-task="'+t.id+'" type="button">'+(t.done?'✓':'')+'</button><div><strong>'+esc(t.title)+'</strong><small>'+esc(t.subject)+' • '+esc(t.type)+' • '+t.minutes+' min</small></div><time>'+(t.done?'done':'next')+'</time></div>'}).join(''):'<div class="item"><b>No tasks yet.</b><small>Open Study Planner and make your next block concrete.</small></div>';
-  var targets=[];
-  var rev=state.revisions.filter(function(r){return r.due<=day()}).slice(0,2);rev.forEach(function(r){targets.push('<div class="item"><b>↻ '+esc(r.subject)+' — '+esc(r.title)+'</b><small>Revision due now</small></div>')});
-  var errs=state.errors.slice(0,2);errs.forEach(function(e){targets.push('<div class="item"><b>⌁ '+esc(e.subject)+' — '+esc(e.chapter)+'</b><small>'+esc(e.type)+' • review the failure mode</small></div>')});
-  if(!targets.length)targets=['<div class="item"><b>🎯 Define one concrete block.</b><small>Then make one genuine attempt before adding more.</small></div>','<div class="item"><b>🔥 Keep the system simple.</b><small>Pick → Attempt → Diagnose → Retest.</small></div>'];
-  $('homeTargets').innerHTML=targets.join('');
+function recordAttempt(subject,correct){
+  state.attempts.push({id:Date.now(),date:today(),subject,correct:!!correct});state.attempts=state.attempts.slice(-1200);
+  state.streak=Math.max(state.streak||0,1);save();toast((correct?'Correct':'Wrong')+' '+subject+' attempt logged');
+}
+function renderAll(){
+  const a=state.attempts,c=a.filter(x=>x.correct).length,acc=a.length?Math.round(c/a.length*100):0,due=state.revisions.filter(x=>x.due<=today()).length;
+  $('mSessions').textContent=state.sessions;$('mMinutes').textContent=state.minutes;$('mQuestions').textContent=a.length;$('mStreak').textContent=state.streak||0;
+  $('kStreak').textContent=state.streak||0;$('kAccuracy').textContent=acc+'%';$('kErrors').textContent=state.errors.length;$('kDue').textContent=due;$('topStreak').textContent=(state.streak||0)+' days';
+  $('todayDate').textContent=new Date().toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
+  renderToday();renderTargets();renderPlanner();renderWeek();renderRevision();renderErrors();renderVault();renderAnalytics();renderSyllabus();updateCoachRecommendation();
+  const subs=['Physics','Chemistry','Mathematics'];const pct={};subs.forEach(s=>{const q=a.filter(x=>x.subject===s),cc=q.filter(x=>x.correct).length;pct[s]=q.length?Math.round(cc/q.length*100):0});
+  [['pPct','pBar','pMeta','Physics'],['cPct','cBar','cMeta','Chemistry'],['mPct','mBar','mMeta','Mathematics']].forEach(function(x){$(x[0]).textContent=pct[x[3]]+'%';$(x[1]).style.width=pct[x[3]]+'%';$(x[2]).textContent=a.filter(y=>y.subject===x[3]).length+' attempts'});
+  const total=Math.round((pct.Physics+pct.Chemistry+pct.Mathematics)/3);$('oPct').textContent=total+'%';$('oBar').style.width=total+'%';$('oMeta').textContent=a.length+' total attempts';
+  $('legendP').textContent=pct.Physics+'%';$('legendC').textContent=pct.Chemistry+'%';$('legendM').textContent=pct.Mathematics+'%';
+}
+function renderToday(){
+  const arr=state.tasks.filter(t=>t.date===today());$('todayQueue').innerHTML=arr.length?arr.slice(0,5).map(t=>'<div class="task"><button class="check '+(t.done?'done':'')+'" data-task="'+t.id+'" type="button">'+(t.done?'✓':'')+'</button><div><strong>'+esc(t.title)+'</strong><span>'+esc(t.subject)+' • '+esc(t.type)+' • '+t.minutes+' min</span></div><time>'+ (t.done?'done':'next') +'</time></div>').join(''):'<div class="item"><b>No tasks yet.</b><small>Add one concrete block in Study Planner.</small></div>';
+}
+function renderTargets(){
+  const d=state.revisions.filter(x=>x.due<=today()).slice(0,3);const errs=state.errors.slice(0,2);let items=[];
+  d.forEach(x=>items.push({text:'Review '+x.subject+' — '+x.title,done:false,date:'due'}));
+  errs.forEach(x=>items.push({text:'Fix '+x.subject+' — '+x.chapter,done:false,date:'error'}));
+  if(!items.length)items=[{text:'Complete one focused practice block',done:false,date:'today'},{text:'Log one useful mistake or uncertain question',done:false,date:'today'},{text:'Do 10 PYQs without notes',done:false,date:'next'}];
+  $('targetList').innerHTML=items.slice(0,4).map(x=>'<div class="target"><div class="dot"></div><div>'+esc(x.text)+'</div><time>'+esc(x.date)+'</time></div>').join('');
 }
 function renderPlanner(){
-  var arr=state.tasks.filter(function(t){return t.date===day()});$('plannerList').innerHTML=arr.length?arr.map(function(t){return '<div class="item" style="display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center"><button class="check '+(t.done?'done':'')+'" data-task="'+t.id+'" type="button">'+(t.done?'✓':'')+'</button><div><b>'+esc(t.title)+'</b><small>'+esc(t.subject)+' • '+esc(t.type)+' • '+t.minutes+' min</small></div><button class="btn small" data-delete-task="'+t.id+'" type="button">Delete</button></div>'}).join(''):'<div class="item"><b>No tasks today.</b><small>Add one above.</small></div>';
+  const arr=state.tasks.filter(t=>t.date===today());$('plannerList').innerHTML=arr.length?arr.map(t=>'<div class="item" style="display:grid;grid-template-columns:22px 1fr auto;gap:7px;align-items:center"><button class="check '+(t.done?'done':'')+'" data-task="'+t.id+'" type="button">'+(t.done?'✓':'')+'</button><div><b>'+esc(t.title)+'</b><small>'+esc(t.subject)+' • '+esc(t.type)+' • '+t.minutes+' min</small></div><button class="btn small" data-delete-task="'+t.id+'" type="button">Delete</button></div>').join(''):'<div class="item"><b>No tasks today.</b><small>Add one above.</small></div>';
 }
-function addTask(){
-  var title=$('taskTitle').value.trim()||'Untitled target',mins=Math.max(10,+$('taskMinutes').value||45);
-  state.tasks.push({id:Date.now(),date:day(),subject:$('taskSubject').value,type:$('taskType').value,minutes:mins,title:title,done:false});$('taskTitle').value='';saveState();toast('Study block added');
+function renderWeek(){
+  const days=['Mon 22','Tue 23','Wed 24','Thu 25','Fri 26','Sat 27','Sun 28'];const types=['physics','chem','math','review','test','misc'];
+  const labels=[['Rotational Motion','Chemical Bonding','Straight Line','Revision','Full Test'],['Fluid Mechanics','Periodic Table','Circle','PYQs','Test Analysis'],['Optics (TIR)','GOC (Aromatic)','Sequence & Series','AI Practice','Mistake Analysis'],['Revision All Subjects','AI Practice Test','Formulae','Mock Test','Review'],['Modern Physics','Ionic Equilibrium','Determinants','PYQs','Weak Topic'],['Full Length Test','Test Analysis','Weak Topic Practice','Notes','Plan Next Week'],['Rest / Light Study','Read NCERT','Watch Lectures','PYQs','Plan Next Week']];
+  const cls=['physics','chem','math','review','test'];$('plannerWeek').innerHTML=days.map(function(d,di){return '<div class="dayCol"><div class="dayHead">'+d+' Sep</div>'+labels[di].map(function(t,i){return '<div class="slot '+cls[i]+'">'+esc(t)+'</div>'}).join('')+'</div>'}).join('');
 }
-function toggleTask(id){var t=state.tasks.find(function(x){return String(x.id)===String(id)});if(t){t.done=!t.done;if(t.done)state.streak=Math.max(state.streak||0,1)}saveState();toast(t&&t.done?'Task completed':'Task reopened')}
-function renderRevision(){
-  var arr=state.revisions.slice().sort(function(a,b){return String(a.due).localeCompare(String(b.due))}),due=arr.filter(function(x){return x.due<=day()}).length;$('revCount').textContent=due+' due';
-  $('revisionList').innerHTML=arr.length?arr.map(function(r){return '<div class="item"><b>'+esc(r.subject)+' — '+esc(r.title)+'</b><small>Due '+esc(r.due)+' • interval '+r.interval+'d • '+(r.reviews||0)+' reviews</small><div class="heroActions"><button class="btn small" data-rev="'+r.id+'" data-ok="1" type="button">✓ Recalled</button><button class="btn small" data-rev="'+r.id+'" data-ok="0" type="button">↺ Failed</button></div></div>'}).join(''):'<div class="item"><b>No revision items.</b><small>Add the concepts you need to see again.</small></div>';
-}
-function addRevision(){
-  var title=$('revTitle').value.trim();if(!title){toast('Add a concept first');return}
-  state.revisions.push({id:Date.now(),subject:$('revSubject').value,title:title,interval:1,due:addDays(1),reviews:0});$('revTitle').value='';saveState();toast('Revision added');
-}
-function reviewRevision(id,ok){
-  var r=state.revisions.find(function(x){return String(x.id)===String(id)});if(!r)return;var ladder=[1,3,7,14,30,60],idx=ladder.indexOf(r.interval);r.reviews=(r.reviews||0)+1;r.interval=ok?ladder[Math.min((idx<0?0:idx)+1,ladder.length-1)]:1;r.due=addDays(r.interval);saveState();toast(ok?'Interval increased':'Reset to 1 day');
-}
-function renderErrors(){
-  $('errCount').textContent=state.errors.length+' total';$('errorList').innerHTML=state.errors.slice(0,35).map(function(e){return '<div class="item"><b>'+esc(e.subject)+' — '+esc(e.chapter)+'</b><small>'+esc(e.type)+' • '+esc(e.note)+' • '+esc(e.date)+'</small><div class="heroActions"><button class="btn small" data-error-rev="'+e.id+'" type="button">↻ Review this</button><button class="btn small" data-delete-error="'+e.id+'" type="button">Delete</button></div></div>'}).join('')||'<div class="item"><b>No mistakes logged.</b><small>Your first miss becomes useful data when you record the reason.</small></div>';
-}
-function addError(){
-  var note=$('errNote').value.trim();if(!note){toast('Write the failure mode');return}
-  state.errors.unshift({id:Date.now(),date:day(),subject:$('errSubject').value,type:$('errType').value,chapter:$('errChapter').value.trim()||'—',note:note});$('errNote').value='';$('errChapter').value='';saveState();toast('Mistake logged');
-}
-var chapters={
- Physics:['Units & Measurement','Kinematics','NLM & Friction','Work, Power & Energy','COM & Collision','Rotational Motion','Gravitation','Fluids','Thermodynamics & KTG','SHM & Waves','Electrostatics','Capacitors','Current Electricity','Magnetism','EMI & AC','Ray Optics','Wave Optics','Modern Physics','Semiconductors'],
- Chemistry:['Mole Concept','Atomic Structure','Periodic Table','Chemical Bonding','States of Matter','Thermodynamics','Equilibrium','Redox Reactions','Solutions','Electrochemistry','Chemical Kinetics','Coordination Compounds','d- & f-Block','IUPAC','GOC','Hydrocarbons','Haloalkanes & Haloarenes','Alcohols / Phenols / Ethers','Aldehydes / Ketones','Carboxylic Acids','Amines','Biomolecules / Polymers','Mechanisms & Synthesis'],
- Mathematics:['Sets / Relations / Functions','Complex Numbers','Quadratic Equations','Sequences & Series','Permutation & Combination','Binomial Theorem','Straight Line','Circle','Conic Sections','Limits / Continuity','Differentiation','Application of Derivatives','Indefinite Integration','Definite Integration','Differential Equations','Matrices / Determinants','Vectors / 3D','Probability','Statistics','Trigonometry']
-};
-function renderSyllabus(){
-  var s=$('syllabusSubject').value,list=[];Object.keys(chapters).forEach(function(sub){if(s!=='All'&&s!==sub)return;chapters[sub].forEach(function(ch){var key=sub+'::'+ch;list.push({sub:sub,ch:ch,key:key})})});
-  $('syllabusList').innerHTML=list.map(function(x){return '<div class="item"><label style="display:flex;gap:7px;align-items:flex-start;font-size:8px"><input type="checkbox" data-syl="'+esc(x.key)+'" '+(state.syllabus[x.key]?'checked':'')+'><span><b>'+esc(x.sub)+'</b><small>'+esc(x.ch)+'</small></span></label></div>'}).join('');
-}
-function markSyllabus(key){state.syllabus[key]=!state.syllabus[key];saveState();toast(state.syllabus[key]?'Chapter marked done':'Chapter reopened')}
-function renderVault(){
-  var cards=state.cards.slice(0,14).map(function(c){return '<div class="item"><b>🧠 '+esc(c.front)+'</b><small>'+(c.open?esc(c.back):'Answer hidden')+'</small><button class="btn small" data-card="'+c.id+'" type="button">'+(c.open?'Hide':'Reveal')+'</button></div>'}).join('');
-  var notes=state.notes.slice(0,14).map(function(n){return '<div class="item"><b>📝 '+esc(n.title)+'</b><small>'+esc(n.body)+'</small></div>'}).join('');
-  $('vaultList').innerHTML=(cards+notes)||'<div class="item"><b>Vault is empty.</b><small>Save a card or note.</small></div>';
-}
-function addCard(){var f=$('cardFront').value.trim(),b=$('cardBack').value.trim();if(!f||!b){toast('Fill both sides');return}state.cards.unshift({id:Date.now(),front:f,back:b,open:false});$('cardFront').value='';$('cardBack').value='';saveState();toast('Card saved')}
-function addNote(){var t=$('noteTitle').value.trim()||'Quick note',b=$('noteBody').value.trim();if(!b){toast('Write the note');return}state.notes.unshift({id:Date.now(),title:t,body:b,date:day()});$('noteTitle').value='';$('noteBody').value='';saveState();toast('Note saved')}
-function renderAnalytics(){
-  var a=state.attempts,c=a.filter(function(x){return x.correct}).length;$('aMinutes').textContent=state.minutes;$('aAttempts').textContent=a.length;$('aCorrect').textContent=c;$('aErrors').textContent=state.errors.length;
-  $('subjectAnalytics').innerHTML=['Physics','Chemistry','Mathematics'].map(function(s){var x=a.filter(function(q){return q.subject===s}),cc=x.filter(function(q){return q.correct}).length,p=x.length?Math.round(cc/x.length*100):0;return '<div class="subject"><div class="subjectTop"><b>'+s+'</b><b>'+p+'%</b></div><div class="bar"><i style="width:'+p+'%"></i></div><small>'+x.length+' attempts • '+cc+' correct</small></div>'}).join('');
-  var by={};state.errors.forEach(function(e){by[e.type]=(by[e.type]||0)+1});var f=Object.keys(by).sort(function(x,y){return by[y]-by[x]})[0];$('analyticsFocus').innerHTML=f?'<b>Focus on '+esc(f)+'.</b><small>'+by[f]+' logged mistake'+(by[f]===1?'':'s')+' share this failure type. Review one example and retest.</small>':'<b>Start logging real attempts.</b><small>Your analytics becomes more useful as practice accumulates.</small>';
-}
-function buildPyq(){$('pyqResult').innerHTML='<b>'+esc($('pyqExam').value)+' • '+esc($('pyqSubject').value)+'</b><small>'+esc($('pyqYear').value)+' • '+esc($('pyqType').value)+' • set prepared. Open the engine to solve.</small>'}
-function buildTest(){var n=Math.max(5,+$('testN').value||30),t=Math.max(10,+$('testT').value||60),ex=$('testExam').value,sub=$('testSubject').value,types=['Single Correct','Numerical','Multiple Correct','Integer','Match / Matrix'];var html='<div class="item"><b>'+esc(ex)+' • '+esc(sub)+' • '+n+' questions • '+t+' min</b><small>Average target time '+(t/n).toFixed(1)+' min/question.</small></div>';for(var i=0;i<Math.min(n,12);i++)html+='<div class="item"><b>'+(i+1)+'. '+esc(sub)+'</b><small>'+types[i%types.length]+' • '+(t/n).toFixed(1)+' min</small></div>';if(n>12)html+='<div class="item"><small>First 12 rows shown to keep the interface clean.</small></div>';$('testBlueprint').innerHTML=html}
-function startTimer(){if(timerHandle)return;timerHandle=setInterval(function(){if(timerSec>0){timerSec--;renderTimer()}else{pauseTimer();state.sessions++;state.minutes+=Math.round(timerBase/60);saveState();toast('Focus session logged');setTimer(Math.round(timerBase/60))}},1000)}
+function toggleTask(id){const t=state.tasks.find(x=>String(x.id)===String(id));if(t){t.done=!t.done;state.streak=Math.max(state.streak||0,t.done?1:0);save();toast(t.done?'Task complete':'Task reopened')}}
+function addTask(){const title=$('taskTitle').value.trim()||'Untitled target';state.tasks.push({id:Date.now(),date:today(),subject:$('taskSubject').value,type:$('taskType').value,minutes:+$('taskMinutes').value||45,title,done:false});$('taskTitle').value='';save();toast('Task added')}
+function addRevision(){const title=$('revTitle').value.trim();if(!title){toast('Add a concept first');return}state.revisions.push({id:Date.now(),subject:$('revSubject').value,title,interval:1,due:addDays(1),reviews:0});$('revTitle').value='';save();toast('Revision added')}
+function reviewRevision(id,ok){const r=state.revisions.find(x=>String(x.id)===String(id));if(!r)return;const ladder=[1,3,7,14,30,60],idx=ladder.indexOf(r.interval);r.reviews=(r.reviews||0)+1;r.interval=ok?ladder[Math.min((idx<0?0:idx)+1,ladder.length-1)]:1;r.due=addDays(r.interval);save();toast(ok?'Interval increased':'Reset to tomorrow')}
+function renderRevision(){const arr=[...state.revisions].sort((a,b)=>String(a.due).localeCompare(String(b.due)));$('revCount').textContent=arr.filter(x=>x.due<=today()).length+' due';$('revisionList').innerHTML=arr.length?arr.map(r=>'<div class="item"><b>'+esc(r.subject)+' — '+esc(r.title)+'</b><small>Due '+esc(r.due)+' • '+r.interval+'d interval • '+(r.reviews||0)+' reviews</small><div class="heroActions"><button class="btn small" data-rev="'+r.id+'" data-ok="1">✓ Recalled</button><button class="btn small" data-rev="'+r.id+'" data-ok="0">↺ Failed</button></div></div>').join(''):'<div class="item"><b>No revision items.</b><small>Add concepts you need to see again.</small></div>'}
+function addError(){const note=$('errNote').value.trim();if(!note){toast('Write the failure mode');return}state.errors.unshift({id:Date.now(),date:today(),subject:$('errSubject').value,type:$('errType').value,chapter:$('errChapter').value.trim()||'—',note});$('errNote').value='';$('errChapter').value='';save();toast('Mistake logged')}
+function reviewError(id){const x=state.errors.find(e=>String(e.id)===String(id));if(!x)return;state.revisions.push({id:Date.now(),subject:x.subject,title:x.chapter+' — error review',interval:1,due:addDays(1),reviews:0});save();toast('Added to revision')}
+function renderErrors(){$('errCount').textContent=state.errors.length+' total';$('errorList').innerHTML=state.errors.length?state.errors.slice(0,30).map(x=>'<div class="item"><b>'+esc(x.subject)+' — '+esc(x.chapter)+'</b><small>'+esc(x.type)+' • '+esc(x.note)+' • '+x.date+'</small><div class="heroActions"><button class="btn small" data-error-rev="'+x.id+'">↻ Review this</button><button class="btn small" data-delete-error="'+x.id+'">Delete</button></div></div>').join(''):'<div class="item"><b>No mistakes logged.</b><small>Your first miss becomes useful when you write down why.</small></div>'}
+function addCard(){const f=$('cardFront').value.trim(),b=$('cardBack').value.trim();if(!f||!b){toast('Fill both sides');return}state.cards.unshift({id:Date.now(),front:f,back:b,open:false});$('cardFront').value='';$('cardBack').value='';save();toast('Card saved')}
+function addNote(){const t=$('noteTitle').value.trim()||'Quick note',b=$('noteBody').value.trim();if(!b){toast('Write the note');return}state.notes.unshift({id:Date.now(),title:t,body:b,date:today()});$('noteTitle').value='';$('noteBody').value='';save();toast('Note saved')}
+function renderVault(){const cards=state.cards.slice(0,15).map(c=>'<div class="item"><b>🧠 '+esc(c.front)+'</b><small>'+ (c.open?esc(c.back):'Answer hidden') +'</small><div class="heroActions"><button class="btn small" data-card="'+c.id+'">'+(c.open?'Hide':'Reveal')+'</button></div></div>');const notes=state.notes.slice(0,15).map(n=>'<div class="item"><b>📝 '+esc(n.title)+'</b><small>'+esc(n.body)+' • '+n.date+'</small></div>');$('vaultList').innerHTML=(cards.concat(notes).join(''))||'<div class="item"><b>Vault is empty.</b><small>Save a flashcard or note.</small></div>';$('vaultCount').textContent=(state.cards.length+state.notes.length)+' saved'}
+function renderAnalytics(){const a=state.attempts,c=a.filter(x=>x.correct);$('aMinutes').textContent=state.minutes;$('aAttempts').textContent=a.length;$('aCorrect').textContent=c.length;$('aErrors').textContent=state.errors.length;const subs=['Physics','Chemistry','Mathematics'];$('subjectAnalytics').innerHTML=subs.map(s=>{const q=a.filter(x=>x.subject===s),cc=q.filter(x=>x.correct).length,p=q.length?Math.round(cc/q.length*100):0;return '<div class="subject"><div class="subjectTop"><b>'+s+'</b><span>'+p+'%</span></div><div class="bar"><i style="width:'+p+'%"></i></div><small>'+q.length+' attempts • '+cc+' correct</small></div>'}).join('');const by={};state.errors.forEach(x=>by[x.type]=(by[x.type]||0)+1);const f=Object.entries(by).sort((x,y)=>y[1]-x[1])[0];$('analyticsFocus').textContent=f?'Your most common logged failure type is '+f[0]+' ('+f[1]+'). Review one example and retest it.':'Not enough evidence yet. Log real attempts and mistakes to make this useful.'}
+function buildTest(){const n=Math.max(5,+$('testN').value||30),t=Math.max(10,+$('testT').value||60),exam=$('testExam').value,sub=$('testSubject').value,types=['Single Correct','Numerical','Multiple Correct','Integer','Match / Matrix'];let out='<div class="item"><b>'+esc(exam)+' • '+esc(sub)+' • '+n+' questions • '+t+' min</b><small>Average target: '+(t/n).toFixed(1)+' min/question.</small></div>';for(let i=0;i<Math.min(n,15);i++)out+='<div class="item"><b>'+String(i+1)+'. '+esc(sub)+'</b><small>'+types[i%types.length]+' • '+(t/n).toFixed(1)+' min target</small></div>';if(n>15)out+='<div class="item"><small>First 15 rows shown to keep the interface clean. Total remains '+n+'.</small></div>';$('testBlueprint').innerHTML=out}
+function buildPyq(){const ex=$('pyqExam').value,sub=$('pyqSubject').value,y=$('pyqYear').value,ty=$('pyqType').value;$('pyqResult').innerHTML='<b>'+esc(ex)+' • '+esc(sub)+'</b><br>'+esc(y)+' • '+esc(ty)+'<br><span style="color:#8aa0af">Practice set prepared. Open the subject engine to solve.</span>'}
+function setTimer(m){pauseTimer();timerBase=m*60;timerSec=timerBase;renderTimer()}
+function startTimer(){if(timerHandle)return;timerHandle=setInterval(function(){if(timerSec>0){timerSec--;renderTimer()}else{pauseTimer();state.sessions++;state.minutes+=Math.round(timerBase/60);save();toast('Focus session logged');setTimer(Math.round(timerBase/60))}},1000)}
 function pauseTimer(){if(timerHandle){clearInterval(timerHandle);timerHandle=null}}
-function setTimer(min){pauseTimer();timerBase=min*60;timerSec=timerBase;renderTimer()}
-function renderTimer(){var m=Math.floor(timerSec/60),s=timerSec%60;$('timer').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
-function recordAttempt(subject,correct){state.attempts.push({id:Date.now(),date:day(),subject:subject,correct:!!correct});state.attempts=state.attempts.slice(-1000);saveState();toast('Attempt recorded')}
-function coachReasonText(){var due=state.revisions.filter(function(x){return x.due<=day()}).length,err=state.errors.length,last=state.attempts[state.attempts.length-1];if(due){recommendedAction='revision';return['Revision is due.','You have '+due+' review item'+(due===1?'':'s')+' waiting. Recall first, then mark the result.']}if(err>=3){recommendedAction='mistakes';return['Your Error Book has useful data.','You have '+err+' logged mistakes. Fix one repeated pattern, then retest it.']}if(last){recommendedAction=last.correct?'test':'mistakes';return[last.correct?'Prove the idea again.':'Fix the last miss.',last.correct?'One correct answer is evidence, not permanent mastery. Try a related problem.':'Do not stack random questions on an unresolved mistake. Diagnose it and retry.']}recommendedAction='planner';return['Start with one real attempt.','Pick one chapter, attempt one problem, then use the result to guide the next block.']}
-function updateCoachRecommendation(){var r=coachReasonText();$('coachHeadline').textContent=r[0];$('coachReason').textContent=r[1];var note=$('coachHistory');if(note)note.innerHTML=coachHistoryHTML()}
-function coachHistoryHTML(){var h=account&&account.coachHistory?account.coachHistory:[];return h.length?h.slice(-12).reverse().map(function(x){return '<div class="item"><b>'+esc(x.action)+'</b><small>'+esc(x.time)+'</small></div>'}).join(''):'<div class="item"><b>No coach actions yet.</b><small>Choose an action and it will appear here.</small></div>'}
-function logCoach(action){if(!account)return;account.coachHistory=account.coachHistory||[];account.coachHistory.push({action:action,time:new Date().toLocaleString()});account.coachHistory=account.coachHistory.slice(-30);var list=accounts();for(var i=0;i<list.length;i++)if(list[i].email===account.email)list[i]=account;saveAccounts(list);$('coachHistory').innerHTML=coachHistoryHTML()}
-function showCoach(open){if(open){$('coach').classList.remove('hidden');$('coachReopen').style.display='none'}else{$('coach').classList.add('hidden');$('coachReopen').style.display='none'}}
-function openCoach(){showCoach(true)}
-function hideCoach(){showCoach(false)}
-function minimizeCoach(){hideCoach();$('coachReopen').style.display='block'}
-function setupCoachHistory(){updateCoachRecommendation()}
-function coachSendAction(a){recommendedAction=a;logCoach(a);var map={planner:'planner',revision:'revision',mistakes:'errors',test:'tests'};openView(map[a]||'planner');toast('Coach opened '+(map[a]||a))}
-function sendChat(){var i=$('chatInput'),t=i.value.trim();if(!t)return;i.value='';addChat('user',t);setTimeout(function(){addChat('bot',coachReply(t))},80)}
-function coachReply(t){var l=t.toLowerCase();if(l.indexOf('revision')>=0)return'Open Revision first. Recall before rereading, then mark Recalled or Failed.';if(l.indexOf('test')>=0)return'Use Test Lab for a controlled paper: choose exam, subject, question count and time.';if(l.indexOf('physics')>=0)return'For Physics, draw the model first and write the governing law before calculating.';if(l.indexOf('chem')>=0)return'For Chemistry, separate structure, mechanism and conditions before memorising the result.';if(l.indexOf('math')>=0)return'For Mathematics, identify the invariant, domain and useful representation before expanding.';if(l.indexOf('plan')>=0)return'Pick one 30–60 minute block. A small finished target beats a huge unfinished list.';if(l.indexOf('mistake')>=0||l.indexOf('error')>=0)return'Open Mistakes and write the failure mode. Then create a short revision item from it.';return'Start with one concrete next step: pick a chapter, attempt one problem without notes, then tell me exactly where you got stuck.'}
-function loadChat(){var a=[];try{a=JSON.parse(localStorage.getItem(CHAT_KEY+'_'+(account?hash(account.email):''))||'[]')}catch(e){}return a}
-function saveChat(a){localStorage.setItem(CHAT_KEY+'_'+hash(account.email),JSON.stringify(a.slice(-40)))}
-function renderChat(){var a=loadChat();if(!a.length)a=[{who:'bot',text:'Hey! I’m your AIRForge study buddy. Tell me a chapter, a mistake, or what you need to study next.'}];$('chatLog').innerHTML=a.map(function(x){return'<div class="bubble '+(x.who==='user'?'user':'bot')+'">'+esc(x.text)+'</div>'}).join('');$('chatLog').scrollTop=$('chatLog').scrollHeight}
-function addChat(who,text){var a=loadChat();if(!a.length)a=[];a.push({who:who,text:text});saveChat(a);renderChat()}
-function clearChat(){localStorage.removeItem(CHAT_KEY+'_'+hash(account.email));renderChat();toast('Chat cleared')}
-
-function setupDrag(){
-  var head=$('coachDrag'),box=$('coach');if(!head||!box)return;
-  var savedPos=null;try{savedPos=JSON.parse(localStorage.getItem('airforge_coach_pos_v1')||'null')}catch(e){}
-  if(savedPos&&savedPos.left!=null&&savedPos.top!=null){box.style.left=savedPos.left+'px';box.style.top=savedPos.top+'px';box.style.right='auto';box.style.bottom='auto'}
-  head.onpointerdown=function(e){if(e.target.closest('button'))return;dragging=true;head.classList.add('drag');var r=box.getBoundingClientRect();dragDX=e.clientX-r.left;dragDY=e.clientY-r.top;head.setPointerCapture(e.pointerId)};
-  head.onpointermove=function(e){if(!dragging)return;var x=Math.max(6,Math.min(window.innerWidth-box.offsetWidth-6,e.clientX-dragDX)),y=Math.max(76,Math.min(window.innerHeight-box.offsetHeight-6,e.clientY-dragDY));box.style.left=x+'px';box.style.top=y+'px';box.style.right='auto';box.style.bottom='auto'};
-  head.onpointerup=function(){if(!dragging)return;dragging=false;head.classList.remove('drag');var r=box.getBoundingClientRect();localStorage.setItem('airforge_coach_pos_v1',JSON.stringify({left:Math.round(r.left),top:Math.round(r.top)}))};
+function renderTimer(){const m=Math.floor(timerSec/60),s=timerSec%60;$('timer').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
+function renderSyllabus(){const subjects={Physics:['Kinematics','NLM & Friction','Work, Power & Energy','Rotational Motion','Fluids','Thermodynamics','SHM & Waves','Electrostatics','Current Electricity','Magnetism'],Chemistry:['Mole Concept','Atomic Structure','Chemical Bonding','Thermodynamics','Equilibrium','GOC','Hydrocarbons','Electrochemistry','Chemical Kinetics','Coordination Compounds'],Mathematics:['Quadratic Equations','Sequences & Series','Straight Line','Circle','Complex Numbers','Functions','Limits & Continuity','Differentiation','Integration','Probability']};let out='';Object.entries(subjects).forEach(function(e){e[1].forEach(function(ch){const key=e[0]+'|'+ch,done=!!state.syllabus[key];out+='<div class="subject"><div class="subjectTop"><b>'+e[0]+'</b><button class="btn small" data-syllabus="'+esc(key)+'">'+(done?'✓ Done':'Mark done')+'</button></div><small>'+esc(ch)+'</small></div>'})});$('syllabusCards').innerHTML=out}
+function updateCoachRecommendation(){const due=state.revisions.filter(x=>x.due<=today()).length,err=state.errors.length,last=state.attempts[state.attempts.length-1];if(due){recommendedAction='revision';$('floatCoachTitle').textContent='Revision is due.';$('floatCoachText').textContent='You have '+due+' review item'+(due===1?'':'s')+' waiting. Start with recall.';$('coachNoteTitle').textContent='Revision is due.';$('coachNoteText').textContent=$('floatCoachText').textContent}else if(err>=3){recommendedAction='mistakes';$('floatCoachTitle').textContent='Your Error Book has data.';$('floatCoachText').textContent='Fix one repeated mistake before stacking more questions.';$('coachNoteTitle').textContent='Fix one mistake pattern.';$('coachNoteText').textContent=$('floatCoachText').textContent}else if(last){recommendedAction=last.correct?'test':'mistakes';$('floatCoachTitle').textContent=last.correct?'Prove it again.':'Fix the last miss.';$('floatCoachText').textContent=last.correct?'Try a related problem without notes.':'Diagnose the miss and retry before moving on.';$('coachNoteTitle').textContent=$('floatCoachTitle').textContent;$('coachNoteText').textContent=$('floatCoachText').textContent}else{recommendedAction='planner';$('floatCoachTitle').textContent='Start with one real attempt.';$('floatCoachText').textContent='Add a concrete block or open a subject engine.';$('coachNoteTitle').textContent='Start with one real attempt.';$('coachNoteText').textContent=$('floatCoachText').textContent}renderCoachHistory()}
+function coachLog(action){const a=account();if(!a)return;a.coachHistory=a.coachHistory||[];a.coachHistory.push({action,time:new Date().toLocaleString()});a.coachHistory=a.coachHistory.slice(-30);saveAccount(a);renderCoachHistory()}
+function renderCoachHistory(){const a=account(),h=a&&a.coachHistory||[];$('coachHistory').innerHTML=h.length?h.slice().reverse().slice(0,12).map(x=>'<div class="item"><b>'+esc(x.action)+'</b><small>'+esc(x.time)+'</small></div>').join(''):'<div class="item"><b>No coach actions yet.</b><small>Your choices will appear here.</small></div>'}
+function setupCoach(){
+  const c=$('floatingCoach');c.classList.remove('hidden');$('coachHide').onclick=function(){c.classList.add('hidden')};$('coachMin').onclick=function(){c.classList.add('docked')};$('coachReopen').onclick=function(){c.classList.remove('hidden','docked')};
+  document.querySelectorAll('[data-coach-tab]').forEach(function(b){b.addEventListener('click',function(){const tab=b.dataset.coachTab;document.querySelectorAll('[data-coach-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('[data-coach-pane]').forEach(x=>x.classList.toggle('active',x.dataset.coachPane===tab));if(tab==='chat')renderChat()})});
+  document.querySelectorAll('[data-coach-action]').forEach(function(b){b.addEventListener('click',function(){const a=b.dataset.coachAction;recommendedAction=a;coachLog(a);executeCoachAction(a)})});
+  $('coachChoose').onclick=function(){coachLog('student chose their own action');toast('Your choice — I’ll follow your lead.')};
+  $('coachDo').onclick=function(){coachLog(recommendedAction);executeCoachAction(recommendedAction)};
+  document.querySelectorAll('.coachOption[data-view]').forEach(function(b){b.addEventListener('click',function(){openView(b.dataset.view)})});
+  $('chatSend').onclick=sendChat;$('chatInput').addEventListener('keydown',function(e){if(e.key==='Enter')sendChat()});$('clearChat').onclick=function(){localStorage.removeItem(CHAT_KEY);renderChat();toast('Chat cleared')};
 }
+function executeCoachAction(a){openView({planner:'planner',revision:'revision',mistakes:'errors',test:'tests'}[a]||'planner');toast('Coach opened '+a)}
+function renderChat(){let a=[];try{a=JSON.parse(localStorage.getItem(CHAT_KEY)||'[]')}catch(e){}if(!a.length)a=[{who:'bot',text:'Hey! I’m your AIRForge study buddy. Tell me a chapter, a mistake, or what you need to do next.'}];$('chatLog').innerHTML=a.map(x=>'<div class="bubble '+(x.who==='user'?'user':'bot')+'">'+esc(x.text)+'</div>').join('');$('chatLog').scrollTop=$('chatLog').scrollHeight}
+function saveChat(who,text){let a=[];try{a=JSON.parse(localStorage.getItem(CHAT_KEY)||'[]')}catch(e){}a.push({who:who,text:text});a=a.slice(-40);localStorage.setItem(CHAT_KEY,JSON.stringify(a));renderChat()}
+function sendChat(){const input=$('chatInput'),t=input.value.trim();if(!t)return;input.value='';saveChat('user',t);let reply='Start with one concrete next step: choose a chapter, attempt a problem without notes, then record what blocked you.';const l=t.toLowerCase();if(l.includes('physics'))reply='For Physics, draw the model first, name the governing law, then calculate. Log the miss when the direction or setup goes wrong.';else if(l.includes('revision'))reply='Open Revision. Recall first, then mark Recalled or Failed so the interval changes.';else if(l.includes('test'))reply='Open Test Lab and set exam, subject, number of questions and time before starting.';else if(l.includes('plan'))reply='Make the next block 30–60 minutes with one measurable target. You can always add another block later.';setTimeout(function(){saveChat('bot',reply)},70)}
+function exportData(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}));a.download='airforge-backup.json';a.click();setTimeout(function(){URL.revokeObjectURL(a.href)},1000)}
+function importData(file){const r=new FileReader();r.onload=function(){try{state=normalize(JSON.parse(r.result));save();toast('Backup restored')}catch(e){toast('Invalid backup')}};r.readAsText(file)}
+function saveSettings(){state.settings.targetDate=$('targetDate').value||DEFAULT.settings.targetDate;state.settings.dailyMinutes=+$('dailyMinutes').value||180;save();toast('Settings saved')}
+function renderSettings(){$('targetDate').value=state.settings.targetDate;$('dailyMinutes').value=state.settings.dailyMinutes}
 
-function backupExport(){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({state:state,exportedAt:new Date().toISOString(),account:account?{email:account.email,name:account.name,className:account.className}:null},null,2)],{type:'application/json'}));a.download='airforge-backup.json';a.click();setTimeout(function(){URL.revokeObjectURL(a.href)},800)}
-function setupEvents(){
+function bind(){
   document.addEventListener('click',function(e){
-    var v=e.target.closest('[data-view]');if(v){e.preventDefault();openView(v.getAttribute('data-view'));return}
-    var task=e.target.closest('[data-task]');if(task){toggleTask(task.getAttribute('data-task'));return}
-    var del=e.target.closest('[data-delete-task]');if(del){state.tasks=state.tasks.filter(function(x){return String(x.id)!==String(del.getAttribute('data-delete-task'))});saveState();toast('Task deleted');return}
-    var rv=e.target.closest('[data-rev]');if(rv){reviewRevision(rv.getAttribute('data-rev'),rv.getAttribute('data-ok')==='1');return}
-    var er=e.target.closest('[data-error-rev]');if(er){reviewError(er.getAttribute('data-error-rev'));return}
-    var de=e.target.closest('[data-delete-error]');if(de){state.errors=state.errors.filter(function(x){return String(x.id)!==String(de.getAttribute('data-delete-error'))});saveState();toast('Mistake deleted');return}
-    var card=e.target.closest('[data-card]');if(card){var c=state.cards.find(function(x){return String(x.id)===String(card.getAttribute('data-card'))});if(c){c.open=!c.open;saveState()}return}
-    var syl=e.target.closest('[data-syl]');if(syl){markSyllabus(syl.getAttribute('data-syl'));return}
-    var ca=e.target.closest('[data-coachaction]');if(ca){coachSendAction(ca.getAttribute('data-coachaction'));return}
+    const v=e.target.closest('[data-view]');if(v){e.preventDefault();openView(v.dataset.view);return}
+    const t=e.target.closest('[data-task]');if(t){toggleTask(t.dataset.task);return}
+    const dt=e.target.closest('[data-delete-task]');if(dt){state.tasks=state.tasks.filter(x=>String(x.id)!==String(dt.dataset.deleteTask));save();toast('Task deleted');return}
+    const rv=e.target.closest('[data-rev]');if(rv){reviewRevision(rv.dataset.rev,rv.dataset.ok==='1');return}
+    const er=e.target.closest('[data-error-rev]');if(er){reviewError(er.dataset.errorRev);return}
+    const de=e.target.closest('[data-delete-error]');if(de){state.errors=state.errors.filter(x=>String(x.id)!==String(de.dataset.deleteError));save();toast('Mistake removed');return}
+    const card=e.target.closest('[data-card]');if(card){const c=state.cards.find(x=>String(x.id)===String(card.dataset.card));if(c){c.open=!c.open;renderVault()}return}
+    const syl=e.target.closest('[data-syllabus]');if(syl){state.syllabus[syl.dataset.syllabus]=!state.syllabus[syl.dataset.syllabus];save();return}
+    const attempt=e.target.closest('[data-attempt-subject]');if(attempt){recordAttempt(attempt.dataset.attemptSubject,attempt.dataset.attemptCorrect==='1');return}
+    const action=e.target.closest('[data-coach-action]');if(action)return;
   });
-  document.querySelectorAll('[data-coachtab]').forEach(function(b){b.onclick=function(){var tab=b.getAttribute('data-coachtab');document.querySelectorAll('[data-coachtab]').forEach(function(x){x.classList.toggle('active',x===b)});document.querySelectorAll('[data-coachpane]').forEach(function(p){p.classList.toggle('active',p.getAttribute('data-coachpane')===tab)});if(tab==='chat')renderChat()}});
   $('menuBtn').onclick=function(){$('sidebar').classList.toggle('open')};
+  $('notifyBtn').onclick=function(){toast('No new notifications — keep the next block clear.')};
+  $('calendarBtn').onclick=function(){openView('planner')};
   $('addTask').onclick=addTask;$('addRevision').onclick=addRevision;$('addError').onclick=addError;$('addCard').onclick=addCard;$('addNote').onclick=addNote;
-  $('buildTest').onclick=buildTest;$('preparePyq').onclick=buildPyq;$('openPyqEngine').onclick=function(){openView({Physics:'physics',Chemistry:'chemistry',Mathematics:'maths'}[$('pyqSubject').value])};
+  $('buildTest').onclick=buildTest;$('buildPyq').onclick=buildPyq;
+  $('openPyqEngine').onclick=function(){openView({Physics:'physics',Chemistry:'chemistry',Mathematics:'maths'}[$('pyqSubject').value])};
   $('officialPyq').onclick=function(){window.open('https://jeemain.nta.nic.in/','_blank','noopener')};
-  document.querySelectorAll('[data-timer]').forEach(function(b){b.onclick=function(){setTimer(+b.getAttribute('data-timer'))}});
+  document.querySelectorAll('[data-timer]').forEach(function(b){b.onclick=function(){setTimer(+b.dataset.timer)}});
   $('timerStart').onclick=function(){if(timerHandle){pauseTimer();$('timerStart').textContent='▶ Start'}else{startTimer();$('timerStart').textContent='Ⅱ Pause'}};
   $('timerReset').onclick=function(){pauseTimer();setTimer(25);$('timerStart').textContent='▶ Start'};
-  $('focusTop').onclick=function(){openView('planner')};$('exportTop').onclick=backupExport;$('exportSettings').onclick=backupExport;
-  $('addCard').onclick=addCard;$('addNote').onclick=addNote;$('saveSettings').onclick=function(){state.settings.targetDate=$('targetDate').value||DEFAULT.settings.targetDate;state.settings.dailyMinutes=+$('dailyMinutes').value||180;saveState();toast('Settings saved')};
-  $('targetDate').onchange=function(){};$('syllabusSubject').onchange=renderSyllabus;
-  $('coachOpenHome').onclick=openCoach;$('coachHide').onclick=hideCoach;$('coachMin').onclick=minimizeCoach;$('coachReopenBtn').onclick=openCoach;
-  $('coachChoice').onclick=function(){logCoach('student chose their own action');toast('Your call — I’ll follow your lead.')};$('coachDo').onclick=function(){coachSendAction(recommendedAction)};
-  $('chatSend').onclick=sendChat;$('clearChat').onclick=clearChat;$('chatInput').onkeydown=function(e){if(e.key==='Enter')sendChat()};
-  $('signOutBtn').onclick=signOut;$('switchAccount').onclick=function(){saveState();sessionStorage.removeItem(SESSION_KEY);account=null;$('app').classList.add('hidden');showAuth('login')};
-  $('resourcePhysics').onclick=function(){openView('physics')};$('resourceChem').onclick=function(){openView('chemistry')};$('resourceMaths').onclick=function(){openView('maths')};$('resourceMain').onclick=function(){window.open('https://jeemain.nta.nic.in/','_blank','noopener')};$('resourceAdv').onclick=function(){window.open('https://jeeadv.ac.in/','_blank','noopener')};$('resourceNcERT').onclick=function(){window.open('https://ncert.nic.in/','_blank','noopener')};
-  $('searchInput').onkeydown=function(e){if(e.key==='Enter'){var q=e.target.value.trim().toLowerCase();if(q.indexOf('physics')>=0)openView('physics');else if(q.indexOf('chemistry')>=0)openView('chemistry');else if(q.indexOf('math')>=0)openView('maths');else if(q.indexOf('test')>=0)openView('tests');else if(q.indexOf('revision')>=0)openView('revision');else if(q.indexOf('mistake')>=0||q.indexOf('error')>=0)openView('errors');else toast('Try Physics, Chemistry, Maths, Test, Revision or Mistakes')}}
+  $('focusBtn') && ($('focusBtn').onclick=function(){openView('planner')});
+  $('backupBtn') && ($('backupBtn').onclick=exportData);
+  $('exportBtn').onclick=exportData;$('importBtn').onclick=function(){$('importFile').click()};$('importFile').onchange=function(e){if(e.target.files[0])importData(e.target.files[0])};$('saveSettings').onclick=saveSettings;
+  $('signOutBtn').onclick=signOut;
+  $('globalSearch').addEventListener('input',function(){
+    const q=this.value.trim().toLowerCase(),box=$('searchResults');if(!q){box.classList.remove('show');box.innerHTML='';return}
+    const items=[['Physics','physics'],['Chemistry','chemistry'],['Mathematics','maths'],['Study Planner','planner'],['PYQ Bank','pyq'],['Test Lab','tests'],['Revision','revision'],['Mistakes','errors'],['Notes & Vault','vault'],['Analytics','analytics'],['Resources','resources'],['AI Coach','coach']];
+    const m=items.filter(x=>x[0].toLowerCase().includes(q)).slice(0,6);
+    box.innerHTML=m.length?m.map(x=>'<div class="searchResult" data-view="'+x[1]+'">'+esc(x[0])+'</div>').join(''):'<div class="searchResult">No matching section</div>';box.classList.add('show');
+  });
+  document.addEventListener('click',function(e){if(!e.target.closest('.searchWrap'))$('searchResults').classList.remove('show')});
 }
-function reviewError(id){var e=state.errors.find(function(x){return String(x.id)===String(id)});if(!e)return;state.revisions.push({id:Date.now(),subject:e.subject,title:e.chapter+' — error review',interval:1,due:addDays(1),reviews:0});saveState();toast('Added to revision')}
-function init(){
-  setupEvents();setupDrag();renderTimer();
-  var email=sessionStorage.getItem(SESSION_KEY),list=accounts(),rec=null;for(var i=0;i<list.length;i++)if(list[i].email===email){rec=list[i];break}
-  if(rec)enter(rec);else showAuth(list.length?'login':'signup');
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-
+$('authScreen').classList.remove('hidden');bind();bootAuth();
 })();
 </script>
 </body>
