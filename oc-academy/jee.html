@@ -734,31 +734,4 @@ setTimeout(wireAuthControls,100);
 initAuth();
 // ===== end AIRForge V3 =====
 
-/* V8 auth event guard: capture clicks before any other page listener can interfere. */
-function airforgeAuthGuard(){
-  const gate=document.getElementById('authGate');
-  if(!gate)return;
-  const active=!document.body.classList.contains('auth-ready');
-  document.documentElement.classList.toggle('auth-lock',active);
-  gate.style.display=active?'flex':'none';
-  if(active){
-    gate.style.pointerEvents='auto';
-    const els=gate.querySelectorAll('button,input,select,textarea');
-    els.forEach(el=>{el.style.pointerEvents='auto';});
-  }
-}
-document.addEventListener('click',function(e){
-  if(document.body.classList.contains('auth-ready'))return;
-  const t=e.target;
-  if(!(t instanceof Element))return;
-  if(t.closest('#authSignupTab')){e.preventDefault();e.stopPropagation();setAuthMode('signup');return;}
-  if(t.closest('#authLoginTab')){e.preventDefault();e.stopPropagation();setAuthMode('login');return;}
-  if(t.closest('#authSubmit')){e.preventDefault();e.stopPropagation();submitAuth();return;}
-},true);
-document.addEventListener('pointerdown',function(e){
-  if(document.body.classList.contains('auth-ready'))return;
-  const t=e.target;
-  if(t instanceof Element && t.closest('#authGate')) e.stopPropagation();
-},true);
-airforgeAuthGuard();
 </script><footer class="siteFooter"><div><b>AIRForge</b> • Train. Analyze. Master.</div><div>JEE Main + Advanced • PCM • AI-assisted study workspace</div></footer></div></body></html>
