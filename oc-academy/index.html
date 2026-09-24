@@ -97,7 +97,29 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .editModalCard{width:min(560px,100%)}
 @media(max-width:1050px){.plannerEditable{grid-template-columns:repeat(4,minmax(130px,1fr))}}
 @media(max-width:760px){.plannerToolbar{align-items:flex-start}.plannerEditable{grid-template-columns:repeat(2,minmax(140px,1fr))}}
-</style><style id="airforgeSmartPlanV1">.smartPlan{margin-top:11px}.smartPlanGrid{display:grid;grid-template-columns:1.1fr .9fr;gap:10px;align-items:end}.smartPlanCards{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:9px}.smartPlanChoice{padding:10px;border:1px solid #294559;background:#0b1824;color:#dcecf4;border-radius:10px;text-align:left;cursor:pointer}.smartPlanChoice:hover{border-color:#4fcae1;background:#0e2230}.smartPlanChoice.active{border-color:#61ddf4;background:#10283a}.smartPlanChoice b{display:block;font-size:9px}.smartPlanChoice span{display:block;color:#8199aa;font-size:8px;line-height:1.45;margin-top:3px}.smartPlanResult{margin-top:9px;padding:10px;border:1px solid #294559;border-radius:10px;background:#08151f;color:#91a8b8;font-size:8px;line-height:1.55}@media(max-width:760px){.smartPlanGrid,.smartPlanCards{grid-template-columns:1fr}}</style></head>
+</style><style id="airforgeSmartPlanV1">.smartPlan{margin-top:11px}.smartPlanGrid{display:grid;grid-template-columns:1.1fr .9fr;gap:10px;align-items:end}.smartPlanCards{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:9px}.smartPlanChoice{padding:10px;border:1px solid #294559;background:#0b1824;color:#dcecf4;border-radius:10px;text-align:left;cursor:pointer}.smartPlanChoice:hover{border-color:#4fcae1;background:#0e2230}.smartPlanChoice.active{border-color:#61ddf4;background:#10283a}.smartPlanChoice b{display:block;font-size:9px}.smartPlanChoice span{display:block;color:#8199aa;font-size:8px;line-height:1.45;margin-top:3px}.smartPlanResult{margin-top:9px;padding:10px;border:1px solid #294559;border-radius:10px;background:#08151f;color:#91a8b8;font-size:8px;line-height:1.55}@media(max-width:760px){.smartPlanGrid,.smartPlanCards{grid-template-columns:1fr}}</style><style id="airforgeUniversalChatStyle">
+/* Universal AIRForge Chat — larger, easier-to-read conversation UI */
+.coach{
+  width:430px!important;
+  max-height:min(760px,calc(100vh - 104px));
+}
+.coachTitle b{font-size:14px!important}
+.coachTitle span{font-size:9px!important}
+.coachTitle small{font-size:9px!important}
+.coachTab{font-size:10px!important;padding:9px 5px!important}
+.coachRec h3{font-size:18px!important}
+.coachRec p{font-size:11px!important;line-height:1.65!important}
+.coachOption b{font-size:11px!important}
+.coachOption span{font-size:9px!important}
+.coachBottom button{font-size:10px!important}
+.chatLog{height:300px!important}
+.bubble{font-size:12px!important;line-height:1.6!important;padding:10px 11px!important}
+.chatInput input{font-size:12px!important;padding:11px!important}
+.chatInput button{font-size:12px!important;width:44px!important}
+.clearChat{font-size:10px!important;padding:8px!important}
+@media(max-width:760px){.coach{width:calc(100vw - 18px)!important;right:9px!important}.chatLog{height:260px!important}}
+</style>
+</head>
 <body>
 <div id="authScreen"></div>
 
@@ -122,7 +144,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   <div class="sideSection">
     <div class="sideLabel">Main</div>
     <button class="sideBtn active" data-view="home"><span class="sideIcon">⌂</span>Home</button>
-    <button class="sideBtn" data-view="coach"><span class="sideIcon">🤖</span>AI Coach</button>
+    <button class="sideBtn" data-view="coach"><span class="sideIcon">🤖</span>AIRForge Chat</button>
     <button class="sideBtn" data-view="planner"><span class="sideIcon">◷</span>Study Planner</button>
     <button class="sideBtn" data-view="practice"><span class="sideIcon">◈</span>Practice</button>
     <button class="sideBtn" data-view="tests"><span class="sideIcon">⚗</span>Tests</button>
@@ -167,7 +189,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       <button class="btn primary" data-view="planner">▶ Continue studying</button>
       <button class="btn" data-view="tests">⚗ Take a test</button>
       <button class="btn" data-view="pyq">▤ Solve PYQs</button>
-      <button class="btn" data-view="coach">🤖 Ask AI Coach</button>
+      <button class="btn" data-view="coach">🤖 Ask AIRForge Chat</button>
     </div>
     <div class="heroMini">
       <div class="mini"><b id="mSessions">0</b><span>focus sessions</span></div>
@@ -249,9 +271,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 </section>
 
 <section id="coach" class="view">
-  <div class="hero"><div class="eyebrow">AI Coach</div><h1>Ask. Solve. Analyze. <span>Plan.</span></h1><p>Your Coach is a helper, not a controller. It uses your logged activity to suggest practical next actions while keeping the final choice with you.</p></div>
+  <div class="hero"><div class="eyebrow">AIRForge Chat</div><h1>Ask. Solve. Analyze. <span>Plan.</span></h1><p>A general-purpose chat for study, ideas, planning, explanations, writing, coding and everyday questions. Use it for anything you want to discuss.</p></div>
   <div class="grid2">
-    <section class="panel"><div class="panelHead"><h3>Coach workspace</h3><span>same coach, larger view</span></div><div id="coachPageNote" class="callout">Start with the recommendation or ask a question.</div>
+    <section class="panel"><div class="panelHead"><h3>Chat workspace</h3><span>larger chat view</span></div><div id="coachPageNote" class="callout">Ask about JEE or anything else — this chat is not limited to study topics.</div>
       <div class="coachOptions" style="margin-top:9px">
         <button class="coachOption" data-coach-action="planner"><b>🗓 Create a plan</b><span>Open today's study queue.</span></button>
         <button class="coachOption" data-coach-action="revision"><b>↻ Review due</b><span>Open the recall queue.</span></button>
@@ -259,7 +281,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
         <button class="coachOption" data-coach-action="test"><b>⚗ Build a test</b><span>Open Test Lab.</span></button>
       </div>
     </section>
-    <section class="panel"><div class="panelHead"><h3>Coach principles</h3><span>transparent</span></div>
+    <section class="panel"><div class="panelHead"><h3>How Chat works</h3><span>transparent</span></div>
       <div class="list"><div class="item"><b>Evidence over guesswork</b><small>Recommendations use your attempts, mistakes and revisions.</small></div><div class="item"><b>Student remains in control</b><small>The Coach suggests. You decide.</small></div><div class="item"><b>One next step</b><small>Reduce noise and keep the next useful action obvious.</small></div></div>
     </section>
   </div>
@@ -447,7 +469,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 </div>
 
 <div id="floatingCoach" class="coach hidden">
-  <div class="coachHead"><div class="coachAvatar"></div><div class="coachTitle"><b>🤖 AIRForge Coach</b><div class="coachStatus">● online</div><span>Explain • Solve • Plan • Analyze</span></div><div class="coachBtns"><button id="coachMin" type="button" title="Minimize">−</button><button id="coachHide" type="button" title="Hide">×</button></div></div>
+  <div class="coachHead"><div class="coachAvatar"></div><div class="coachTitle"><b>💬 AIRForge Chat</b><div class="coachStatus">● online</div><span>Talk • Learn • Plan • Explore</span></div><div class="coachBtns"><button id="coachMin" type="button" title="Minimize">−</button><button id="coachHide" type="button" title="Hide">×</button></div></div>
   <div class="coachTabs">
     <button class="coachTab active" data-coach-tab="recommend" type="button">Recommend</button>
     <button class="coachTab" data-coach-tab="chat" type="button">Chat</button>
@@ -456,7 +478,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   </div>
   <div class="coachBody">
     <div class="coachPane active" data-coach-pane="recommend">
-      <div class="coachRec"><label>Based on your record</label><h3 id="floatCoachTitle">Start with one real attempt.</h3><p id="floatCoachText">Give me a chapter or a task. I’ll use your activity to suggest the next useful step.</p></div>
+      <div class="coachRec"><label>AIRForge Chat</label><h3 id="floatCoachTitle">Start with one real attempt.</h3><p id="floatCoachText">Tell me what is on your mind. I can help with JEE, general questions, ideas, writing, coding, planning and more.</p></div>
       <div class="coachOptions">
         <button class="coachOption" data-coach-action="planner"><b>🗓 Today</b><span>Open study queue.</span></button>
         <button class="coachOption" data-coach-action="revision"><b>↻ Revision</b><span>Review what is due.</span></button>
@@ -467,7 +489,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     </div>
     <div class="coachPane" data-coach-pane="chat">
       <div id="chatLog" class="chatLog"></div>
-      <div class="chatInput"><input id="chatInput" placeholder="Ask about a plan, chapter or mistake…" autocomplete="off"><button id="chatSend" type="button">→</button></div>
+      <div class="chatInput"><input id="chatInput" placeholder="Ask anything…" autocomplete="off"><button id="chatSend" type="button">→</button></div>
       <button id="clearChat" class="clearChat" type="button">Clear chat</button>
     </div>
     <div class="coachPane" data-coach-pane="tools">
@@ -803,7 +825,53 @@ function setupCoach(){
 function executeCoachAction(a){openView({planner:'planner',revision:'revision',mistakes:'errors',test:'tests'}[a]||'planner');toast('Coach opened '+a)}
 function renderChat(){let a=[];try{a=JSON.parse(localStorage.getItem(CHAT_KEY)||'[]')}catch(e){}if(!a.length)a=[{who:'bot',text:'Hey! I’m your AIRForge study buddy. Tell me a chapter, a mistake, or what you need to do next.'}];$('chatLog').innerHTML=a.map(x=>'<div class="bubble '+(x.who==='user'?'user':'bot')+'">'+esc(x.text)+'</div>').join('');$('chatLog').scrollTop=$('chatLog').scrollHeight}
 function saveChat(who,text){let a=[];try{a=JSON.parse(localStorage.getItem(CHAT_KEY)||'[]')}catch(e){}a.push({who:who,text:text});a=a.slice(-40);localStorage.setItem(CHAT_KEY,JSON.stringify(a));renderChat()}
-function sendChat(){const input=$('chatInput'),t=input.value.trim();if(!t)return;input.value='';saveChat('user',t);let reply='Start with one concrete next step: choose a chapter, attempt a problem without notes, then record what blocked you.';const l=t.toLowerCase();if(l.includes('physics'))reply='For Physics, draw the model first, name the governing law, then calculate. Log the miss when the direction or setup goes wrong.';else if(l.includes('revision'))reply='Open Revision. Recall first, then mark Recalled or Failed so the interval changes.';else if(l.includes('test'))reply='Open Test Lab and set exam, subject, number of questions and time before starting.';else if(l.includes('plan'))reply='Make the next block 30–60 minutes with one measurable target. You can always add another block later.';setTimeout(function(){saveChat('bot',reply)},70)}
+async function sendChat(){
+  const input=$('chatInput');
+  const t=input.value.trim();
+  if(!t)return;
+  input.value='';
+  saveChat('user',t);
+
+  const loadingId='airforge-chat-loading';
+  const box=$('chatLog');
+  if(box){
+    const old=box.querySelector('#'+loadingId);
+    if(old)old.remove();
+    box.insertAdjacentHTML('beforeend','<div id="'+loadingId+'" class="bubble bot">Thinking…</div>');
+    box.scrollTop=box.scrollHeight;
+  }
+
+  try{
+    const history=JSON.parse(localStorage.getItem(CHAT_KEY)||'[]').slice(-10);
+    const context=history.map(x=>(x.who==='user'?'User':'Assistant')+': '+x.text).join('\n');
+    const prompt=[
+      'You are AIRForge Chat, a friendly general-purpose assistant.',
+      'The user is a student, so explain clearly, naturally and safely.',
+      'You can discuss JEE preparation, school subjects, coding, writing, brainstorming, planning, technology, hobbies and ordinary everyday questions.',
+      'Do not claim to have performed an action you did not perform.',
+      'Use the conversation context below when useful.',
+      '',
+      context,
+      '',
+      'Respond naturally to the latest user message.'
+    ].join('\n');
+
+    const url='https://text.pollinations.ai/'+encodeURIComponent(prompt);
+    const res=await fetch(url,{method:'GET',headers:{Accept:'text/plain'}});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const reply=(await res.text()).trim();
+    if(!reply)throw new Error('Empty response');
+
+    const loading=box&&box.querySelector('#'+loadingId);
+    if(loading)loading.remove();
+    saveChat('bot',reply);
+  }catch(err){
+    const loading=box&&box.querySelector('#'+loadingId);
+    if(loading)loading.remove();
+    saveChat('bot','I could not reach the chat model right now. Please try again in a moment.');
+    console.warn('AIRForge Chat error:',err);
+  }
+}
 function exportData(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}));a.download='airforge-backup.json';a.click();setTimeout(function(){URL.revokeObjectURL(a.href)},1000)}
 function importData(file){const r=new FileReader();r.onload=function(){try{state=normalize(JSON.parse(r.result));save();toast('Backup restored')}catch(e){toast('Invalid backup')}};r.readAsText(file)}
 function saveSettings(){state.settings.targetDate=$('targetDate').value||DEFAULT.settings.targetDate;state.settings.dailyMinutes=+$('dailyMinutes').value||180;save();toast('Settings saved')}
@@ -854,7 +922,7 @@ function bind(){
   updateSessionPanel();
   $('globalSearch').addEventListener('input',function(){
     const q=this.value.trim().toLowerCase(),box=$('searchResults');if(!q){box.classList.remove('show');box.innerHTML='';return}
-    const items=[['Physics','physics'],['Chemistry','chemistry'],['Mathematics','maths'],['Study Planner','planner'],['PYQ Bank','pyq'],['Test Lab','tests'],['Revision','revision'],['Mistakes','errors'],['Notes & Vault','vault'],['Analytics','analytics'],['Resources','resources'],['AI Coach','coach']];
+    const items=[['Physics','physics'],['Chemistry','chemistry'],['Mathematics','maths'],['Study Planner','planner'],['PYQ Bank','pyq'],['Test Lab','tests'],['Revision','revision'],['Mistakes','errors'],['Notes & Vault','vault'],['Analytics','analytics'],['Resources','resources'],['AIRForge Chat','coach']];
     const m=items.filter(x=>x[0].toLowerCase().includes(q)).slice(0,6);
     box.innerHTML=m.length?m.map(x=>'<div class="searchResult" data-view="'+x[1]+'">'+esc(x[0])+'</div>').join(''):'<div class="searchResult">No matching section</div>';box.classList.add('show');
   });
