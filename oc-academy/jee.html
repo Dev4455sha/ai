@@ -25,7 +25,7 @@ input,select,textarea{border:1px solid var(--line);background:#fff;border-radius
 .resource a{color:var(--blue);font-weight:800;text-decoration:none}.resource a:hover{text-decoration:underline}
 .examClock{font-size:54px;font-weight:900;text-align:center;font-variant-numeric:tabular-nums}.stat{padding:10px;border:1px solid var(--line);border-radius:11px;background:var(--soft)}.stat b{font-size:20px;display:block}
 .errorBadge{font-size:10px;padding:3px 6px;border-radius:999px;background:#fff3f3;color:var(--red);border:1px solid #e7bbbb}
-.toast{position:fixed;right:16px;bottom:16px;background:#142235;color:#fff;padding:10px 13px;border-radius:10px;display:none;z-index:20;font-size:12px;box-shadow:0 10px 25px rgba(0,0,0,.18)}
+.aiCoach{position:fixed;right:16px;bottom:16px;width:330px;max-width:calc(100vw - 32px);background:#fff;border:1px solid #cfd9e3;border-radius:15px;box-shadow:0 16px 40px rgba(20,34,53,.18);z-index:50;overflow:hidden}.aiCoachHead{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#f6fafc;border-bottom:1px solid #e2e8ef;font-size:12px;font-weight:800}.aiCoachHead em{font-style:normal;font-size:9px;padding:3px 6px;border-radius:999px;background:#eaf8f0;color:#168a55;margin-left:6px}.coachMin{border:0;background:none;font-size:18px;cursor:pointer;color:#607083}.coachRec{font-size:13px;font-weight:800;line-height:1.45;margin-bottom:5px}.coachWhy{font-size:10px;line-height:1.5;color:#607083;margin-bottom:9px}.aiCoach.min .aiCoachHead{border:0}.aiCoach.min #aiCoachBody{display:none}.toast{position:fixed;right:16px;bottom:16px;background:#142235;color:#fff;padding:10px 13px;border-radius:10px;display:none;z-index:20;font-size:12px;box-shadow:0 10px 25px rgba(0,0,0,.18)}
 @media(max-width:1100px){.grid3,.syllabus{grid-template-columns:repeat(2,1fr)}.kpis{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:760px){.grid2,.grid3,.syllabus{grid-template-columns:1fr}.kpis{grid-template-columns:1fr}.hero h2{font-size:28px}.barline{grid-template-columns:110px 1fr 40px}.frame{min-height:900px;height:900px}}
 </style></head>
@@ -165,6 +165,7 @@ input,select,textarea{border:1px solid var(--line);background:#fff;border-radius
 
 <div class="notice">This hub stores command-center data in this browser using localStorage. Export a backup before clearing browser data. The subject engines keep their own local progress as well.</div>
 </div><div id="toast" class="toast"></div>
+<div id="aiCoach" class="aiCoach"><div class="aiCoachHead"><span>🤖 AI Coach <em id="aiLive">LIVE</em></span><button class="coachMin" onclick="toggleCoach()">−</button></div><div id="aiCoachBody"><div id="aiRec" class="coachRec">Reading your current screen…</div><div id="aiWhy" class="coachWhy">The coach updates from your actions and stored study evidence.</div><div class="row"><button class="btn" onclick="coachDo()">▶ Do this</button><button class="btn" onclick="openView('aimastery')">🤖 Mastery</button></div></div></div>
 
 <script>
 const STORE='pcm_master_command_v3';
@@ -181,7 +182,7 @@ function save(){localStorage.setItem(STORE,JSON.stringify(state));renderAll()}
 function toast(t){const x=document.getElementById('toast');x.textContent=t;x.style.display='block';setTimeout(()=>x.style.display='none',1800)}
 function dayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function touchDay(){const d=dayKey();if(state.lastDay!==d){const y=new Date();y.setDate(y.getDate()-1);const yd=y.getFullYear()+'-'+String(y.getMonth()+1).padStart(2,'0')+'-'+String(y.getDate()).padStart(2,'0');state.streak=state.lastDay===yd?(state.streak||0)+1:1;state.lastDay=d;state.today={P:false,C:false,M:false,R:false};localStorage.setItem(STORE,JSON.stringify(state))}}
-function openView(v){document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===v));window.scrollTo({top:0,behavior:'smooth'});if(v==='syllabus')renderSyllabus();if(v==='revision')renderRevisions();if(v==='errors')renderErrors();if(v==='analytics')renderAnalytics();if(v==='vault')renderVault();if(v==='settings')renderSettings();if(v==='pyq')initPyq();if(v==='formula')renderFormulas();if(v==='notebook')renderNotebook();if(v==='challenge')renderChallenge()}
+function openView(v){window.__pcmCurrentView=v;document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===v));window.scrollTo({top:0,behavior:'smooth'});if(v==='syllabus')renderSyllabus();if(v==='revision')renderRevisions();if(v==='errors')renderErrors();if(v==='analytics')renderAnalytics();if(v==='vault')renderVault();if(v==='settings')renderSettings();if(v==='pyq')initPyq();if(v==='formula')renderFormulas();if(v==='notebook')renderNotebook();if(v==='challenge')renderChallenge()}
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>openView(b.dataset.view));
 function toggleToday(k){touchDay();state.today[k]=!state.today[k];save()}
 let timerSec=1500,timerBase=1500,timerHandle=null;
@@ -304,6 +305,29 @@ const by={Physics:map.filter(x=>x.s==='Physics'),Chemistry:map.filter(x=>x.s==='
 document.getElementById('aiEvidence').innerHTML=state.ai.signals.slice(0,20).map(x=>'<div class="item"><strong>'+escapeHtml(x.subject)+' — '+escapeHtml(x.chapter)+'</strong><small>'+(x.correct?'✅ Correct':'❌ Incorrect')+' • '+(x.advanced?'Advanced':'Main/standard')+' • '+new Date(x.timestamp).toLocaleString()+'</small></div>').join('')||'<div class="item muted">No engine evidence received yet.</div>'}
 function aiAction(s,ch){const v=s==='Physics'?'physics':s==='Chemistry'?'chemistry':'maths';openView(v);toast('Target: '+ch)}
 function aiAddRevision(s,ch){state.revisions.push({id:Date.now(),subject:s,title:ch+' — AI mastery review',interval:1,due:addDays(1),reviews:0});save();toast('AI review scheduled')}
+
+
+let coachState={screen:'Dashboard',action:'open',subject:null,chapter:null,exam:null,correct:null,seconds:0,nextAction:null};
+function coachEvent(e){const d=e.data||{};if(d.type==='pcm-screen'){coachState=Object.assign(coachState,d);renderCoach()}if(d.type==='pcm-performance'){coachState=Object.assign(coachState,{action:d.correct?'correct':'wrong',subject:d.subject,chapter:d.chapter,exam:d.exam,correct:d.correct,nextAction:d.correct?'raise_or_switch':'review_error',seconds:0});renderCoach()}}
+window.addEventListener('message',coachEvent);
+function toggleCoach(){document.getElementById('aiCoach').classList.toggle('min')}
+function coachReco(){
+ const s=coachState, now=Date.now(), due=state.revisions.filter(x=>x.due<=dayKey()).length, err=state.errors.length;
+ if(s.action==='wrong')return ['Stop and diagnose the miss before another question.','Your latest attempt was incorrect. Write the exact failure mode, then retry a related problem.','errors'];
+ if(s.action==='correct'&&s.exam==='adv')return ['Do one confidence check before moving on.','Advanced accuracy is useful only when you can reproduce the reasoning without the solution.','revision'];
+ if(s.action==='hint')return ['Finish this question before looking for another.','You used a hint. Reconstruct the solution from the hint, then solve one similar problem unaided.','retry'];
+ if(s.action==='solution')return ['Close the solution and recall it blind.','A revealed solution is not counted as mastery until you can reproduce the method.','retry'];
+ if(s.action==='skip')return ['Return to the skipped question later.','Skipping is fine; leaving it unreviewed is not.','review'];
+ if((s.seconds||0)>120)return ['Choose: solve or skip — don’t drift.','You have spent more than two minutes on the current problem. Make a deliberate decision.','review'];
+ if(due>0)return ['Revision queue has '+due+' due item'+(due===1?'':'s')+'.','Spaced revision is higher priority than collecting more new material right now.','revision'];
+ if(err>=3)return ['Your error book needs attention.','Three or more logged errors means the next useful action is diagnosis, not more random volume.','errors'];
+ if(s.subject)return [s.subject+' — '+(s.chapter||'current topic'),'Stay on this target. Try the problem before opening hints or resources.','retry'];
+ return ['Start with your weakest measured area.','The AI mastery engine chooses the next target from your evidence.','aimastery'];
+}
+function renderCoach(){const [r,w,a]=coachReco();document.getElementById('aiRec').textContent=r;document.getElementById('aiWhy').textContent=w;coachState.nextAction=a;document.getElementById('aiLive').textContent='LIVE'}
+function coachDo(){const a=coachState.nextAction||'aimastery';if(a==='errors')openView('errors');else if(a==='revision')openView('revision');else if(a==='aimastery')openView('aimastery');else if(a==='review')document.querySelector('.frame.active')?.contentWindow?.postMessage({type:'pcm-coach-action',action:'review'},'*');else if(a==='retry')document.querySelector('.frame.active')?.contentWindow?.postMessage({type:'pcm-coach-action',action:'retry'},'*')}
+setInterval(()=>{if(coachState.subject&&coachState.screen!=='Dashboard'){coachState.seconds=(coachState.seconds||0)+1;renderCoach()}},1000);
+renderCoach();
 
 function showBackupControls(){const c=document.querySelector('.top');const d=document.createElement('div');d.className='row';d.innerHTML='<button class="btn" onclick="exportData()">💾 Backup</button><button class="btn" onclick="importData()">↥ Restore</button>';c.appendChild(d)}
 touchDay();showBackupControls();renderTimer();renderExam();renderAll();
