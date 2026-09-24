@@ -126,6 +126,13 @@ body:not(.auth-ready) .aiCoach{display:none!important}
 .authGate{z-index:1000000!important}
 </style><style id="airforgeAuthFixV4">
 .authForm .field input:focus,.authForm .field select:focus{outline:2px solid rgba(89,216,243,.25);border-color:#4cb9d1!important}.authAction:active{transform:translateY(1px)}.authRemember{margin-top:8px;color:#7892a3;font-size:9px}.authDeviceBadge{display:inline-flex;gap:5px;align-items:center;padding:5px 7px;border-radius:7px;background:#0e202d;border:1px solid #294356;color:#8fe9f7;font-size:9px;font-weight:800}
+</style><style id="airforgeAuthClickFixV5">
+.authGate,.authGate *{pointer-events:auto!important}
+.authGate{cursor:default}
+.authCard,.authForm{position:relative;z-index:2}
+.authTabs,.authTabs button,.authAction,.authForm input,.authForm select{position:relative;z-index:10}
+.authTab,.authAction{pointer-events:auto!important;cursor:pointer!important}
+.authAction:disabled{opacity:.65;cursor:wait!important}
 </style></head>
 <body><div id="authGate" class="authGate">
   <div class="authCard">
@@ -659,6 +666,20 @@ function wireCoachDrag(){const box=document.getElementById('aiCoachV2'),handle=d
 function initAFSidebar(){document.querySelectorAll('[data-af-view]').forEach(b=>b.addEventListener('click',()=>document.querySelectorAll('[data-af-view]').forEach(x=>x.classList.toggle('active',x.dataset.afView===b.dataset.afView))))}
 const _airforgeOpenView=openView;openView=function(v){_airforgeOpenView(v);afActivity('view-open',v);updateAFDashboard();if(document.getElementById('aiCoachV2')?.style.display!=='none')renderCoachV2();document.querySelectorAll('[data-af-view]').forEach(b=>b.classList.toggle('active',b.dataset.afView===v))}
 initAFSidebar();
+
+// Robust auth event wiring: never depend only on inline handlers.
+function wireAuthControls(){
+ const gate=document.getElementById('authGate'), sign=document.getElementById('authSignupTab'), login=document.getElementById('authLoginTab'), submit=document.getElementById('authSubmit');
+ if(!gate||!sign||!login||!submit)return;
+ gate.style.pointerEvents='auto';
+ sign.style.pointerEvents='auto';login.style.pointerEvents='auto';submit.style.pointerEvents='auto';
+ sign.onclick=(e)=>{e.preventDefault();e.stopPropagation();setAuthMode('signup')};
+ login.onclick=(e)=>{e.preventDefault();e.stopPropagation();setAuthMode('login')};
+ submit.onclick=(e)=>{e.preventDefault();e.stopPropagation();submitAuth()};
+ document.querySelectorAll('#authGate input,#authGate select').forEach(el=>{el.style.pointerEvents='auto';el.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submit.click()}})});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wireAuthControls);else wireAuthControls();
+setTimeout(wireAuthControls,100);
 initAuth();
 // ===== end AIRForge V3 =====
 </script><footer class="siteFooter"><div><b>AIRForge</b> • Train. Analyze. Master.</div><div>JEE Main + Advanced • PCM • AI-assisted study workspace</div></footer></div></body></html>
