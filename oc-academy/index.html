@@ -489,6 +489,7 @@ const ACCOUNT_OLD='airforge_account_v3';
 const STATE_KEY='airforge_clean_state_v1';
 const OLD_STATE='pcm_master_command_v3';
 const CHAT_KEY='airforge_clean_chat_v1';
+const SESSION_COOKIE='airforge_session_v6';
 
 const DEFAULT={
  sessions:0,minutes:0,streak:0,lastDay:'',tasks:[],revisions:[],errors:[],attempts:[],
@@ -519,6 +520,9 @@ function loadState(){
   return normalize(DEFAULT);
 }
 function save(){localStorage.setItem(STATE_KEY,JSON.stringify(state));renderAll()}
+function setBrowserSession(){document.cookie=SESSION_COOKIE+'=1; path=/; SameSite=Lax';}
+function hasBrowserSession(){return document.cookie.split(';').some(function(x){return x.trim()===SESSION_COOKIE+'=1'})}
+function clearBrowserSession(){document.cookie=SESSION_COOKIE+'=; Max-Age=0; path=/; SameSite=Lax';}
 function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),1600)}
 function initials(name){return String(name||'A').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'A'}
 
@@ -536,7 +540,7 @@ function showAuth(mode){
     (authMode==='signup'?'<div><label>Name</label><input id="authName" placeholder="Your name" autocomplete="name"></div><div><label>Email</label><input id="authEmail" type="email" placeholder="you@example.com" autocomplete="email"></div><div><label>Password</label><input id="authPass" type="password" placeholder="At least 6 characters" autocomplete="new-password"></div><div><label>Class</label><select id="authClass"><option>Class 11</option><option selected>Class 12</option><option>Dropper</option><option>Other</option></select></div>':
     '<div><label>Email</label><input id="loginEmail" type="email" placeholder="you@example.com" autocomplete="email"></div><div><label>Password</label><input id="loginPass" type="password" placeholder="Your password" autocomplete="current-password"></div>')+
     '<button class="authSubmit" id="authSubmit" type="button">'+(authMode==='signup'?'Create account & enter AIRForge →':'Sign in & enter AIRForge →')+'</button><div class="authMessage" id="authMessage"></div></div>'+
-    '<div class="authNote">Current version: account and study data are stored locally in this browser. This is a local gate, not server-side authentication.</div></div></div>';
+    '<div class="authNote">This device keeps you signed in across refreshes and browser tabs. The session ends when the browser session is closed. Your password is never stored or reopened as plain text.</div></div></div>';
   $('authSignup').addEventListener('click',function(){showAuth('signup')});
   $('authLogin').addEventListener('click',function(){showAuth('login')});
   $('authSubmit').addEventListener('click',submitAuth);
@@ -552,13 +556,13 @@ function submitAuth(){
       if(pass.length<6)throw Error('Password must be at least 6 characters.');
       if(account())throw Error('An AIRForge account already exists on this browser. Use Sign in.');
       saveAccount({version:5,name,email,className:cls,passwordHash:hash(pass),createdAt:new Date().toISOString(),coachHistory:[]});
-      sessionStorage.setItem('airforge_session','1');enterApp();
+      setBrowserSession();enterApp();
     }else{
       const a=account(),email=$('loginEmail').value.trim().toLowerCase(),pass=$('loginPass').value;
       if(!a||a.email!==email)throw Error('No matching account found on this browser.');
       const ok=a.passwordHash?a.passwordHash===hash(pass):a.password===pass;
       if(!ok)throw Error('Incorrect email or password.');
-      if(!a.passwordHash)a.passwordHash=hash(pass);delete a.password;a.lastSeen=new Date().toISOString();saveAccount(a);sessionStorage.setItem('airforge_session','1');enterApp();
+      if(!a.passwordHash)a.passwordHash=hash(pass);delete a.password;a.lastSeen=new Date().toISOString();saveAccount(a);setBrowserSession();enterApp();
     }
   }catch(e){msg.textContent=e.message||'Could not continue.'}
   finally{btn.disabled=false}
@@ -570,14 +574,13 @@ function enterApp(){
   renderAll();setupCoach();renderChat();
 }
 function bootAuth(){
-  const a=account(),active=sessionStorage.getItem('airforge_session')==='1';
+  const a=account(),active=hasBrowserSession();
   if(a&&active){enterApp();return}
-  sessionStorage.removeItem('airforge_session');
   $('app').classList.add('hidden');
   $('authScreen').classList.remove('hidden');
   showAuth(a?'login':'signup');
 }
-function signOut(){sessionStorage.removeItem('airforge_session');$('app').classList.add('hidden');$('authScreen').classList.remove('hidden');showAuth('login');$('floatingCoach').classList.add('hidden')}
+function signOut(){clearBrowserSession();$('app').classList.add('hidden');$('authScreen').classList.remove('hidden');showAuth('login');$('floatingCoach').classList.add('hidden')}
 function openView(v){
   if(v==='coach'){$('floatingCoach').classList.remove('hidden');currentView='home'}
   else{currentView=v}
