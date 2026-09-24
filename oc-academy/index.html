@@ -570,7 +570,11 @@ function enterApp(){
   renderAll();setupCoach();renderChat();
 }
 function bootAuth(){
-  const a=account();$('app').classList.add('hidden');$('authScreen').classList.remove('hidden');
+  const a=account(),active=sessionStorage.getItem('airforge_session')==='1';
+  if(a&&active){enterApp();return}
+  sessionStorage.removeItem('airforge_session');
+  $('app').classList.add('hidden');
+  $('authScreen').classList.remove('hidden');
   showAuth(a?'login':'signup');
 }
 function signOut(){sessionStorage.removeItem('airforge_session');$('app').classList.add('hidden');$('authScreen').classList.remove('hidden');showAuth('login');$('floatingCoach').classList.add('hidden')}
