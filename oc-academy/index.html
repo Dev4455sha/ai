@@ -97,7 +97,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .editModalCard{width:min(560px,100%)}
 @media(max-width:1050px){.plannerEditable{grid-template-columns:repeat(4,minmax(130px,1fr))}}
 @media(max-width:760px){.plannerToolbar{align-items:flex-start}.plannerEditable{grid-template-columns:repeat(2,minmax(140px,1fr))}}
-</style></head>
+</style><style id="airforgeSmartPlanV1">.smartPlan{margin-top:11px}.smartPlanGrid{display:grid;grid-template-columns:1.1fr .9fr;gap:10px;align-items:end}.smartPlanCards{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:9px}.smartPlanChoice{padding:10px;border:1px solid #294559;background:#0b1824;color:#dcecf4;border-radius:10px;text-align:left;cursor:pointer}.smartPlanChoice:hover{border-color:#4fcae1;background:#0e2230}.smartPlanChoice.active{border-color:#61ddf4;background:#10283a}.smartPlanChoice b{display:block;font-size:9px}.smartPlanChoice span{display:block;color:#8199aa;font-size:8px;line-height:1.45;margin-top:3px}.smartPlanResult{margin-top:9px;padding:10px;border:1px solid #294559;border-radius:10px;background:#08151f;color:#91a8b8;font-size:8px;line-height:1.55}@media(max-width:760px){.smartPlanGrid,.smartPlanCards{grid-template-columns:1fr}}</style></head>
 <body>
 <div id="authScreen"></div>
 
@@ -302,6 +302,20 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       </div>
     </section>
   </div>
+
+  <section class="panel smartPlan">
+    <div class="panelHead"><h3>✨ Smart Week Builder</h3><span>editable after generation</span></div>
+    <div class="smartPlanGrid">
+      <div><div class="field"><label>Plan style</label><div class="smartPlanCards">
+        <button type="button" class="smartPlanChoice active" data-smart-style="balanced"><b>Balanced</b><span>Concept + practice + revision.</span></button>
+        <button type="button" class="smartPlanChoice" data-smart-style="advanced"><b>Advanced Push</b><span>More hard problems and retests.</span></button>
+        <button type="button" class="smartPlanChoice" data-smart-style="revision"><b>Revision Heavy</b><span>Recall, errors and spaced review.</span></button>
+      </div></div></div>
+      <div><div class="field"><label>Minutes / day</label><input id="smartMinutes" type="number" min="60" max="720" step="15" value="180"></div>
+        <button class="btn primary" id="buildSmartPlan" style="margin-top:8px;width:100%" type="button">✨ Generate 7-day plan</button></div>
+    </div>
+    <div id="smartPlanResult" class="smartPlanResult">Generate a week. Every block will remain fully editable in the planner.</div>
+  </section>
 
   <section class="panel" style="margin-top:11px">
     <div class="plannerToolbar">
@@ -669,6 +683,20 @@ function markEditingTaskDone(){
   if(editingTaskId==null)return;
   const t=state.tasks.find(x=>String(x.id)===String(editingTaskId));if(t){t.done=!t.done}
   closeTaskEditor();save();toast(t?.done?'Task completed':'Task reopened');
+}
+function generateSmartPlan(style){
+  const minutes=Math.max(60,Math.min(720,+$("smartMinutes").value||180));
+  const templates={
+    balanced:[["Physics","Concept","Mechanics / current weak chapter",0.30],["Mathematics","Practice","Maths problem set — timed",0.30],["Chemistry","PYQ","Chemistry PYQs — chapter focus",0.22],["Revision","Revision","Recall + Error Book review",0.18]],
+    advanced:[["Physics","Mock","Advanced Physics set — hard problems",0.34],["Mathematics","Practice","Advanced Maths set — hard problems",0.34],["Chemistry","PYQ","Advanced Chemistry PYQs",0.16],["Revision","Revision","Retest yesterday’s mistakes",0.16]],
+    revision:[["Revision","Revision","Spaced recall — due topics",0.35],["Physics","Revision","Physics formula + error retest",0.20],["Chemistry","Revision","Chemistry reaction / fact recall",0.20],["Mathematics","Practice","Mixed retrieval practice",0.25]]
+  };
+  const chosen=templates[style]||templates.balanced;let created=0;
+  for(let d=0;d<7;d++){
+    const day=new Date();day.setHours(0,0,0,0);day.setDate(day.getDate()+d);const dk=dateKey(day);
+    chosen.forEach(function(x,i){const id=Date.now()+created+d*100+i;const mins=Math.max(10,Math.round(minutes*x[3]));const title=(d===0&&i===0?"Start here — ":"")+x[2];state.tasks.push({id:id,date:dk,subject:x[0],type:x[1],minutes:mins,title:title,done:false,smartPlan:true});created++;});
+  }
+  save();$("smartPlanResult").textContent="Created "+created+" editable study blocks across the next 7 days ("+minutes+" min/day target). Open any block to change it.";toast("7-day Smart Plan generated");
 }
 function addTaskForDate(date){
   const title=$('taskTitle').value.trim()||'Untitled target';
