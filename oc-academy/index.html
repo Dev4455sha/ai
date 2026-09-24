@@ -73,7 +73,31 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 @media(max-width:1100px){.layout{grid-template-columns:1fr}.sidebar{position:fixed;left:0;top:72px;bottom:0;width:250px;transform:translateX(-105%);transition:.18s;z-index:70}.sidebar.open{transform:none}.menuBtn{display:grid;place-items:center}.topSearch{display:none}.grid4{grid-template-columns:repeat(2,1fr)}.subjectGrid{grid-template-columns:repeat(2,1fr)}.analytics{grid-template-columns:1fr}}
 @media(max-width:760px){.content{padding:12px}.brand{min-width:0}.brand small{display:none}.topbar{padding:0 9px}.streakBadge{display:none}.profileText{display:none}.hero{padding:20px;min-height:0}.hero h1{font-size:38px}.hero:after{right:18px;top:25px}.heroMini{grid-template-columns:repeat(2,1fr)}.grid2,.grid3,.grid4{grid-template-columns:1fr}.subjectGrid{grid-template-columns:1fr}.loop{grid-template-columns:1fr}.plannerGrid{grid-template-columns:repeat(7,105px)}.controls{grid-template-columns:1fr}.coach{right:10px;bottom:10px;top:auto}.authCard{grid-template-columns:1fr}.authLeft{display:none}.authRight{padding:22px}}
 </style>
-</head>
+<style id="airforgePlannerEditableV1">
+.plannerToolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+.plannerNav{display:flex;gap:5px}
+.plannerEditable{grid-template-columns:repeat(7,minmax(120px,1fr));gap:7px}
+.plannerEditable .dayCol{min-width:120px;min-height:240px}
+.plannerEditable .dayHead{display:flex;align-items:center;justify-content:space-between;gap:5px;padding:8px}
+.dayHead .dayPlus{width:21px;height:21px;padding:0;border:1px solid #35536a;background:#102333;color:#71e5f8;border-radius:6px;font-size:12px;font-weight:950}
+.dayHead .dayPlus:hover{border-color:#62dff5;background:#153044}
+.plannerSlot{position:relative;margin:5px;padding:8px 25px 8px 8px;border:1px solid transparent;border-radius:8px;font-size:8px;line-height:1.4;cursor:pointer;min-height:54px;transition:.14s;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.plannerSlot:hover{transform:translateY(-1px);border-color:#7ce7f7;box-shadow:0 8px 18px rgba(0,0,0,.2)}
+.plannerSlot.done{opacity:.58;text-decoration:line-through}
+.plannerSlot b{display:block;font-size:9px}
+.plannerSlot small{display:block;font-size:7px;margin-top:3px;opacity:.86}
+.plannerSlot .editMark{position:absolute;right:7px;top:7px;font-size:9px;opacity:.7}
+.plannerSlot.physics{background:#0f5bb9;color:#e8f7ff}
+.plannerSlot.chemistry{background:#7139bb;color:#f5eaff}
+.plannerSlot.mathematics{background:#0a8d73;color:#e4fff8}
+.plannerSlot.revision{background:#0f789b;color:#e3fbff}
+.plannerSlot.test{background:#bf4b72;color:#fff1f5}
+.plannerEmpty{margin:5px;border:1px dashed #294458;border-radius:8px;padding:13px 7px;text-align:center;color:#657f90;font-size:8px;min-height:54px;display:grid;place-items:center;cursor:pointer}
+.plannerEmpty:hover{border-color:#54cbe0;color:#91eafb;background:#0b1c29}
+.editModalCard{width:min(560px,100%)}
+@media(max-width:1050px){.plannerEditable{grid-template-columns:repeat(4,minmax(130px,1fr))}}
+@media(max-width:760px){.plannerToolbar{align-items:flex-start}.plannerEditable{grid-template-columns:repeat(2,minmax(140px,1fr))}}
+</style></head>
 <body>
 <div id="authScreen"></div>
 
@@ -242,23 +266,61 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 </section>
 
 <section id="planner" class="view">
-  <div class="hero"><div class="eyebrow">Study Planner</div><h1>Make the next block <span>obvious.</span></h1><p>Build a day around coaching, school and realistic focus blocks.</p></div>
+  <div class="hero">
+    <div class="eyebrow">Study Planner</div>
+    <h1>Your week, <span>under control.</span></h1>
+    <p>Create, move, edit and delete study blocks. The planner saves on this browser and stays editable after you add a task.</p>
+  </div>
+
   <div class="grid2">
-    <section class="panel"><div class="panelHead"><h3>Add task</h3><span>saved locally</span></div>
+    <section class="panel">
+      <div class="panelHead"><h3>Add a study block</h3><span>saved locally</span></div>
       <div class="controls">
-        <div class="field"><label>Subject</label><select id="taskSubject"><option>Physics</option><option>Chemistry</option><option>Mathematics</option><option>Revision</option></select></div>
+        <div class="field"><label>Subject</label><select id="taskSubject"><option>Physics</option><option>Chemistry</option><option>Mathematics</option><option>Revision</option><option>Test</option></select></div>
         <div class="field"><label>Type</label><select id="taskType"><option>Practice</option><option>Concept</option><option>PYQ</option><option>Revision</option><option>Mock</option></select></div>
         <div class="field"><label>Minutes</label><input id="taskMinutes" type="number" value="45" min="10" step="5"></div>
-        <div class="field"><label>Target</label><input id="taskTitle" placeholder="e.g. SHM — phase"></div>
+        <div class="field"><label>Target</label><input id="taskTitle" placeholder="e.g. Rotational Motion — rolling"></div>
       </div>
-      <button class="btn primary" id="addTask" style="margin-top:8px">＋ Add task</button>
+      <div class="heroActions">
+        <button class="btn primary" id="addTask" type="button">＋ Add to today</button>
+        <button class="btn" id="addTaskTomorrow" type="button">＋ Add tomorrow</button>
+      </div>
+      <div class="notice">Click any block in the weekly planner to edit it. Use <b>+</b> on an empty day to add a task directly to that date.</div>
     </section>
-    <section class="panel"><div class="panelHead"><h3>Focus Timer</h3><span>completed sessions are logged</span></div>
-      <div style="text-align:center"><div id="timer" style="font-size:43px;font-weight:950;letter-spacing:1px">25:00</div><div class="pillRow" style="justify-content:center;margin:7px 0"><button class="pill" data-timer="25">25 min</button><button class="pill" data-timer="45">45 min</button><button class="pill" data-timer="60">60 min</button></div><button class="btn primary" id="timerStart">▶ Start</button> <button class="btn" id="timerReset">↺ Reset</button></div>
+
+    <section class="panel">
+      <div class="panelHead"><h3>Focus Timer</h3><span>completed sessions are logged</span></div>
+      <div style="text-align:center">
+        <div id="timer" style="font-size:43px;font-weight:950;letter-spacing:1px">25:00</div>
+        <div class="pillRow" style="justify-content:center;margin:7px 0">
+          <button class="pill" data-timer="25" type="button">25 min</button>
+          <button class="pill" data-timer="45" type="button">45 min</button>
+          <button class="pill" data-timer="60" type="button">60 min</button>
+        </div>
+        <button class="btn primary" id="timerStart" type="button">▶ Start</button>
+        <button class="btn" id="timerReset" type="button">↺ Reset</button>
+      </div>
     </section>
   </div>
-  <section class="panel" style="margin-top:11px"><div class="panelHead"><h3>Today's tasks</h3><span>tap the check to finish</span></div><div id="plannerList" class="list"></div></section>
-  <section class="panel" style="margin-top:11px"><div class="panelHead"><h3>Week view</h3><span>22–28 Sep 2026</span></div><div class="plannerGrid" id="plannerWeek"></div></section>
+
+  <section class="panel" style="margin-top:11px">
+    <div class="plannerToolbar">
+      <div>
+        <div class="panelHead" style="margin-bottom:2px"><h3 id="plannerWeekTitle">This week</h3><span id="plannerTaskCount"></span></div>
+      </div>
+      <div class="plannerNav">
+        <button class="btn small" id="plannerPrev" type="button">←</button>
+        <button class="btn small" id="plannerToday" type="button">Today</button>
+        <button class="btn small" id="plannerNext" type="button">→</button>
+      </div>
+    </div>
+    <div class="plannerGrid plannerEditable" id="plannerWeek"></div>
+  </section>
+
+  <section class="panel" style="margin-top:11px">
+    <div class="panelHead"><h3>Today's tasks</h3><span>complete or edit below</span></div>
+    <div id="plannerList" class="list"></div>
+  </section>
 </section>
 
 <section id="practice" class="view">
@@ -397,6 +459,25 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   </div>
 </div>
 <div id="coachDockLabel" class="coachDockLabel"><button id="coachReopen" type="button">← Coach</button></div>
+<div id="taskEditModal" class="modal">
+  <div class="modalCard editModalCard">
+    <div class="modalHead"><h3>Edit study block</h3><button class="iconBtn" id="closeTaskEdit" type="button">×</button></div>
+    <div class="modalBody">
+      <div class="controls" style="grid-template-columns:1fr 1fr">
+        <div class="field"><label>Date</label><input id="editTaskDate" type="date"></div>
+        <div class="field"><label>Minutes</label><input id="editTaskMinutes" type="number" min="10" step="5"></div>
+        <div class="field"><label>Subject</label><select id="editTaskSubject"><option>Physics</option><option>Chemistry</option><option>Mathematics</option><option>Revision</option><option>Test</option></select></div>
+        <div class="field"><label>Type</label><select id="editTaskType"><option>Practice</option><option>Concept</option><option>PYQ</option><option>Revision</option><option>Mock</option></select></div>
+        <div class="field" style="grid-column:1/-1"><label>Target</label><input id="editTaskTitle" placeholder="Study target"></div>
+      </div>
+      <div class="heroActions">
+        <button class="btn primary" id="saveTaskEdit" type="button">Save changes</button>
+        <button class="btn" id="completeTaskEdit" type="button">✓ Mark complete</button>
+        <button class="btn" id="deleteTaskEdit" type="button">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div id="toast" class="toast"></div>
 
 <script>
@@ -529,10 +610,63 @@ function renderTargets(){
 function renderPlanner(){
   const arr=state.tasks.filter(t=>t.date===today());$('plannerList').innerHTML=arr.length?arr.map(t=>'<div class="item" style="display:grid;grid-template-columns:22px 1fr auto;gap:7px;align-items:center"><button class="check '+(t.done?'done':'')+'" data-task="'+t.id+'" type="button">'+(t.done?'✓':'')+'</button><div><b>'+esc(t.title)+'</b><small>'+esc(t.subject)+' • '+esc(t.type)+' • '+t.minutes+' min</small></div><button class="btn small" data-delete-task="'+t.id+'" type="button">Delete</button></div>').join(''):'<div class="item"><b>No tasks today.</b><small>Add one above.</small></div>';
 }
+let plannerWeekOffset=0,editingTaskId=null;
+function dateKey(d){return d.toISOString().slice(0,10)}
+function weekMonday(offset){
+  const d=new Date();d.setHours(0,0,0,0);const day=d.getDay();d.setDate(d.getDate()+(day===0?-6:1-day)+offset*7);return d;
+}
+function prettyDay(d){return d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'})}
 function renderWeek(){
-  const days=['Mon 22','Tue 23','Wed 24','Thu 25','Fri 26','Sat 27','Sun 28'];const types=['physics','chem','math','review','test','misc'];
-  const labels=[['Rotational Motion','Chemical Bonding','Straight Line','Revision','Full Test'],['Fluid Mechanics','Periodic Table','Circle','PYQs','Test Analysis'],['Optics (TIR)','GOC (Aromatic)','Sequence & Series','AI Practice','Mistake Analysis'],['Revision All Subjects','AI Practice Test','Formulae','Mock Test','Review'],['Modern Physics','Ionic Equilibrium','Determinants','PYQs','Weak Topic'],['Full Length Test','Test Analysis','Weak Topic Practice','Notes','Plan Next Week'],['Rest / Light Study','Read NCERT','Watch Lectures','PYQs','Plan Next Week']];
-  const cls=['physics','chem','math','review','test'];$('plannerWeek').innerHTML=days.map(function(d,di){return '<div class="dayCol"><div class="dayHead">'+d+' Sep</div>'+labels[di].map(function(t,i){return '<div class="slot '+cls[i]+'">'+esc(t)+'</div>'}).join('')+'</div>'}).join('');
+  const start=weekMonday(plannerWeekOffset),days=[];
+  for(let i=0;i<7;i++){const d=new Date(start);d.setDate(start.getDate()+i);days.push(d)}
+  const end=days[6];
+  $('plannerWeekTitle').textContent=start.toLocaleDateString(undefined,{month:'short',day:'numeric'})+' – '+end.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
+  const total=state.tasks.filter(t=>days.some(d=>dateKey(d)===t.date)).length;
+  $('plannerTaskCount').textContent=total+' block'+(total===1?'':'s');
+  $('plannerWeek').innerHTML=days.map(function(d){
+    const key=dateKey(d),tasks=state.tasks.filter(t=>t.date===key);
+    const slots=tasks.map(function(t){
+      const cls=(t.subject||'').toLowerCase().replace(/\s+/g,'');
+      return '<button type="button" class="plannerSlot '+esc(cls)+' '+(t.done?'done':'')+'" data-edit-task="'+t.id+'"><b>'+esc(t.title)+'</b><small>'+esc(t.subject)+' • '+esc(t.type)+' • '+t.minutes+' min</small><span class="editMark">✎</span></button>';
+    }).join('');
+    const todayMark=key===today()?' • Today':'';
+    return '<div class="dayCol"><div class="dayHead"><span>'+esc(prettyDay(d))+todayMark+'</span><button class="dayPlus" type="button" data-add-date="'+key+'">+</button></div>'+slots+(tasks.length?'':'<button class="plannerEmpty" type="button" data-add-date="'+key+'">＋ Add block</button>')+'</div>';
+  }).join('');
+}
+function openTaskEditor(id){
+  const t=state.tasks.find(x=>String(x.id)===String(id));if(!t)return;
+  editingTaskId=t.id;
+  $('editTaskDate').value=t.date;$('editTaskMinutes').value=t.minutes;
+  $('editTaskSubject').value=t.subject;$('editTaskType').value=t.type;$('editTaskTitle').value=t.title;
+  $('taskEditModal').classList.add('show');
+}
+function openTaskEditorNew(date){
+  editingTaskId=null;
+  $('editTaskDate').value=date||today();$('editTaskMinutes').value=45;$('editTaskSubject').value='Physics';$('editTaskType').value='Practice';$('editTaskTitle').value='';
+  $('taskEditModal').classList.add('show');
+  setTimeout(function(){$('editTaskTitle').focus()},20);
+}
+function closeTaskEditor(){$('taskEditModal').classList.remove('show');editingTaskId=null}
+function saveTaskEditor(){
+  const title=$('editTaskTitle').value.trim()||'Untitled target';
+  const payload={date:$('editTaskDate').value||today(),minutes:Math.max(10,+$('editTaskMinutes').value||45),subject:$('editTaskSubject').value,type:$('editTaskType').value,title};
+  if(editingTaskId==null){state.tasks.push({id:Date.now(),done:false,...payload});toast('Study block added')}
+  else{const t=state.tasks.find(x=>String(x.id)===String(editingTaskId));if(t)Object.assign(t,payload);toast('Study block updated')}
+  closeTaskEditor();save();
+}
+function deleteEditingTask(){
+  if(editingTaskId==null)return closeTaskEditor();
+  state.tasks=state.tasks.filter(x=>String(x.id)!==String(editingTaskId));closeTaskEditor();save();toast('Study block deleted');
+}
+function markEditingTaskDone(){
+  if(editingTaskId==null)return;
+  const t=state.tasks.find(x=>String(x.id)===String(editingTaskId));if(t){t.done=!t.done}
+  closeTaskEditor();save();toast(t?.done?'Task completed':'Task reopened');
+}
+function addTaskForDate(date){
+  const title=$('taskTitle').value.trim()||'Untitled target';
+  state.tasks.push({id:Date.now(),date:date||today(),subject:$('taskSubject').value,type:$('taskType').value,minutes:+$('taskMinutes').value||45,title,done:false});
+  $('taskTitle').value='';save();toast('Study block added to '+prettyDay(new Date((date||today())+'T00:00:00')));
 }
 function toggleTask(id){const t=state.tasks.find(x=>String(x.id)===String(id));if(t){t.done=!t.done;state.streak=Math.max(state.streak||0,t.done?1:0);save();toast(t.done?'Task complete':'Task reopened')}}
 function addTask(){const title=$('taskTitle').value.trim()||'Untitled target';state.tasks.push({id:Date.now(),date:today(),subject:$('taskSubject').value,type:$('taskType').value,minutes:+$('taskMinutes').value||45,title,done:false});$('taskTitle').value='';save();toast('Task added')}
@@ -590,6 +724,20 @@ function bind(){
   $('menuBtn').onclick=function(){$('sidebar').classList.toggle('open')};
   $('notifyBtn').onclick=function(){toast('No new notifications — keep the next block clear.')};
   $('calendarBtn').onclick=function(){openView('planner')};
+  $('addTask').onclick=addTask;
+  $('addTaskTomorrow').onclick=function(){const d=new Date();d.setDate(d.getDate()+1);addTaskForDate(dateKey(d))};
+  $('plannerPrev').onclick=function(){plannerWeekOffset--;renderWeek()};
+  $('plannerNext').onclick=function(){plannerWeekOffset++;renderWeek()};
+  $('plannerToday').onclick=function(){plannerWeekOffset=0;renderWeek()};
+  $('closeTaskEdit').onclick=closeTaskEditor;
+  $('saveTaskEdit').onclick=saveTaskEditor;
+  $('deleteTaskEdit').onclick=deleteEditingTask;
+  $('completeTaskEdit').onclick=markEditingTaskDone;
+  $('taskEditModal').addEventListener('click',function(e){if(e.target.id==='taskEditModal')closeTaskEditor()});
+  document.addEventListener('click',function(e){
+    const edit=e.target.closest('[data-edit-task]');if(edit){openTaskEditor(edit.dataset.editTask);return}
+    const add=e.target.closest('[data-add-date]');if(add){openTaskEditorNew(add.dataset.addDate);return}
+  });
   $('addTask').onclick=addTask;$('addRevision').onclick=addRevision;$('addError').onclick=addError;$('addCard').onclick=addCard;$('addNote').onclick=addNote;
   $('buildTest').onclick=buildTest;$('buildPyq').onclick=buildPyq;
   $('openPyqEngine').onclick=function(){openView({Physics:'physics',Chemistry:'chemistry',Mathematics:'maths'}[$('pyqSubject').value])};
