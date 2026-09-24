@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AIRForge Admin Console</title>
+<link rel="icon" type="image/svg+xml" href="airforge-logo.svg">
+<style>
+:root{--bg:#07111b;--panel:#0d1927;--line:#20384c;--text:#edf8ff;--muted:#8fa5b5;--cyan:#61ddf4;--green:#5ae0a0;--red:#ff747d}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(800px 500px at 10% 0,rgba(80,190,225,.13),transparent 55%),#07111b;color:var(--text);font-family:Inter,system-ui,sans-serif}.wrap{max-width:1100px;margin:auto;padding:28px}.top{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:10px}.brand img{width:42px;height:42px;border-radius:12px}.brand b{display:block;font-size:18px}.brand span{color:var(--muted);font-size:9px}.btn{border:1px solid #315169;background:#0d1b29;color:#eaf6fb;border-radius:9px;padding:9px 12px;font-weight:850;font-size:10px;cursor:pointer}.btn.primary{border:0;background:linear-gradient(135deg,#52dff3,#7180f5);color:#07111b}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}.card{border:1px solid var(--line);background:linear-gradient(145deg,#0d1927,#0a1520);border-radius:14px;padding:14px}.card h3{margin:0 0 7px;font-size:12px}.big{font-size:24px;font-weight:950}.small{font-size:9px;color:var(--muted);line-height:1.55}.table{width:100%;border-collapse:collapse;margin-top:15px;font-size:9px}.table th,.table td{padding:9px;border-bottom:1px solid #193044;text-align:left}.table th{color:#7e96a8;text-transform:uppercase;font-size:8px}.pill{display:inline-block;padding:4px 7px;border-radius:999px;border:1px solid #294254;background:#0d1b28;font-size:8px;color:#a9becb}.notice{margin-top:15px;border-left:3px solid var(--cyan);padding:11px 13px;background:#0b1723;border-radius:0 10px 10px 0;color:#9fb4c0;font-size:9px;line-height:1.6}.error{color:var(--red)}
+@media(max-width:760px){.wrap{padding:15px}.grid{grid-template-columns:1fr}.table{font-size:8px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><img src="airforge-logo.svg" alt="AIRForge"><div><b>AIRForge Admin Console</b><span>Local browser diagnostics</span></div></div>
+    <div><a class="btn" href="./index.html">← Back to AIRForge</a> <button class="btn primary" id="refresh">Refresh</button></div>
+  </header>
+
+  <div class="notice"><b>What this console can see:</b> accounts stored in this browser, the current browser session, and this browser's current public IP. A static Pages site cannot safely read passwords or other users' localStorage. IP-based login is intentionally not used as an identity mechanism.</div>
+
+  <div class="grid">
+    <div class="card"><h3>Session</h3><div class="big" id="sessionStatus">—</div><div class="small" id="sessionUser">Checking…</div></div>
+    <div class="card"><h3>Accounts on this browser</h3><div class="big" id="accountCount">0</div><div class="small">Each account has its own local study record.</div></div>
+    <div class="card"><h3>Current public IP</h3><div class="big" id="ip">Checking…</div><div class="small">Public IP only; your private LAN IP is not exposed.</div></div>
+  </div>
+
+  <section class="card" style="margin-top:12px">
+    <h3>Browser accounts</h3>
+    <table class="table"><thead><tr><th>Name</th><th>Email</th><th>Class</th><th>Logins</th><th>Last seen</th><th>Activity</th></tr></thead><tbody id="accounts"></tbody></table>
+  </section>
+
+  <section class="card" style="margin-top:12px">
+    <h3>Session behavior</h3>
+    <div class="small">AIRForge uses a browser-session cookie for the active account. Refreshing the page or opening another tab keeps the same session. A normal browser close ends a session cookie, though browser session-restore settings can vary.</div>
+  </section>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var ACCOUNT_KEY='airforge_accounts_v6',OLD='airforge_account_v4',COOKIE='airforge_session_v6';
+  function $(id){return document.getElementById(id)}
+  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
+  function accounts(){
+    try{var a=JSON.parse(localStorage.getItem(ACCOUNT_KEY)||'null');if(Array.isArray(a))return a}catch(e){}
+    try{var o=JSON.parse(localStorage.getItem(OLD)||'null');return o&&o.email?[o]:[]}catch(e){return []}
+  }
+  function cookie(){
+    var m=document.cookie.match(/(?:^|; )airforge_session_v6=([^;]*)/);return m?decodeURIComponent(m[1]):'';
+  }
+  function current(a,id){return a.find(function(x){return x.id===id})||null}
+  function render(){
+    var a=accounts(),sid=cookie(),rec=current(a,sid);
+    $('accountCount').textContent=a.length;
+    $('sessionStatus').textContent=rec?'Signed in':'No active session';
+    $('sessionUser').textContent=rec?(rec.name||'Student')+' • '+(rec.email||''):'Open AIRForge and sign in.';
+    $('accounts').innerHTML=a.length?a.map(function(x){
+      return '<tr><td>'+esc(x.name)+'</td><td>'+esc(x.email)+'</td><td><span class="pill">'+esc(x.className||'Student')+'</span></td><td>'+esc(x.loginCount||0)+'</td><td>'+esc(x.lastSeen||'—')+'</td><td>'+((x.activity||[]).length)+'</td></tr>'
+    }).join(''):'<tr><td colspan="6" class="small">No accounts stored in this browser.</td></tr>';
+    fetch('./api/session',{cache:'no-store'}).then(function(r){if(!r.ok)throw Error('No server endpoint');return r.json()}).then(function(x){$('ip').textContent=x.ip||'Unavailable'}).catch(function(){$('ip').innerHTML='<span class="error">Unavailable</span>'});
+  }
+  $('refresh').onclick=render;render();
+})();
+</script>
+</body>
+</html>
