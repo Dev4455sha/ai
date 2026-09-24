@@ -509,6 +509,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 
 const ACCOUNT_KEY='airforge_account_v4';
 const ACCOUNT_OLD='airforge_account_v3';
+const ACCOUNTS_KEY='airforge_accounts_v1';
+const LAST_EMAIL_KEY='airforge_last_email_v1';
 const STATE_KEY='airforge_clean_state_v1';
 const OLD_STATE='pcm_master_command_v3';
 const CHAT_KEY='airforge_clean_chat_v1';
@@ -525,8 +527,36 @@ function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){retur
 function today(){return new Date().toISOString().slice(0,10)}
 function addDays(n){const d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
 function hash(pass){let h=2166136261;for(let i=0;i<pass.length;i++){h^=pass.charCodeAt(i);h=Math.imul(h,16777619)}return 'af4-'+(h>>>0).toString(16)}
-function account(){try{return JSON.parse(localStorage.getItem(ACCOUNT_KEY)||localStorage.getItem(ACCOUNT_OLD)||'null')}catch(e){return null}}
-function saveAccount(a){localStorage.setItem(ACCOUNT_KEY,JSON.stringify(a))}
+function allAccounts(){
+  try{
+    const arr=JSON.parse(localStorage.getItem(ACCOUNTS_KEY)||'null');
+    if(Array.isArray(arr))return arr;
+  }catch(e){}
+  try{
+    const legacy=JSON.parse(localStorage.getItem(ACCOUNT_KEY)||localStorage.getItem(ACCOUNT_OLD)||'null');
+    if(legacy&&legacy.email){
+      const migrated=[legacy];
+      localStorage.setItem(ACCOUNTS_KEY,JSON.stringify(migrated));
+      return migrated;
+    }
+  }catch(e){}
+  return [];
+}
+function saveAccounts(arr){localStorage.setItem(ACCOUNTS_KEY,JSON.stringify(arr))}
+function findAccount(email){return allAccounts().find(a=>String(a.email||'').toLowerCase()===String(email||'').toLowerCase())||null}
+function rememberEmail(email){if(email)localStorage.setItem(LAST_EMAIL_KEY,email)}
+function rememberedEmail(){return localStorage.getItem(LAST_EMAIL_KEY)||''}
+function saveAccount(a){
+  const arr=allAccounts(),i=arr.findIndex(x=>String(x.email||'').toLowerCase()===String(a.email||'').toLowerCase());
+  if(i>=0)arr[i]=a;else arr.push(a);
+  saveAccounts(arr);
+  localStorage.setItem(ACCOUNT_KEY,JSON.stringify(a));
+}
+function sessionEmail(){
+  const raw=document.cookie.split(';').map(x=>x.trim()).find(x=>x.indexOf(SESSION_COOKIE+'=')===0);
+  if(!raw)return '';
+  try{return decodeURIComponent(raw.slice(SESSION_COOKIE.length+1))}catch(e){return ''}
+}
 function normalize(s){s=Object.assign({},DEFAULT,s||{});for(const k of ['tasks','revisions','errors','attempts','notes','cards','coachHistory'])s[k]=Array.isArray(s[k])?s[k]:[];s.syllabus=Object.assign({},s.syllabus||{});s.settings=Object.assign({},DEFAULT.settings,s.settings||{});return s}
 function loadState(){
   try{
@@ -543,11 +573,12 @@ function loadState(){
   return normalize(DEFAULT);
 }
 function save(){localStorage.setItem(STATE_KEY,JSON.stringify(state));renderAll()}
-function setBrowserSession(){document.cookie=SESSION_COOKIE+'=1; path=/; SameSite=Lax';}
-function hasBrowserSession(){return document.cookie.split(';').some(function(x){return x.trim()===SESSION_COOKIE+'=1'})}
+function setBrowserSession(email){if(!email)return;rememberEmail(email);document.cookie=SESSION_COOKIE+'='+encodeURIComponent(email)+'; path=/; SameSite=Lax';}
+function hasBrowserSession(){const e=sessionEmail();return !!e&&!!findAccount(e)}
 function clearBrowserSession(){document.cookie=SESSION_COOKIE+'=; Max-Age=0; path=/; SameSite=Lax';}
+function currentSignedInAccount(){const e=sessionEmail();return e?findAccount(e):null}
 function updateSessionPanel(){
-  const a=account();
+  const a=currentSignedInAccount()||account();
   if($('sessionAccount'))$('sessionAccount').textContent=a?'Signed in as '+(a.name||a.email||'Student'):'Not signed in';
   if($('sessionState'))$('sessionState').textContent=hasBrowserSession()?'Active browser session — refresh and new tabs stay signed in.':'No active browser session.';
 }
@@ -583,9 +614,9 @@ function showAuth(mode){
     '<div class="authTabs"><button class="authTab '+(authMode==='signup'?'active':'')+'" id="authSignup" type="button">Sign up</button><button class="authTab '+(authMode==='login'?'active':'')+'" id="authLogin" type="button">Sign in</button></div>'+
     '<div class="authFields">'+
     (authMode==='signup'?'<div><label>Name</label><input id="authName" placeholder="Your name" autocomplete="name"></div><div><label>Email</label><input id="authEmail" type="email" placeholder="you@example.com" autocomplete="email"></div><div><label>Password</label><input id="authPass" type="password" placeholder="At least 6 characters" autocomplete="new-password"></div><div><label>Class</label><select id="authClass"><option>Class 11</option><option selected>Class 12</option><option>Dropper</option><option>Other</option></select></div>':
-    '<div><label>Email</label><input id="loginEmail" type="email" placeholder="you@example.com" autocomplete="email"></div><div><label>Password</label><input id="loginPass" type="password" placeholder="Your password" autocomplete="current-password"></div>')+
+    '<div><label>Email</label><input id="loginEmail" type="email" placeholder="you@example.com" autocomplete="email" value="'+esc(rememberedEmail())+'"></div><div><label>Password</label><input id="loginPass" type="password" placeholder="Your password" autocomplete="current-password"></div>')+
     '<button class="authSubmit" id="authSubmit" type="button">'+(authMode==='signup'?'Create account & enter AIRForge →':'Sign in & enter AIRForge →')+'</button><div class="authMessage" id="authMessage"></div></div>'+
-    '<div class="authNote">This device keeps you signed in across refreshes and browser tabs. The session ends when the browser session is closed. Your password is never stored or reopened as plain text.</div></div></div>';
+    '<div class="authNote">You stay signed in across refreshes and tabs during the browser session. Closing the browser ends the session. Your password is never stored or displayed.</div></div></div>';
   $('authSignup').addEventListener('click',function(){showAuth('signup')});
   $('authLogin').addEventListener('click',function(){showAuth('login')});
   $('authSubmit').addEventListener('click',submitAuth);
@@ -599,15 +630,19 @@ function submitAuth(){
       if(name.length<2)throw Error('Please enter your name.');
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw Error('Enter a valid email address.');
       if(pass.length<6)throw Error('Password must be at least 6 characters.');
-      if(account())throw Error('An AIRForge account already exists on this browser. Use Sign in.');
-      saveAccount({version:5,name,email,className:cls,passwordHash:hash(pass),createdAt:new Date().toISOString(),coachHistory:[]});
-      setBrowserSession();enterApp();
+      if(findAccount(email))throw Error('An account with this email already exists. Use Sign in.');
+      const rec={version:6,id:hash(email+'|'+Date.now()+'|'+Math.random()),name,email,className:cls,passwordHash:hash(pass),createdAt:new Date().toISOString(),coachHistory:[]};
+      saveAccount(rec);setBrowserSession(email);enterApp();
     }else{
-      const a=account(),email=$('loginEmail').value.trim().toLowerCase(),pass=$('loginPass').value;
-      if(!a||a.email!==email)throw Error('No matching account found on this browser.');
+      const email=$('loginEmail').value.trim().toLowerCase(),pass=$('loginPass').value;
+      const a=findAccount(email);
+      if(!a)throw Error('No matching account found on this browser.');
       const ok=a.passwordHash?a.passwordHash===hash(pass):a.password===pass;
       if(!ok)throw Error('Incorrect email or password.');
-      if(!a.passwordHash)a.passwordHash=hash(pass);delete a.password;a.lastSeen=new Date().toISOString();saveAccount(a);setBrowserSession();enterApp();
+      if(!a.passwordHash)a.passwordHash=hash(pass);
+      delete a.password;
+      a.lastSeen=new Date().toISOString();
+      saveAccount(a);setBrowserSession(email);enterApp();
     }
   }catch(e){msg.textContent=e.message||'Could not continue.'}
   finally{btn.disabled=false}
@@ -619,11 +654,11 @@ function enterApp(){
   renderAll();setupCoach();renderChat();updateSessionPanel();detectPublicIP();
 }
 function bootAuth(){
-  const a=account(),active=hasBrowserSession();
-  if(a&&active){enterApp();return}
+  const email=sessionEmail(),a=email?findAccount(email):null;
+  if(a&&hasBrowserSession()){enterApp();return}
   $('app').classList.add('hidden');
   $('authScreen').classList.remove('hidden');
-  showAuth(a?'login':'signup');
+  showAuth(allAccounts().length?'login':'signup');
 }
 function signOut(){clearBrowserSession();$('app').classList.add('hidden');$('authScreen').classList.remove('hidden');showAuth('login');$('floatingCoach').classList.add('hidden')}
 function openView(v){
