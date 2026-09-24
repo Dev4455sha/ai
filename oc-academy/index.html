@@ -771,8 +771,8 @@ initAuth();
   }
   function wire(){
     var gate=$('authGate');if(!gate)return;
-    gate.style.display='grid';
-    setMode(saved()?'login':'signup');
+    gate.style.display=document.body.classList.contains('auth-ready')?'none':'grid';
+    if(!document.body.classList.contains('auth-ready'))setMode(saved()?'login':'signup');
     var st=$('authSignupTab'),lt=$('authLoginTab'),sb=$('authSubmit');
     if(st)st.addEventListener('click',function(e){e.preventDefault();e.stopImmediatePropagation();setMode('signup')},true);
     if(lt)lt.addEventListener('click',function(e){e.preventDefault();e.stopImmediatePropagation();setMode('login')},true);
