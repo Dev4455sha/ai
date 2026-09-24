@@ -56,7 +56,10 @@ body.noScroll{overflow:hidden}
 @media(max-width:1080px){.menu{display:grid;place-items:center}.layout{grid-template-columns:1fr}.sidebar{position:fixed;left:0;top:72px;bottom:0;width:250px;z-index:55;transform:translateX(-104%);transition:.18s}.sidebar.open{transform:none}.search{display:none}.heroGrid{grid-template-columns:1fr}.modelWrap{display:none}.stats{grid-template-columns:repeat(2,1fr)}.controls{grid-template-columns:repeat(2,1fr)}.planCards{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.content{padding:12px}.hero{padding:20px}.grid2,.grid3{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.controls{grid-template-columns:1fr}.authCard{grid-template-columns:1fr}.authLeft{display:none}.coach{right:10px;bottom:10px}.topbar{padding:0 10px}.brand{min-width:auto}.brand span{display:none}.profile small{display:none}.planCards{grid-template-columns:1fr 1fr}}
 </style>
-</head>
+<style id="airforgeAdminModeStyle">
+.adminBadge{position:fixed;left:248px;bottom:16px;z-index:45;border:1px solid #365a70;background:#0d1f2d;color:#72e4f7;padding:7px 10px;border-radius:9px;font-size:8px;font-weight:950;box-shadow:0 10px 25px rgba(0,0,0,.25)}
+@media(max-width:1050px){.adminBadge{left:16px;bottom:16px}}
+</style></head>
 <body>
 <div id="authRoot" class="auth"></div>
 
@@ -234,7 +237,7 @@ body.noScroll{overflow:hidden}
 'use strict';
 var ACCOUNT_KEY='airforge_accounts_v6',OLD_ACCOUNT='airforge_account_v4',OLD_ACCOUNT3='airforge_account_v3';
 var STATE_KEY='airforge_state_v6',OLD_STATE='pcm_master_command_v3',CHAT_KEY='airforge_chat_v6';
-var COOKIE='airforge_session_v6';
+var COOKIE='airforge_session_v6',ADMIN_KEY='airforge_admin_mode_v1';
 var DEFAULT={sessions:0,minutes:0,streak:0,lastDay:'',tasks:[],revisions:[],errors:[],cards:[],notes:[],attempts:[],settings:{targetDate:'2027-04-18',dailyMinutes:180}};
 var state=loadState(),currentView='home',authMode='login',editingTaskId=null,recommendedAction='planner',timerSec=1500,timerBase=1500,timerHandle=null;
 
@@ -261,6 +264,34 @@ function saveAccounts(a){localStorage.setItem(ACCOUNT_KEY,JSON.stringify(a))}
 function readCookie(name){var m=document.cookie.match(new RegExp('(?:^|; )'+name.replace(/[.*+?^{}()|[\]\\]/g,'\\$&')+'=([^;]*)'));return m?decodeURIComponent(m[1]):''}
 function setSession(id){document.cookie=COOKIE+'='+encodeURIComponent(id)+'; path=/; SameSite=Lax';}
 function clearSession(){document.cookie=COOKIE+'=; path=/; Max-Age=0; SameSite=Lax'}
+function adminMode(){
+  try{
+    if(new URLSearchParams(location.search).get('admin')==='1'){
+      localStorage.setItem(ADMIN_KEY,'1');
+      try{history.replaceState({},document.title,location.pathname)}catch(e){}
+    }else if(new URLSearchParams(location.search).get('admin')==='0'){
+      localStorage.removeItem(ADMIN_KEY);
+      clearSession();
+      try{history.replaceState({},document.title,location.pathname)}catch(e){}
+    }
+    return localStorage.getItem(ADMIN_KEY)==='1';
+  }catch(e){return false}
+}
+function adminAccount(){
+  var a=loadAccounts();
+  if(!a.length){
+    var rec={version:6,id:'admin-'+randomToken(),name:'Admin Demo Student',email:'admin@airforge.local',className:'Admin / Demo',passwordHash:hash('admin-demo'),createdAt:new Date().toISOString(),activity:[],adminDemo:true};
+    a.push(rec);saveAccounts(a);return rec;
+  }
+  return a[Math.floor(Math.random()*a.length)];
+}
+function enterAdmin(){
+  var rec=adminAccount();
+  rec.adminDemo=true;rec.lastSeen=new Date().toISOString();
+  rec.activity=rec.activity||[];rec.activity.push({type:'admin-auto-entry',detail:'Admin mode auto-opened a local demo account',time:new Date().toLocaleString()});
+  saveAccounts(loadAccounts().map(function(x){return x.id===rec.id?rec:x}));
+  setSession(rec.id);enterApp(rec);
+}
 function currentAccount(){
   var id=readCookie(COOKIE);if(!id)return null;
   var a=loadAccounts();for(var i=0;i<a.length;i++)if(a[i].id===id)return a[i];
@@ -299,12 +330,13 @@ function submitAuth(){
   finally{if(btn)btn.disabled=false}
 }
 function enterApp(rec){
-  $('authRoot').style.display='none';$('app').classList.remove('hidden');$('app').style.display='block';
+  $('authRoot').style.display='none';
+  if(adminMode())$('adminBadge').style.display='block';else $('adminBadge').style.display='none';$('app').classList.remove('hidden');$('app').style.display='block';
   $('profileName').textContent=rec.name||'Student';$('profileClass').textContent=rec.className||'JEE aspirant';$('avatar').textContent=initials(rec.name);
   $('greeting').textContent='Hey '+String(rec.name||'Student').split(' ')[0]+' — let’s make the next block useful, not just busy.';
   renderAll();setupCoach();renderChat();
 }
-function signOut(){clearSession();$('app').style.display='none';$('coach').classList.add('hidden');$('reopenCoach').classList.add('hidden');showAuth('login','Signed out. Choose an account to continue.')}
+function signOut(){clearSession();if(adminMode())localStorage.removeItem(ADMIN_KEY);$('app').style.display='none';$('coach').classList.add('hidden');$('reopenCoach').classList.add('hidden');showAuth('login','Signed out. Choose an account to continue.')}
 function openView(v){
   if(!$(''+v))return;currentView=v;document.querySelectorAll('.view').forEach(function(x){x.classList.toggle('active',x.id===v)});document.querySelectorAll('.sideBtn[data-view]').forEach(function(b){b.classList.toggle('active',b.dataset.view===v)});$('sidebar').classList.remove('open');window.scrollTo(0,0);
   var modelName={'home':'Dashboard','planner':'Planner','pyq':'PYQ','tests':'Test','revision':'Revision','errors':'Error','analytics':'Analytics','vault':'Vault','plans':'Features','settings':'Settings','physics':'Physics','chemistry':'Chemistry','maths':'Mathematics'}[v]||v;document.title='AIRForge — '+modelName;
@@ -459,6 +491,7 @@ function showModal(title,body){$('modalTitle').textContent=title;$('modalBody').
 function init(){
   $('modalClose').onclick=function(){$('planModal').classList.remove('show')};$('planModal').addEventListener('click',function(e){if(e.target===$('planModal'))$('planModal').classList.remove('show')});
   bind();
+  if(adminMode()){enterAdmin();return;}
   var rec=currentAccount();if(rec){enterApp(rec)}else{var a=loadAccounts();showAuth(a.length?'login':'signup')}
 }
 document.addEventListener('DOMContentLoaded',init);
