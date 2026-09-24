@@ -438,7 +438,7 @@ function loadState(){
   }catch(e){}
   return normalize(DEFAULT);
 }
-function save(){localStorage.setItem(STATE_KEY,JSON.stringify(state));renderAll()}
+function save(){const e=sessionEmail();localStorage.setItem(e?stateKeyFor(e):STATE_KEY,JSON.stringify(state));renderAll()}
 function setBrowserSession(){document.cookie=SESSION_COOKIE+'=1; path=/; SameSite=Lax';}
 function hasBrowserSession(){return document.cookie.split(';').some(function(x){return x.trim()===SESSION_COOKIE+'=1'})}
 function clearBrowserSession(){document.cookie=SESSION_COOKIE+'=; Max-Age=0; path=/; SameSite=Lax';}
@@ -489,6 +489,9 @@ function submitAuth(){
 function enterApp(){
   const a=account();if(!a)return; $('authScreen').classList.add('hidden');$('app').classList.remove('hidden');
   $('profileName').textContent=a.name||'Student';$('profileClass').textContent=a.className||'JEE 2027';$('sideName').textContent=a.name||'Student';$('avatar').textContent=initials(a.name);
+  $('sessionAccount').textContent='Signed in as '+(a.name||a.email||'Student');
+  $('sessionState').textContent='Active browser session — refresh and new tabs stay signed in.';
+  if($('publicIp')&&a.lastPublicIp)$('publicIp').textContent=a.lastPublicIp;
   $('greeting').textContent='Hey '+String(a.name||'Student').split(' ')[0]+' — let’s make the next study block useful.';
   renderAll();setupCoach();renderChat();
 }
