@@ -137,6 +137,14 @@ body:not(.auth-ready) .aiCoach{display:none!important}
 #authSubmit{transition:transform .1s ease,opacity .1s ease}
 #authSubmit:disabled{opacity:1}
 .authTabs{position:relative;z-index:20}
+</style><style id="airforgeAuthPointerIsolationV7">
+.authPitch,.authPitch:before,.authPitch:after{pointer-events:none!important}
+.auth3d,#auth3dAuth,#auth3d canvas,#auth3dAuth canvas{pointer-events:none!important}
+.authForm{position:relative!important;z-index:999999!important;pointer-events:auto!important;isolation:isolate}
+.authForm *{pointer-events:auto!important}
+.authTabs,.authTabs button,#authSignupTab,#authLoginTab,#authSubmit{position:relative!important;z-index:1000000!important;pointer-events:auto!important;cursor:pointer!important}
+.authForm input,.authForm select{position:relative!important;z-index:1000000!important;pointer-events:auto!important;user-select:text}
+#authGate{pointer-events:auto!important}
 </style></head>
 <body><div id="authGate" class="authGate">
   <div class="authCard">
