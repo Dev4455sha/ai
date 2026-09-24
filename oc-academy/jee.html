@@ -59,7 +59,8 @@ body.noScroll{overflow:hidden}
 <style id="airforgeAdminModeStyle">
 .adminBadge{position:fixed;left:248px;bottom:16px;z-index:45;border:1px solid #365a70;background:#0d1f2d;color:#72e4f7;padding:7px 10px;border-radius:9px;font-size:8px;font-weight:950;box-shadow:0 10px 25px rgba(0,0,0,.25)}
 @media(max-width:1050px){.adminBadge{left:16px;bottom:16px}}
-</style></head>
+</style>
+</head>
 <body>
 <div id="authRoot" class="auth"></div>
 
@@ -206,7 +207,7 @@ body.noScroll{overflow:hidden}
 
 <section id="settings" class="view"><div class="hero"><div class="heroGrid"><div><div class="eyebrow">Settings</div><h1>Make AIRForge fit <span>your routine.</span></h1><p>Session login is shared across tabs and lasts for the browser session. The site does not save your password in the login session.</p></div><div class="modelWrap"><div class="model3d"></div><div class="modelText"><b>Settings Guide</b>Simple controls.</div></div></div></div>
 <div class="grid2" style="margin-top:12px"><section class="panel"><div class="panelHead"><h3>Study settings</h3><span></span></div><div class="controls" style="grid-template-columns:1fr 1fr"><div class="field"><label>Target date</label><input id="targetDate" type="date"></div><div class="field"><label>Daily minutes</label><input id="dailyMinutes" type="number" value="180" min="30"></div></div><button class="btn primary" id="saveSettings" style="margin-top:9px">Save settings</button></section>
-<section class="panel"><div class="panelHead"><h3>Browser session</h3><span>shared across tabs</span></div><div class="item"><b id="sessionStatus">Signed in on this browser session</b><small>Refreshing or opening another tab keeps the session. Closing the browser normally ends the session cookie; browser session restore can vary by browser settings.</small></div><div class="heroActions"><button class="btn" id="getIp">🌐 Check public IP</button><span id="ipResult" class="subtle">Not checked.</span></div><div class="subtle" style="margin-top:8px">The page cannot reliably see a user's private/local IP. Public IP lookup is optional and is not used to store or reveal passwords.</div></section></div>
+<section class="panel"><div class="panelHead"><h3>Browser session</h3><span>shared across tabs</span></div><div class="item"><b id="sessionStatus">Signed in on this browser session</b><small>Refreshing or opening another tab keeps the session. Closing the browser normally ends the session cookie; browser session restore can vary by browser settings.</small></div><div class="heroActions"><button class="btn" id="getIp">🌐 Check public IP</button><span id="ipResult" class="subtle">Not checked.</span></div><div class="subtle" style="margin-top:8px">The page cannot reliably see a user's private/local IP. Public IP lookup is optional and is not used to store or reveal passwords. A production admin system should authenticate admins on the server; the current local admin switch is a demo-only control.</div></section></div>
 <div class="panel" style="margin-top:12px"><div class="panelHead"><h3>Data</h3><span>local browser storage</span></div><button class="btn" id="exportData">💾 Export backup</button><button class="btn" id="importData">↥ Import backup</button><input id="importFile" type="file" accept="application/json" hidden></div>
 </section>
 
@@ -228,7 +229,7 @@ body.noScroll{overflow:hidden}
   </div>
 </div>
 <div id="reopenCoach" class="reopenCoach hidden"><button id="reopenCoachBtn" type="button">← Coach</button></div>
-<div id="toast" class="toast"></div>
+<div id="adminBadge" class="adminBadge" style="display:none">ADMIN MODE</div><div id="toast" class="toast"></div>
 
 <div id="planModal" class="modal"><div class="modalCard"><div class="modalHead"><h3 id="modalTitle">AIRForge</h3><button class="closeBtn" id="modalClose" type="button">×</button></div><div id="modalBody" class="modalBody"></div></div></div>
 
@@ -239,7 +240,7 @@ var ACCOUNT_KEY='airforge_accounts_v6',OLD_ACCOUNT='airforge_account_v4',OLD_ACC
 var STATE_KEY='airforge_state_v6',OLD_STATE='pcm_master_command_v3',CHAT_KEY='airforge_chat_v6';
 var COOKIE='airforge_session_v6',ADMIN_KEY='airforge_admin_mode_v1';
 var DEFAULT={sessions:0,minutes:0,streak:0,lastDay:'',tasks:[],revisions:[],errors:[],cards:[],notes:[],attempts:[],settings:{targetDate:'2027-04-18',dailyMinutes:180}};
-var state=loadState(),currentView='home',authMode='login',editingTaskId=null,recommendedAction='planner',timerSec=1500,timerBase=1500,timerHandle=null;
+var state=loadState(),activeAccountId='',currentView='home',authMode='login',editingTaskId=null,recommendedAction='planner',timerSec=1500,timerBase=1500,timerHandle=null;
 
 function $(id){return document.getElementById(id)}
 function esc(v){return String(v===undefined||v===null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
@@ -251,7 +252,13 @@ function loadState(){
   try{var o=JSON.parse(localStorage.getItem(OLD_STATE)||'null');if(o){var m=normalize({sessions:o.sessions||0,minutes:o.minutes||0,streak:o.streak||0,lastDay:o.lastDay||'',tasks:o.tasks||[],revisions:o.revisions||[],errors:o.errors||[],cards:o.vault&&o.vault.cards||[],notes:o.vault&&o.vault.notes||[],attempts:o.ai&&o.ai.signals||[],settings:{targetDate:o.profile&&o.profile.targetDate||DEFAULT.settings.targetDate,dailyMinutes:o.profile&&o.profile.dailyMinutes||180}});localStorage.setItem(STATE_KEY,JSON.stringify(m));return m}}catch(e){}
   return normalize(DEFAULT)
 }
-function saveState(){localStorage.setItem(STATE_KEY,JSON.stringify(state));renderAll()}
+function accountStateKey(id){return STATE_KEY+'_'+String(id||'guest')}
+function loadStateForAccount(id){
+  try{var n=JSON.parse(localStorage.getItem(accountStateKey(id))||'null');if(n)return normalize(n)}catch(e){}
+  try{var legacy=JSON.parse(localStorage.getItem(STATE_KEY)||'null');if(legacy){var m=normalize(legacy);localStorage.setItem(accountStateKey(id),JSON.stringify(m));return m}}catch(e){}
+  return normalize(DEFAULT)
+}
+function saveState(){var key=accountStateKey(activeAccountId||'guest');localStorage.setItem(key,JSON.stringify(state));if(!activeAccountId)localStorage.setItem(STATE_KEY,JSON.stringify(state));renderAll()}
 function hash(p){var h=2166136261;for(var i=0;i<p.length;i++){h^=p.charCodeAt(i);h=Math.imul(h,16777619)}return 'af6-'+(h>>>0).toString(16)}
 function randomToken(){return Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)+'-'+Math.random().toString(36).slice(2)}
 function loadAccounts(){
@@ -330,8 +337,10 @@ function submitAuth(){
   finally{if(btn)btn.disabled=false}
 }
 function enterApp(rec){
+  activeAccountId=rec.id||'';
+  state=loadStateForAccount(activeAccountId);
   $('authRoot').style.display='none';
-  if(adminMode())$('adminBadge').style.display='block';else $('adminBadge').style.display='none';$('app').classList.remove('hidden');$('app').style.display='block';
+  var adminBadge=$('adminBadge');if(adminBadge)adminBadge.style.display=adminMode()?'block':'none';$('app').classList.remove('hidden');$('app').style.display='block';
   $('profileName').textContent=rec.name||'Student';$('profileClass').textContent=rec.className||'JEE aspirant';$('avatar').textContent=initials(rec.name);
   $('greeting').textContent='Hey '+String(rec.name||'Student').split(' ')[0]+' — let’s make the next block useful, not just busy.';
   renderAll();setupCoach();renderChat();
@@ -484,7 +493,7 @@ function bind(){
   $('focusTop').onclick=function(){openView('planner')};
   $('signOut').onclick=signOut;
   $('saveSettings').onclick=saveSettings;$('exportData').onclick=exportBackup;$('importData').onclick=function(){$('importFile').click()};$('importFile').onchange=function(e){if(e.target.files[0])importBackup(e.target.files[0])};
-  $('getIp').onclick=function(){var out=$('ipResult');out.textContent='Checking public IP…';fetch('https://api.ipify.org?format=json').then(function(r){return r.json()}).then(function(x){out.textContent='Public IP: '+x.ip}).catch(function(){out.textContent='Could not fetch public IP right now.'})};
+  $('getIp').onclick=function(){var out=$('ipResult');out.textContent='Checking public IP…';fetch('/api/session',{cache:'no-store'}).then(function(r){if(!r.ok)throw Error('endpoint');return r.json()}).then(function(x){out.textContent=x.ip?'Public IP: '+x.ip:'Public IP unavailable'}).catch(function(){fetch('https://api.ipify.org?format=json').then(function(r){return r.json()}).then(function(x){out.textContent='Public IP: '+x.ip}).catch(function(){out.textContent='Could not fetch public IP right now.'})})};
   $('searchInput').addEventListener('keydown',function(e){if(e.key==='Enter'){var q=this.value.toLowerCase();var map={dashboard:'home',today:'planner',planner:'planner',pyq:'pyq',test:'tests',revision:'revision',mistake:'errors',error:'errors',analytics:'analytics',physics:'physics',chemistry:'chemistry',math:'maths',mathematics:'maths',vault:'vault',features:'plans',plans:'plans',settings:'settings'};for(var k in map){if(q.indexOf(k)>=0){openView(map[k]);return}}toast('Try: Physics, PYQ, Revision, Test, Analytics…')}})
 }
 function showModal(title,body){$('modalTitle').textContent=title;$('modalBody').innerHTML='<div class="callout">'+esc(body)+'</div>';$('planModal').classList.add('show')}
