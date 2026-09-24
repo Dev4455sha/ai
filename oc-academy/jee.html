@@ -208,7 +208,7 @@ body.noScroll{overflow:hidden}
 <section id="settings" class="view"><div class="hero"><div class="heroGrid"><div><div class="eyebrow">Settings</div><h1>Make AIRForge fit <span>your routine.</span></h1><p>Session login is shared across tabs and lasts for the browser session. The site does not save your password in the login session.</p></div><div class="modelWrap"><div class="model3d"></div><div class="modelText"><b>Settings Guide</b>Simple controls.</div></div></div></div>
 <div class="grid2" style="margin-top:12px"><section class="panel"><div class="panelHead"><h3>Study settings</h3><span></span></div><div class="controls" style="grid-template-columns:1fr 1fr"><div class="field"><label>Target date</label><input id="targetDate" type="date"></div><div class="field"><label>Daily minutes</label><input id="dailyMinutes" type="number" value="180" min="30"></div></div><button class="btn primary" id="saveSettings" style="margin-top:9px">Save settings</button></section>
 <section class="panel"><div class="panelHead"><h3>Browser session</h3><span>shared across tabs</span></div><div class="item"><b id="sessionStatus">Signed in on this browser session</b><small>Refreshing or opening another tab keeps the session. Closing the browser normally ends the session cookie; browser session restore can vary by browser settings.</small></div><div class="heroActions"><button class="btn" id="getIp">🌐 Check public IP</button><span id="ipResult" class="subtle">Not checked.</span></div><div class="subtle" style="margin-top:8px">The page cannot reliably see a user's private/local IP. Public IP lookup is optional and is not used to store or reveal passwords. A production admin system should authenticate admins on the server; the current local admin switch is a demo-only control.</div></section></div>
-<div class="panel" style="margin-top:12px"><div class="panelHead"><h3>Data</h3><span>local browser storage</span></div><button class="btn" id="exportData">💾 Export backup</button><button class="btn" id="importData">↥ Import backup</button><input id="importFile" type="file" accept="application/json" hidden></div>
+<div class="panel" style="margin-top:12px"><div class="panelHead"><h3>Data</h3><span>local browser storage</span></div><button class="btn" id="exportData">💾 Export backup</button><button class="btn" id="importData">↥ Import backup</button><a class="btn" href="./admin.html" target="_blank" rel="noopener">🛠 Admin console</a><input id="importFile" type="file" accept="application/json" hidden></div>
 </section>
 
 <section id="physics" class="view"><div class="hero"><div class="eyebrow">Physics Engine</div><h1>Model first. <span>Then calculate.</span></h1><p>Use the full AIRForge Physics engine.</p></div><div class="iframeWrap"><iframe class="engineFrame" src="physics.html" title="AIRForge Physics Engine"></iframe></div></section>
@@ -271,20 +271,8 @@ function saveAccounts(a){localStorage.setItem(ACCOUNT_KEY,JSON.stringify(a))}
 function readCookie(name){var m=document.cookie.match(new RegExp('(?:^|; )'+name.replace(/[.*+?^{}()|[\]\\]/g,'\\$&')+'=([^;]*)'));return m?decodeURIComponent(m[1]):''}
 function setSession(id){document.cookie=COOKIE+'='+encodeURIComponent(id)+'; path=/; SameSite=Lax';}
 function clearSession(){document.cookie=COOKIE+'=; path=/; Max-Age=0; SameSite=Lax'}
-function adminMode(){
-  try{
-    if(new URLSearchParams(location.search).get('admin')==='1'){
-      localStorage.setItem(ADMIN_KEY,'1');
-      try{history.replaceState({},document.title,location.pathname)}catch(e){}
-    }else if(new URLSearchParams(location.search).get('admin')==='0'){
-      localStorage.removeItem(ADMIN_KEY);
-      clearSession();
-      try{history.replaceState({},document.title,location.pathname)}catch(e){}
-    }
-    return localStorage.getItem(ADMIN_KEY)==='1';
-  }catch(e){return false}
-}
-function adminAccount(){
+function adminMode(){return false}
+function adminAccount(){{
   var a=loadAccounts();
   if(!a.length){
     var rec={version:6,id:'admin-'+randomToken(),name:'Admin Demo Student',email:'admin@airforge.local',className:'Admin / Demo',passwordHash:hash('admin-demo'),createdAt:new Date().toISOString(),activity:[],adminDemo:true};
@@ -500,7 +488,6 @@ function showModal(title,body){$('modalTitle').textContent=title;$('modalBody').
 function init(){
   $('modalClose').onclick=function(){$('planModal').classList.remove('show')};$('planModal').addEventListener('click',function(e){if(e.target===$('planModal'))$('planModal').classList.remove('show')});
   bind();
-  if(adminMode()){enterAdmin();return;}
   var rec=currentAccount();if(rec){enterApp(rec)}else{var a=loadAccounts();showAuth(a.length?'login':'signup')}
 }
 document.addEventListener('DOMContentLoaded',init);
