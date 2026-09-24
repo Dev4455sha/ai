@@ -145,7 +145,41 @@ body:not(.auth-ready) .aiCoach{display:none!important}
 .authTabs,.authTabs button,#authSignupTab,#authLoginTab,#authSubmit{position:relative!important;z-index:1000000!important;pointer-events:auto!important;cursor:pointer!important}
 .authForm input,.authForm select{position:relative!important;z-index:1000000!important;pointer-events:auto!important;user-select:text}
 #authGate{pointer-events:auto!important}
-</style></head>
+</style>
+<style id="airforgeAuthPointerIsolationV8">
+/* Hard auth lock: nothing behind the login screen can capture a pointer event. */
+html.auth-lock,html.auth-lock body{overflow:hidden!important}
+body:not(.auth-ready)>:not(#authGate){pointer-events:none!important}
+body:not(.auth-ready) #authGate{
+  position:fixed!important;inset:0!important;
+  z-index:2147483647!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  pointer-events:auto!important;
+  isolation:isolate!important;
+}
+body:not(.auth-ready) #authGate *{pointer-events:auto}
+body:not(.auth-ready) #authGate .authPitch,
+body:not(.auth-ready) #authGate .authPitch:before,
+body:not(.auth-ready) #authGate .authPitch:after{pointer-events:none!important}
+body:not(.auth-ready) #authGate .auth3d,
+body:not(.auth-ready) #authGate canvas{pointer-events:none!important}
+#authGate .authCard{
+  position:relative!important;z-index:1!important;
+  pointer-events:auto!important;
+}
+#authGate .authForm{
+  position:relative!important;z-index:2!important;
+  pointer-events:auto!important;
+}
+#authGate .authForm button,
+#authGate .authForm input,
+#authGate .authForm select,
+#authGate .authForm label{
+  position:relative!important;z-index:3!important;
+  pointer-events:auto!important;
+}
+#authGate .authTab,#authGate .authAction{cursor:pointer!important}
+</head>
 <body><div id="authGate" class="authGate">
   <div class="authCard">
     <div class="authPitch">
@@ -699,4 +733,32 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 setTimeout(wireAuthControls,100);
 initAuth();
 // ===== end AIRForge V3 =====
+
+/* V8 auth event guard: capture clicks before any other page listener can interfere. */
+function airforgeAuthGuard(){
+  const gate=document.getElementById('authGate');
+  if(!gate)return;
+  const active=!document.body.classList.contains('auth-ready');
+  document.documentElement.classList.toggle('auth-lock',active);
+  gate.style.display=active?'flex':'none';
+  if(active){
+    gate.style.pointerEvents='auto';
+    const els=gate.querySelectorAll('button,input,select,textarea');
+    els.forEach(el=>{el.style.pointerEvents='auto';});
+  }
+}
+document.addEventListener('click',function(e){
+  if(document.body.classList.contains('auth-ready'))return;
+  const t=e.target;
+  if(!(t instanceof Element))return;
+  if(t.closest('#authSignupTab')){e.preventDefault();e.stopPropagation();setAuthMode('signup');return;}
+  if(t.closest('#authLoginTab')){e.preventDefault();e.stopPropagation();setAuthMode('login');return;}
+  if(t.closest('#authSubmit')){e.preventDefault();e.stopPropagation();submitAuth();return;}
+},true);
+document.addEventListener('pointerdown',function(e){
+  if(document.body.classList.contains('auth-ready'))return;
+  const t=e.target;
+  if(t instanceof Element && t.closest('#authGate')) e.stopPropagation();
+},true);
+airforgeAuthGuard();
 </script><footer class="siteFooter"><div><b>AIRForge</b> • Train. Analyze. Master.</div><div>JEE Main + Advanced • PCM • AI-assisted study workspace</div></footer></div></body></html>
