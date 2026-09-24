@@ -1,28 +1,67 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>JEE PCM Master Academy — Main + Advanced</title>
-<meta name="description" content="Single-page JEE PCM academy containing the full Physics, Chemistry and Mathematics training engines.">
+<meta name="description" content="Single-page JEE PCM academy with a central command center plus Physics, Chemistry and Mathematics training engines.">
 <style>
-:root{--ink:#142235;--muted:#5b6b7e;--line:#d7e0ea;--blue:#087f9e;--violet:#6546c7;--green:#168a55;--bg:#fff}
+:root{--ink:#142235;--muted:#5b6b7e;--line:#d7e0ea;--blue:#087f9e;--violet:#6546c7;--green:#168a55;--bg:#fff;--soft:#f7fafc;--danger:#b33a3a}
 *{box-sizing:border-box}html,body{margin:0;background:#fff;color:var(--ink);font-family:Inter,system-ui,Segoe UI,Arial,sans-serif}
 .shell{max-width:1600px;margin:auto;padding:16px}.top{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap}.brand h1{margin:0;font-size:30px}.brand p{margin:5px 0;color:var(--muted);font-size:13px}
-.nav{display:flex;gap:7px;flex-wrap:wrap}.nav button{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:9px 12px;font-weight:700}.nav button.active{border-color:var(--blue);color:var(--blue);background:#f2fbfd}
-.hero{margin:12px 0;padding:20px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(135deg,#f8fbfd,#fff);box-shadow:0 10px 28px rgba(20,34,53,.06)}.hero h2{margin:0 0 7px;font-size:36px}.hero p{margin:0;color:var(--muted);line-height:1.6;max-width:1050px}
-.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}.kpi{padding:10px;border:1px solid var(--line);border-radius:11px;background:#fff}.kpi b{display:block;font-size:22px}.kpi span{color:var(--muted);font-size:10px}
+.nav{display:flex;gap:7px;flex-wrap:wrap}.nav button,.action{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:9px 12px;font-weight:700;cursor:pointer}.nav button.active{border-color:var(--blue);color:var(--blue);background:#f2fbfd}.action:hover,.nav button:hover{border-color:#9bb1c4}
+.hero{margin:12px 0;padding:20px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(135deg,#f8fbfd,#fff);box-shadow:0 10px 28px rgba(20,34,53,.06)}.hero h2{margin:0 0 7px;font-size:36px}.hero p{margin:0;color:var(--muted);line-height:1.6;max-width:1100px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:12px}.kpi{padding:11px;border:1px solid var(--line);border-radius:11px;background:#fff}.kpi b{display:block;font-size:22px}.kpi span{color:var(--muted);font-size:10px}
+.command{display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:12px;margin:12px 0}.card{border:1px solid var(--line);border-radius:16px;background:#fff;padding:14px;box-shadow:0 8px 20px rgba(20,34,53,.04)}.card h3{margin:0 0 8px;font-size:16px}.muted{color:var(--muted)}
+.mission{display:flex;gap:10px;align-items:center}.mission .emoji{font-size:30px}.mission strong{display:block}.mission small{color:var(--muted)}
+.progress{height:9px;background:#edf2f6;border-radius:99px;overflow:hidden;margin:10px 0}.progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--violet));border-radius:99px;transition:width .2s}
+.timer{text-align:center}.timer .clock{font-variant-numeric:tabular-nums;font-size:44px;font-weight:800;letter-spacing:1px;margin:3px 0 8px}.timer .row{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
+.loggrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.logbtn{padding:11px;border:1px solid var(--line);border-radius:12px;background:var(--soft);cursor:pointer;font-weight:800;text-align:left}.logbtn span{display:block;font-size:11px;color:var(--muted);font-weight:500;margin-top:2px}.logbtn.done{background:#eef9f3;border-color:#9fd2b7}
+.toolrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.toolrow button{font-size:12px}
 .subject{display:none}.subject.active{display:block}.frame{width:100%;height:calc(100vh - 190px);min-height:760px;border:1px solid var(--line);border-radius:16px;background:#fff}
 .notice{margin-top:9px;color:var(--muted);font-size:11px;line-height:1.5}
-@media(max-width:700px){.hero h2{font-size:28px}.kpis{grid-template-columns:1fr}.frame{height:900px;min-height:900px}}
+@media(max-width:980px){.command{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:repeat(2,1fr)}}@media(max-width:700px){.hero h2{font-size:28px}.kpis,.command{grid-template-columns:1fr}.loggrid{grid-template-columns:1fr}.frame{height:900px;min-height:900px}}
 </style></head>
 <body><div class="shell">
 <header class="top"><div class="brand"><h1>🏆 JEE PCM Master Academy</h1><p>One website • Physics + Chemistry + Mathematics • JEE Main + JEE Advanced</p></div>
-<nav class="nav"><button class="active" data-subject="physics">⚡ Physics</button><button data-subject="chemistry">🧪 Chemistry</button><button data-subject="maths">📐 Mathematics</button></nav></header>
-<section class="hero"><h2>One URL. All three JEE subjects.</h2><p>Each tab opens the complete existing subject engine inside this single academy page — including adaptive practice, Advanced training, infinite resources, simulations, mastery tools, mocks and revision systems.</p>
-<div class="kpis"><div class="kpi"><b>21+</b><span>Physics chapter buckets + Advanced command tools</span></div><div class="kpi"><b>3</b><span>Chemistry branches: Physical, Inorganic, Organic</span></div><div class="kpi"><b>17</b><span>Maths chapter buckets + resource forge</span></div></div></section>
-<section id="physics" class="subject active"><iframe class="frame" src="physics.html" title="JEE Physics Forge"></iframe></section>
+<nav class="nav"><button class="active" data-view="home">🏠 Command Center</button><button data-view="physics">⚡ Physics</button><button data-view="chemistry">🧪 Chemistry</button><button data-view="maths">📐 Mathematics</button></nav></header>
+
+<section id="home" class="subject active">
+<section class="hero"><h2>One URL. Your complete PCM command center.</h2><p>Launch any subject, run a focused 25-minute session, record today's work, and use the existing subject engines for adaptive practice, Advanced training, simulations, infinite resources, mocks and revision.</p>
+<div class="kpis"><div class="kpi"><b id="daysLeft">—</b><span>days until JEE Advanced 2027* (date can be updated)</span></div><div class="kpi"><b id="sessions">0</b><span>focused sessions logged on this device</span></div><div class="kpi"><b id="minutes">0</b><span>focused minutes logged</span></div><div class="kpi"><b id="streak">0</b><span>current study-day streak on this device</span></div></div></section>
+
+<section class="command">
+<div class="card"><h3>🎯 Today's Mission</h3><div class="mission"><div class="emoji" id="missionEmoji">⚡</div><div><strong id="missionTitle">Physics: attack one difficult concept</strong><small id="missionText">25 minutes • write the law, draw the diagram, then solve 3 questions.</small></div></div><div class="progress"><i id="missionBar"></i></div><div class="toolrow"><button class="action" onclick="openView('physics')">Open Physics</button><button class="action" onclick="openView('chemistry')">Open Chemistry</button><button class="action" onclick="openView('maths')">Open Maths</button></div></div>
+<div class="card timer"><h3>⏱️ Focus Timer</h3><div class="clock" id="clock">25:00</div><div class="row"><button class="action" onclick="startTimer()">Start</button><button class="action" onclick="pauseTimer()">Pause</button><button class="action" onclick="resetTimer()">Reset</button></div><div class="muted" style="font-size:11px;margin-top:7px">Finishing the timer logs one focused session.</div></div>
+<div class="card"><h3>🧭 Training Mode</h3><div class="muted" style="font-size:12px;line-height:1.55">Main → speed & accuracy<br>Advanced → depth & multi-step reasoning<br>Mixed → exam switching practice</div><div class="toolrow"><button class="action" onclick="openView('physics')">⚡ Physics</button><button class="action" onclick="openView('chemistry')">🧪 Chemistry</button><button class="action" onclick="openView('maths')">📐 Maths</button></div></div>
+</section>
+
+<section class="card"><h3>✅ Today's Study Log</h3><div class="loggrid"><button class="logbtn" id="logP" onclick="toggleLog('P')">⚡ Physics<span>Concept + problems</span></button><button class="logbtn" id="logC" onclick="toggleLog('C')">🧪 Chemistry<span>Recall + questions</span></button><button class="logbtn" id="logM" onclick="toggleLog('M')">📐 Mathematics<span>Problems + review</span></button></div><div class="toolrow"><button class="action" onclick="clearToday()">Clear today's checks</button><button class="action" onclick="exportProgress()">Export local progress</button></div></section>
+
+<section class="card" style="margin-top:12px"><h3>🔥 Session Rules</h3><div class="muted" style="font-size:12px;line-height:1.6">During a focus session: one target only. Show working, not just the final answer. Mark every error by cause. End with a 60-second recall without looking at notes.</div></section>
+<p class="notice">*The exact JEE Advanced 2027 exam date is not hard-coded as an official date here. This counter uses 18 April 2027 as a planning target and is easy to replace when the official schedule is published.</p>
+</section>
+
+<section id="physics" class="subject"><iframe class="frame" src="physics.html" title="JEE Physics Forge"></iframe></section>
 <section id="chemistry" class="subject"><iframe class="frame" src="chemistry.html" title="JEE Chemistry Forge" loading="lazy"></iframe></section>
 <section id="maths" class="subject"><iframe class="frame" src="maths.html" title="JEE Mathematics Forge" loading="lazy"></iframe></section>
-<div class="notice">This is a single-page PCM shell using the full subject engines already published in this repository. Your progress remains stored separately for each subject.</div>
+
+<div class="notice">Central command-center data is stored locally in this browser. The full subject engines remain in their existing files, so their own local progress systems continue to work.</div>
 </div>
 <script>
-document.querySelectorAll('[data-subject]').forEach(function(btn){btn.onclick=function(){document.querySelectorAll('[data-subject]').forEach(function(x){x.classList.remove('active')});btn.classList.add('active');document.querySelectorAll('.subject').forEach(function(x){x.classList.remove('active')});document.getElementById(btn.dataset.subject).classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}})
+const KEY='pcm_master_command_v1';
+let state=JSON.parse(localStorage.getItem(KEY)||'null')||{sessions:0,minutes:0,streak:0,lastDay:'',today:{P:false,C:false,M:false}};
+function save(){localStorage.setItem(KEY,JSON.stringify(state));render();}
+function dayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function touchDay(){const d=dayKey();if(state.lastDay!==d){const y=new Date();y.setDate(y.getDate()-1);const yd=y.getFullYear()+'-'+String(y.getMonth()+1).padStart(2,'0')+'-'+String(y.getDate()).padStart(2,'0');state.streak=state.lastDay===yd?(state.streak||0)+1:1;state.lastDay=d;state.today={P:false,C:false,M:false};save();}}
+let timer=1500,handle=null,wasRunning=false;
+function renderTimer(){const m=Math.floor(timer/60),s=timer%60;document.getElementById('clock').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
+function startTimer(){if(handle)return;wasRunning=true;handle=setInterval(()=>{if(timer>0){timer--;renderTimer()}else{clearInterval(handle);handle=null;wasRunning=false;state.sessions++;state.minutes+=25;save();alert('Focus session complete. +25 minutes logged.');resetTimer();}},1000)}
+function pauseTimer(){if(handle){clearInterval(handle);handle=null}}
+function resetTimer(){pauseTimer();timer=1500;renderTimer()}
+function openView(v){document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));document.querySelectorAll('.subject').forEach(x=>x.classList.toggle('active',x.id===v));window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('[data-view]').forEach(btn=>btn.onclick=()=>openView(btn.dataset.view));
+function toggleLog(x){touchDay();state.today[x]=!state.today[x];save()}
+function clearToday(){state.today={P:false,C:false,M:false};save()}
+function exportProgress(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='pcm-command-progress.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+function render(){document.getElementById('sessions').textContent=state.sessions;document.getElementById('minutes').textContent=state.minutes;document.getElementById('streak').textContent=state.streak;['P','C','M'].forEach(x=>document.getElementById('log'+x).classList.toggle('done',!!state.today[x]));const n=Object.values(state.today).filter(Boolean).length;document.getElementById('missionBar').style.width=(n/3*100)+'%';}
+function setDays(){const target=new Date('2027-04-18T00:00:00+05:30');const now=new Date();document.getElementById('daysLeft').textContent=Math.max(0,Math.ceil((target-now)/86400000))}
+touchDay();render();renderTimer();setDays();
 </script></body></html>
