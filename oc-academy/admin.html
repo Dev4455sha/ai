@@ -3,65 +3,118 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AIRForge Admin Console</title>
+<title>AIRForge Admin Diagnostics</title>
+<meta name="robots" content="noindex,nofollow">
 <link rel="icon" type="image/svg+xml" href="airforge-logo.svg">
 <style>
-:root{--bg:#07111b;--panel:#0d1927;--line:#20384c;--text:#edf8ff;--muted:#8fa5b5;--cyan:#61ddf4;--green:#5ae0a0;--red:#ff747d}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(800px 500px at 10% 0,rgba(80,190,225,.13),transparent 55%),#07111b;color:var(--text);font-family:Inter,system-ui,sans-serif}.wrap{max-width:1100px;margin:auto;padding:28px}.top{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:10px}.brand img{width:42px;height:42px;border-radius:12px}.brand b{display:block;font-size:18px}.brand span{color:var(--muted);font-size:9px}.btn{border:1px solid #315169;background:#0d1b29;color:#eaf6fb;border-radius:9px;padding:9px 12px;font-weight:850;font-size:10px;cursor:pointer}.btn.primary{border:0;background:linear-gradient(135deg,#52dff3,#7180f5);color:#07111b}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}.card{border:1px solid var(--line);background:linear-gradient(145deg,#0d1927,#0a1520);border-radius:14px;padding:14px}.card h3{margin:0 0 7px;font-size:12px}.big{font-size:24px;font-weight:950}.small{font-size:9px;color:var(--muted);line-height:1.55}.table{width:100%;border-collapse:collapse;margin-top:15px;font-size:9px}.table th,.table td{padding:9px;border-bottom:1px solid #193044;text-align:left}.table th{color:#7e96a8;text-transform:uppercase;font-size:8px}.pill{display:inline-block;padding:4px 7px;border-radius:999px;border:1px solid #294254;background:#0d1b28;font-size:8px;color:#a9becb}.notice{margin-top:15px;border-left:3px solid var(--cyan);padding:11px 13px;background:#0b1723;border-radius:0 10px 10px 0;color:#9fb4c0;font-size:9px;line-height:1.6}.error{color:var(--red)}
-@media(max-width:760px){.wrap{padding:15px}.grid{grid-template-columns:1fr}.table{font-size:8px}}
+:root{--bg:#07111b;--panel:#0c1825;--line:#243d51;--text:#edf7ff;--muted:#8ca3b4;--cyan:#61ddf4;--green:#59dfa0;--red:#ff737b;--amber:#ffb75a}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(800px 500px at 8% 0,rgba(82,195,226,.12),transparent 58%),radial-gradient(700px 500px at 100% 5%,rgba(126,91,235,.10),transparent 60%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+body{padding:18px}.wrap{max-width:1500px;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:10px}.brand img{width:42px;height:42px;border-radius:12px}.brand b{font-size:18px}.brand small{display:block;color:var(--muted);font-size:9px;margin-top:2px}.actions{display:flex;gap:7px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#0d1b29;color:#eaf6fb;border-radius:9px;padding:9px 11px;font-size:9px;font-weight:900;cursor:pointer}.primary{background:linear-gradient(135deg,#50dff2,#7184ff);border:0;color:#061019}
+.grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:12px;margin-top:14px}.panel{border:1px solid var(--line);border-radius:15px;background:linear-gradient(145deg,#0c1825,#09131e);padding:13px}.panel h2{font-size:12px;margin:0 0 10px}.checks{display:grid;gap:7px}.check{display:grid;grid-template-columns:12px 1fr auto;gap:8px;align-items:start;border:1px solid #20394c;border-radius:10px;padding:9px;background:#091622}.dot{width:10px;height:10px;border-radius:50%;background:var(--amber);margin-top:2px}.dot.ok{background:var(--green);box-shadow:0 0 10px rgba(89,223,160,.3)}.dot.bad{background:var(--red);box-shadow:0 0 10px rgba(255,115,123,.2)}.dot.warn{background:var(--amber)}.check b{font-size:9px}.check span{display:block;color:var(--muted);font-size:8px;line-height:1.45;margin-top:2px}.status{font-size:7px;font-style:normal;font-weight:950;letter-spacing:.1em;text-transform:uppercase}.preview{width:100%;height:780px;border:1px solid #294356;border-radius:12px;background:#07111b}.log{max-height:240px;overflow:auto;margin-top:10px;border-top:1px solid #172c3c;padding-top:7px}.log div{font:8px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;color:#97abb8;padding:3px 0;border-bottom:1px solid #132738}.note{margin-top:10px;color:#6f8798;font-size:8px;line-height:1.55}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}.stat{border:1px solid #20394c;border-radius:10px;background:#091622;padding:10px}.stat b{display:block;font-size:18px}.stat span{font-size:7px;color:var(--muted)}
+@media(max-width:1050px){.grid{grid-template-columns:1fr}.preview{height:680px}.summary{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:650px){body{padding:10px}.summary{grid-template-columns:1fr}.preview{height:620px}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header class="top">
-    <div class="brand"><img src="airforge-logo.svg" alt="AIRForge"><div><b>AIRForge Admin Console</b><span>Local browser diagnostics</span></div></div>
-    <div><a class="btn" href="./index.html">← Back to AIRForge</a> <button class="btn primary" id="refresh">Refresh</button></div>
-  </header>
+<header class="top">
+  <div class="brand"><img src="airforge-logo.svg" alt=""><div><b>AIRForge Admin Diagnostics</b><small>Check the real deployed app, not guesses</small></div></div>
+  <div class="actions"><button class="btn primary" id="run">▶ Run full check</button><button class="btn" id="reload">↻ Reload preview</button><button class="btn" id="open">↗ Open site</button></div>
+</header>
 
-  <div class="notice"><b>What this console can see:</b> accounts stored in this browser, the current browser session, and this browser's current public IP. A static Pages site cannot safely read passwords or other users' localStorage. IP-based login is intentionally not used as an identity mechanism.</div>
+<div class="summary">
+  <div class="stat"><b id="score">—</b><span>checks passing</span></div>
+  <div class="stat"><b id="blocked">—</b><span>covered clickable elements</span></div>
+  <div class="stat"><b id="runtime">0</b><span>runtime errors caught</span></div>
+</div>
 
-  <div class="grid">
-    <div class="card"><h3>Session</h3><div class="big" id="sessionStatus">—</div><div class="small" id="sessionUser">Checking…</div></div>
-    <div class="card"><h3>Accounts on this browser</h3><div class="big" id="accountCount">0</div><div class="small">Each account has its own local study record.</div></div>
-    <div class="card"><h3>Current public IP</h3><div class="big" id="ip">Checking…</div><div class="small">Public IP only; your private LAN IP is not exposed.</div></div>
+<div class="grid">
+<section>
+  <div class="panel">
+    <h2>System checks</h2>
+    <div id="checks"></div>
+    <div class="note">This console is diagnostic only. It does not read passwords, collect visitors' IP addresses, or expose other users' browser-local data. Because AIRForge is currently a static Pages app, a normal browser cannot inspect another visitor's localStorage.</div>
+    <div class="log" id="log"></div>
   </div>
-
-  <section class="card" style="margin-top:12px">
-    <h3>Browser accounts</h3>
-    <table class="table"><thead><tr><th>Name</th><th>Email</th><th>Class</th><th>Logins</th><th>Last seen</th><th>Activity</th></tr></thead><tbody id="accounts"></tbody></table>
-  </section>
-
-  <section class="card" style="margin-top:12px">
-    <h3>Session behavior</h3>
-    <div class="small">AIRForge uses a browser-session cookie for the active account. Refreshing the page or opening another tab keeps the same session. A normal browser close ends a session cookie, though browser session-restore settings can vary.</div>
-  </section>
+</section>
+<section class="panel">
+  <h2>Live deployed-site preview</h2>
+  <iframe id="preview" class="preview" src="index.html?diagnostic=1" title="AIRForge preview"></iframe>
+</section>
+</div>
 </div>
 
 <script>
 (function(){
-  'use strict';
-  var ACCOUNT_KEY='airforge_accounts_v6',OLD='airforge_account_v4',COOKIE='airforge_session_v6';
-  function $(id){return document.getElementById(id)}
-  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
-  function accounts(){
-    try{var a=JSON.parse(localStorage.getItem(ACCOUNT_KEY)||'null');if(Array.isArray(a))return a}catch(e){}
-    try{var o=JSON.parse(localStorage.getItem(OLD)||'null');return o&&o.email?[o]:[]}catch(e){return []}
-  }
-  function cookie(){
-    var m=document.cookie.match(/(?:^|; )airforge_session_v6=([^;]*)/);return m?decodeURIComponent(m[1]):'';
-  }
-  function current(a,id){return a.find(function(x){return x.id===id})||null}
-  function render(){
-    var a=accounts(),sid=cookie(),rec=current(a,sid);
-    $('accountCount').textContent=a.length;
-    $('sessionStatus').textContent=rec?'Signed in':'No active session';
-    $('sessionUser').textContent=rec?(rec.name||'Student')+' • '+(rec.email||''):'Open AIRForge and sign in.';
-    $('accounts').innerHTML=a.length?a.map(function(x){
-      return '<tr><td>'+esc(x.name)+'</td><td>'+esc(x.email)+'</td><td><span class="pill">'+esc(x.className||'Student')+'</span></td><td>'+esc(x.loginCount||0)+'</td><td>'+esc(x.lastSeen||'—')+'</td><td>'+((x.activity||[]).length)+'</td></tr>'
-    }).join(''):'<tr><td colspan="6" class="small">No accounts stored in this browser.</td></tr>';
-    fetch('./api/session',{cache:'no-store'}).then(function(r){if(!r.ok)throw Error('No server endpoint');return r.json()}).then(function(x){$('ip').textContent=x.ip||'Unavailable'}).catch(function(){$('ip').innerHTML='<span class="error">Unavailable</span>'});
-  }
-  $('refresh').onclick=render;render();
+'use strict';
+const $=id=>document.getElementById(id), frame=$('preview'), checks=$('checks'), logBox=$('log');
+let runtimeErrors=0;
+function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+function log(s){const d=document.createElement('div');d.textContent=new Date().toLocaleTimeString()+'  '+s;logBox.prepend(d)}
+function add(name,detail,status){const d=document.createElement('div');d.className='check';const cls=status==='OK'?'ok':status==='FAIL'?'bad':'warn';d.innerHTML='<i class="dot '+cls+'"></i><div><b>'+esc(name)+'</b><span>'+esc(detail)+'</span></div><em class="status">'+status+'</em>';checks.appendChild(d);return status}
+async function fetchOne(path){
+  try{const t=performance.now(),r=await fetch(path,{cache:'no-store'});return {ok:r.ok,status:r.status,ms:Math.round(performance.now()-t)}}catch(e){return {ok:false,status:0,ms:0,error:e.message}}
+}
+function visible(el,doc){
+  const s=doc.defaultView.getComputedStyle(el),r=el.getBoundingClientRect();
+  return s.display!=='none'&&s.visibility!=='hidden'&&s.opacity!=='0'&&r.width>0&&r.height>0;
+}
+function hitScan(doc,selector,limit){
+  let total=0,blocked=0;
+  const arr=[...doc.querySelectorAll(selector)].filter(x=>visible(x,doc)).slice(0,limit);
+  arr.forEach(el=>{
+    const r=el.getBoundingClientRect(),x=Math.max(1,Math.min(doc.documentElement.clientWidth-1,r.left+r.width/2)),y=Math.max(1,Math.min(doc.documentElement.clientHeight-1,r.top+r.height/2));
+    const hit=doc.elementFromPoint(x,y);total++;if(hit&&!el.contains(hit))blocked++;
+  });
+  return {total,blocked};
+}
+async function run(){
+  checks.innerHTML='';logBox.innerHTML='';runtimeErrors=0;
+  $('runtime').textContent='0';$('score').textContent='—';$('blocked').textContent='—';
+  log('Starting full AIRForge check');
+  const files=['index.html','physics.html','chemistry.html','maths.html','airforge-logo.svg'];
+  let pass=0,total=0;
+  for(const f of files){const r=await fetchOne(f);total++;const s=add('File: '+f,r.ok?'HTTP '+r.status+' • '+r.ms+' ms':(r.error||'request failed'),r.ok?'OK':'FAIL');if(s==='OK')pass++;log(f+' -> '+r.status)}
+  await new Promise(resolve=>{if(frame.contentDocument?.readyState==='complete')resolve();else frame.addEventListener('load',resolve,{once:true})});
+  const doc=frame.contentDocument;
+  if(!doc){add('Preview DOM','Same-origin preview not accessible','FAIL');return}
+  total++;const body=!!doc.body;add('Main DOM',body?'Document body loaded':'No body element',body?'OK':'FAIL');if(body)pass++;
+  const buttons=[...doc.querySelectorAll('button')].filter(b=>visible(b,doc));
+  total++;const nav=doc.querySelectorAll('[data-view],.sideBtn').length;add('Navigation',nav+' navigation controls found',nav?'OK':'FAIL');if(nav)pass++;
+  const overlay=hitScan(doc,'button,input,select,textarea',160);
+  $('blocked').textContent=String(overlay.blocked);total++;const hs=add('Click hit-test',overlay.blocked?overlay.blocked+' visible controls appear covered':'Visible controls are not covered',overlay.blocked?'FAIL':'OK');if(hs==='OK')pass++;log('Hit-tested '+overlay.total+' controls; blocked='+overlay.blocked);
+  const fixed=[...doc.querySelectorAll('*')].filter(el=>{const s=doc.defaultView.getComputedStyle(el);return s.position==='fixed'&&visible(el,doc)});
+  add('Overlay scan',fixed.length+' visible fixed elements detected',fixed.length>10?'WARN':'OK');if(fixed.length>10)log('Many fixed elements; inspect manually if buttons look dead');
+  const auth=!!doc.querySelector('#authRoot,#authGate,.auth');
+  add('Authentication UI',auth?'Auth UI is present':'No auth UI root found',auth?'OK':'WARN');
+  try{
+    const account=doc.defaultView.localStorage.getItem('airforge_account_v4')||doc.defaultView.localStorage.getItem('airforge_account_v3')||doc.defaultView.localStorage.getItem('airforge_accounts_v6');
+    add('Local account',account?'Account record exists in preview browser':'No account record in preview browser',account?'OK':'WARN');
+    if(account){
+      doc.defaultView.sessionStorage.setItem('airforge_session_v5','1');
+      frame.contentWindow.location.reload();
+      await new Promise(resolve=>frame.addEventListener('load',resolve,{once:true}));
+      const d2=frame.contentDocument;
+      const dashboard=!!d2.querySelector('.sidebar,.sideBtn,[data-view="home"]');
+      total++;const ds=add('Signed-in dashboard',dashboard?'Dashboard loaded after session seed':'Dashboard did not load',dashboard?'OK':'FAIL');if(ds==='OK')pass++;
+      const hit2=hitScan(d2,'button,input,select,textarea',180);
+      total++;const hs2=add('Signed-in click hit-test',hit2.blocked?hit2.blocked+' controls appear covered':'Signed-in controls are not covered',hit2.blocked?'FAIL':'OK');if(hs2==='OK')pass++;$('blocked').textContent=String(hit2.blocked);log('Signed-in hit-test: '+hit2.total+' controls; blocked='+hit2.blocked);
+    }
+  }catch(e){add('Storage/session test',e.message,'FAIL')}
+  total++;const on=navigator.onLine;add('Browser connection',on?'Browser reports online':'Browser reports offline',on?'OK':'WARN');if(on)pass++;
+  $('score').textContent=pass+'/'+total;log('Diagnostics finished: '+pass+'/'+total passing');
+}
+frame.addEventListener('load',()=>log('Preview loaded'));
+frame.addEventListener('load',()=>{
+  try{
+    frame.contentWindow.addEventListener('error',e=>{runtimeErrors++;$('runtime').textContent=String(runtimeErrors);log('Runtime error: '+(e.message||'unknown'))});
+    frame.contentWindow.addEventListener('unhandledrejection',e=>{runtimeErrors++;$('runtime').textContent=String(runtimeErrors);log('Unhandled rejection')});
+  }catch(e){}
+},{once:false});
+$('run').onclick=run;
+$('reload').onclick=()=>{frame.src='index.html?diagnostic='+Date.now()};
+$('open').onclick=()=>window.open('./index.html','_blank','noopener');
+setTimeout(run,700);
 })();
 </script>
 </body>
