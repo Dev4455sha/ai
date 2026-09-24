@@ -182,7 +182,7 @@ function save(){localStorage.setItem(STORE,JSON.stringify(state));renderAll()}
 function toast(t){const x=document.getElementById('toast');x.textContent=t;x.style.display='block';setTimeout(()=>x.style.display='none',1800)}
 function dayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function touchDay(){const d=dayKey();if(state.lastDay!==d){const y=new Date();y.setDate(y.getDate()-1);const yd=y.getFullYear()+'-'+String(y.getMonth()+1).padStart(2,'0')+'-'+String(y.getDate()).padStart(2,'0');state.streak=state.lastDay===yd?(state.streak||0)+1:1;state.lastDay=d;state.today={P:false,C:false,M:false,R:false};localStorage.setItem(STORE,JSON.stringify(state))}}
-function openView(v){window.__pcmCurrentView=v;document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===v));window.scrollTo({top:0,behavior:'smooth'});if(v==='syllabus')renderSyllabus();if(v==='revision')renderRevisions();if(v==='errors')renderErrors();if(v==='analytics')renderAnalytics();if(v==='vault')renderVault();if(v==='settings')renderSettings();if(v==='pyq')initPyq();if(v==='formula')renderFormulas();if(v==='notebook')renderNotebook();if(v==='challenge')renderChallenge()}
+function openView(v){window.__pcmCurrentView=v;coachState.screen=v;document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===v));window.scrollTo({top:0,behavior:'smooth'});if(v==='syllabus')renderSyllabus();if(v==='revision')renderRevisions();if(v==='errors')renderErrors();if(v==='analytics')renderAnalytics();if(v==='vault')renderVault();if(v==='settings')renderSettings();if(v==='pyq')initPyq();if(v==='formula')renderFormulas();if(v==='notebook')renderNotebook();if(v==='challenge')renderChallenge()}
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>openView(b.dataset.view));
 function toggleToday(k){touchDay();state.today[k]=!state.today[k];save()}
 let timerSec=1500,timerBase=1500,timerHandle=null;
@@ -308,7 +308,7 @@ function aiAddRevision(s,ch){state.revisions.push({id:Date.now(),subject:s,title
 
 
 let coachState={screen:'Dashboard',action:'open',subject:null,chapter:null,exam:null,correct:null,seconds:0,nextAction:null};
-function coachEvent(e){const d=e.data||{};if(d.type==='pcm-screen'){coachState=Object.assign(coachState,d);renderCoach()}if(d.type==='pcm-performance'){coachState=Object.assign(coachState,{action:d.correct?'correct':'wrong',subject:d.subject,chapter:d.chapter,exam:d.exam,correct:d.correct,nextAction:d.correct?'raise_or_switch':'review_error',seconds:0});renderCoach()}}
+function coachEvent(e){const d=e.data||{};if(d.type==='pcm-screen'){coachState=Object.assign(coachState,d);renderCoach()}if(d.type==='pcm-performance'){coachState=Object.assign(coachState,{action:d.correct?'correct':'wrong',subject:d.subject,chapter:d.chapter,exam:d.exam,correct:d.correct,nextAction:d.correct?'raise_or_switch':'review_error',seconds:0});renderCoach()}if(d.type==='pcm-coach-open'){coachState.subject=d.subject;coachState.chapter=d.chapter;coachState.nextAction=d.target==='revision'?'revision':'aimastery';openView(d.target==='revision'?'revision':'aimastery');renderCoach()}}
 window.addEventListener('message',coachEvent);
 function toggleCoach(){document.getElementById('aiCoach').classList.toggle('min')}
 function coachReco(){
@@ -325,7 +325,7 @@ function coachReco(){
  return ['Start with your weakest measured area.','The AI mastery engine chooses the next target from your evidence.','aimastery'];
 }
 function renderCoach(){const [r,w,a]=coachReco();document.getElementById('aiRec').textContent=r;document.getElementById('aiWhy').textContent=w;coachState.nextAction=a;document.getElementById('aiLive').textContent='LIVE'}
-function coachDo(){const a=coachState.nextAction||'aimastery';if(a==='errors')openView('errors');else if(a==='revision')openView('revision');else if(a==='aimastery')openView('aimastery');else if(a==='review')document.querySelector('.frame.active')?.contentWindow?.postMessage({type:'pcm-coach-action',action:'review'},'*');else if(a==='retry')document.querySelector('.frame.active')?.contentWindow?.postMessage({type:'pcm-coach-action',action:'retry'},'*')}
+function coachDo(){const a=coachState.nextAction||'aimastery';if(a==='errors'||a==='review_error')openView('errors');else if(a==='revision')openView('revision');else if(a==='aimastery')openView('aimastery');else if(a==='review'){openView('revision')}else if(a==='retry'){const frame=document.querySelector('.view.active .frame');if(frame&&frame.contentWindow)frame.contentWindow.postMessage({type:'pcm-coach-action',action:'retry'},'*')}}
 setInterval(()=>{if(coachState.subject&&coachState.screen!=='Dashboard'){coachState.seconds=(coachState.seconds||0)+1;renderCoach()}},1000);
 renderCoach();
 
