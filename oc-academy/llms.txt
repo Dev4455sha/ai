@@ -1,0 +1,19 @@
+# AIRForge
+
+AIRForge is a JEE Main and JEE Advanced preparation workspace for Physics, Chemistry and Mathematics.
+
+Purpose:
+- Daily study planning and focus sessions
+- Chapter-level mastery evidence
+- PYQ workflows
+- Test and revision planning
+- Error analysis and spaced revision
+- Physics, Chemistry and Mathematics practice engines
+
+Primary page:
+https://airforgehub.pages.dev/
+
+Core pages:
+https://airforgehub.pages.dev/physics.html
+https://airforgehub.pages.dev/chemistry.html
+https://airforgehub.pages.dev/maths.html
